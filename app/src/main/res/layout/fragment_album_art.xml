@@ -1,0 +1,27 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#9a000000"
+    android:padding="20dp"
+    tools:context="com.emo.audomeda.view.AlbumArtFragment">
+
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardElevation="12dp"
+        tools:context="com.emo.audomeda.view.AlbumArtFragment">
+
+        <ImageView
+            android:id="@+id/imgV_SliderAlbumArt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/album_default_ico"/>
+
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>
+

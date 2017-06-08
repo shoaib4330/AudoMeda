@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:weightSum="1"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="#333444">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4">
+
+        <ImageButton
+            android:id="@+id/btn_Play"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="@dimen/audomeda_controller_margin"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/play"
+            android:scaleType="fitXY"/>
+
+        <ImageButton
+            android:id="@+id/btn_FastRewind"
+            android:layout_toLeftOf="@+id/btn_Play"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_margin="@dimen/audomeda_controller_margin"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/fastrewind"
+            android:scaleType="fitXY"/>
+
+        <ImageButton
+            android:id="@+id/btn_FastForward"
+            android:layout_toRightOf="@+id/btn_Play"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_margin="@dimen/audomeda_controller_margin"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/fastforward"
+            android:scaleType="fitXY"/>
+
+        <ImageButton
+            android:id="@+id/btn_SkipNext"
+            android:layout_toRightOf="@+id/btn_FastForward"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/audomeda_controller_margin"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/skipnext"
+            android:scaleType="fitXY"/>
+
+        <ImageButton
+            android:id="@+id/btn_SkipPrev"
+            android:layout_toLeftOf="@+id/btn_FastRewind"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/audomeda_controller_margin"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/skipprev"
+            android:scaleType="fitXY"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.6"
+        android:layout_margin="@dimen/basic_inbetween_components_margin">
+
+        <android.support.v7.widget.AppCompatSeekBar
+            android:id="@+id/seekBar_TrackSeeker"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/tv_TrackLength"
+            android:layout_toRightOf="@+id/tv_TrackCurrentPos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_TrackCurrentPos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_above="@+id/panel_Textual"
+            android:text="0:00"
+            android:textAppearance="?android:textAppearanceSmallInverse"/>
+
+
+        <TextView
+            android:id="@+id/tv_TrackLength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_above="@+id/panel_Textual"
+            android:text="2:33"
+            android:textAppearance="?android:textAppearanceSmallInverse"/>
+
+        <RelativeLayout
+            android:id="@+id/panel_Textual"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/seekBar_TrackSeeker">
+
+            <ImageView
+                android:id="@+id/img_StaticTrackIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/basic_inbetween_components_margin"
+                android:src="@drawable/track"
+                android:scaleType="fitCenter"/>
+
+            <TextView
+                android:id="@+id/tv_TrackTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/img_StaticTrackIcon"
+                android:padding="@dimen/basic_textview_padding"
+                android:textAppearance="?android:textAppearanceLargeInverse"
+                android:text="I am a song"/>
+
+            <TextView
+                android:id="@+id/tv_AlbumTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_TrackTitle"
+                android:layout_toRightOf="@+id/img_StaticTrackIcon"
+                android:padding="@dimen/basic_textview_padding"
+                android:textAppearance="?android:textAppearanceLargeInverse"
+                android:text="I am an album" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+
+</android.support.v7.widget.LinearLayoutCompat>

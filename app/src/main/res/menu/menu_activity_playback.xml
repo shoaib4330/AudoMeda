@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menuBtn_ToneVol"
+        android:icon="@drawable/toneandvol"
+        android:title="Tone/Vol"
+        app:showAsAction="always"
+        android:orderInCategory="3">
+    </item>
+
+    <item
+        android:id="@+id/menuBtn_Equalizer"
+        android:icon="@drawable/equalizer"
+        android:title="Equalizer"
+        app:showAsAction="always"
+        android:orderInCategory="2">
+    </item>
+
+    <item
+        android:id="@+id/menuBtn_Library"
+        android:icon="@drawable/ic_libraryfoler"
+        android:title="Library"
+        app:showAsAction="always"
+        android:orderInCategory="1">
+    </item>
+</menu>
