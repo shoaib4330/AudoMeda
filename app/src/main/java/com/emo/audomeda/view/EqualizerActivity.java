@@ -5,41 +5,53 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
-public class EqualizerActivity extends AppCompatActivity {
+import com.emo.audomeda.R;
+import com.emo.audomeda.view.navigation.NavigationManagerContentFlow;
+import com.emo.audomeda.view.navigation.NavigationManagerSettingsFlow;
 
-    private TextView mTextMessage;
+public class EqualizerActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationManagerContentFlow.NavigationListener {
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private NavigationManagerSettingsFlow mNavigationManager;
 
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    return true;
-            }
-            return false;
-        }
-
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_equalizer);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navView_EqualizerAcitiy);
+        navigation.getMenu().findItem(R.id.navMenu_toEqualizerFrag_EqualizerActivity).setChecked(true);
+        navigation.setOnNavigationItemSelectedListener(this);
+
+        mNavigationManager = new NavigationManagerSettingsFlow();
+        mNavigationManager.init(getSupportFragmentManager());
+        mNavigationManager.startUpInitialFragment_Equalizer();
     }
 
+    @Override
+    public void onBackPressed() {
+        mNavigationManager.navigateBack(this);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.navMenu_toEqualizerFrag_EqualizerActivity:
+                mNavigationManager.startEqualizerFragment();
+                return true;
+            case R.id.navMenu_toToneAndVolFrag_EqualizerActivity:
+                mNavigationManager.startToneandVolFragment();
+                return true;
+            case R.id.navMenu_toPlaybackActivity_EqualizerActivity:
+                finish();
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onBackstackChanged() {
+
+    }
 }

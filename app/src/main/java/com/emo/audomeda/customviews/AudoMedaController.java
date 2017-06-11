@@ -41,7 +41,7 @@ public class AudoMedaController extends LinearLayoutCompat implements View.OnCli
 
         rootView            = inflate(context, R.layout.audomedacontroller, this);
 
-        btn_PlayPause       = (ImageButton) rootView.findViewById(R.id.btn_Play);
+        btn_PlayPause       = (android.support.v7.widget.AppCompatImageButton) rootView.findViewById(R.id.btn_Play);
         btn_FastForward     = (ImageButton) rootView.findViewById(R.id.btn_FastForward);
         btn_FastRewind      = (ImageButton) rootView.findViewById(R.id.btn_FastRewind);
         btn_SkipNext        = (ImageButton) rootView.findViewById(R.id.btn_SkipNext);

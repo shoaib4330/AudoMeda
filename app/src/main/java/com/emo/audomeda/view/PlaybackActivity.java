@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.emo.audomeda.R;
+import com.emo.audomeda.view.fragments.AlbumArtFragment;
 
 public class PlaybackActivity extends AppCompatActivity {
 
