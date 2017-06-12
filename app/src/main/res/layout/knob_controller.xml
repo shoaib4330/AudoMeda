@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="@dimen/knobcontroller_basic_padding_">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right">
+
+        <TextView
+            android:id="@+id/tv_KnobText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Im text1"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_KnobText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="Im text2"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <view
+            android:id="@+id/cv_KnobController"
+            class="com.emo.audomeda.customviews.KnobController$RotatingKnobController"
+            app:layout_heightPercent="90%"
+            app:layout_aspectRatio="100%"
+            android:minHeight="80dp"
+            android:minWidth="80dp"
+            android:layout_centerInParent="true">
+
+        </view>
+
+    </android.support.percent.PercentRelativeLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_KnobText3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Im text3"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_KnobText4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="Im text1"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+</LinearLayout>

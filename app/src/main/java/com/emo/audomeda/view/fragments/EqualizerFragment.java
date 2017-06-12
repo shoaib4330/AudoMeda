@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.emo.audomeda.R;
+import com.emo.audomeda.customviews.KnobController;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,7 +22,6 @@ public class EqualizerFragment extends Fragment {
 
     private String mParam1;
     private String mParam2;
-
 
 
     public EqualizerFragment() {
@@ -50,7 +50,10 @@ public class EqualizerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_equalizer, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_equalizer, container, false);
+        //knobController = (KnobController) rootView.findViewById(R.id.knob_Volume);
+        //knobController.setTopRightText("Volume");
+        return rootView;
     }
 
 
