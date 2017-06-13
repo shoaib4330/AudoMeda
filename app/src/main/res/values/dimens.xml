@@ -8,6 +8,12 @@
 
     <dimen name="knobcontroller_smallScreen_minWidth">100dp</dimen>
 
+    <!-- CustomViews Dimensions Here -->
+    <dimen name="customStateButton_rightMargin_dot">10dp</dimen>
+    <dimen name="customStateButton_bottomMargin_dot">10dp</dimen>
+
+    <dimen name="customSlider_allSidedPadding">10dp</dimen>
+
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>

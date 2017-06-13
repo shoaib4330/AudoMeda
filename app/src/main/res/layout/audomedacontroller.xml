@@ -94,7 +94,7 @@
             android:layout_alignParentLeft="true"
             android:layout_above="@+id/panel_Textual"
             android:text="0:00"
-            android:textAppearance="?android:textAppearanceSmallInverse"/>
+            android:textAppearance="?android:textAppearanceSmall"/>
 
 
         <TextView
@@ -104,7 +104,7 @@
             android:layout_alignParentRight="true"
             android:layout_above="@+id/panel_Textual"
             android:text="2:33"
-            android:textAppearance="?android:textAppearanceSmallInverse"/>
+            android:textAppearance="?android:textAppearanceSmall"/>
 
         <RelativeLayout
             android:id="@+id/panel_Textual"
@@ -127,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/img_StaticTrackIcon"
                 android:padding="@dimen/basic_textview_padding"
-                android:textAppearance="?android:textAppearanceLargeInverse"
+                android:textAppearance="?android:textAppearanceMedium"
                 android:text="I am a song"/>
 
             <TextView
@@ -137,7 +137,7 @@
                 android:layout_below="@+id/tv_TrackTitle"
                 android:layout_toRightOf="@+id/img_StaticTrackIcon"
                 android:padding="@dimen/basic_textview_padding"
-                android:textAppearance="?android:textAppearanceLargeInverse"
+                android:textAppearance="?android:textAppearanceMedium"
                 android:text="I am an album" />
 
         </RelativeLayout>

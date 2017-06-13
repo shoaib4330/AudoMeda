@@ -4,14 +4,30 @@
     android:layout_height="match_parent"
     tools:context="com.emo.audomeda.view.fragments.ToneAndVolFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
 
-    <com.emo.audomeda.customviews.KnobController
-        android:id="@+id/knob_mono"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_centerHorizontal="true">
+        <Button
+            android:id="@+id/btn_switchMono"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_margin="@dimen/basic_inbetween_components_margin"
+            android:background="@drawable/custom_activedisable_button"
+            android:text="Mono"
+            android:textColor="#ffffff" />
 
-    </com.emo.audomeda.customviews.KnobController>
+        <com.emo.audomeda.customviews.KnobController
+            android:id="@+id/knob_mono"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_centerHorizontal="true">
+
+        </com.emo.audomeda.customviews.KnobController>
+    </LinearLayout>
+
 
     <com.emo.audomeda.customviews.KnobController
         android:id="@+id/knob_volume"

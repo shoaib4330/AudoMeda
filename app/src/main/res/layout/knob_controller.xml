@@ -36,7 +36,7 @@
         <view
             android:id="@+id/cv_KnobController"
             class="com.emo.audomeda.customviews.KnobController$RotatingKnobController"
-            app:layout_heightPercent="90%"
+            app:layout_heightPercent="80%"
             app:layout_aspectRatio="100%"
             android:minHeight="80dp"
             android:minWidth="80dp"

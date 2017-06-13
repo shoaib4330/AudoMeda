@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 
 import com.emo.audomeda.R;
 import com.emo.audomeda.customviews.KnobController;
@@ -51,6 +52,7 @@ public class EqualizerFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_equalizer, container, false);
+        HorizontalScrollView horizontalScrollView;
         //knobController = (KnobController) rootView.findViewById(R.id.knob_Volume);
         //knobController.setTopRightText("Volume");
         return rootView;

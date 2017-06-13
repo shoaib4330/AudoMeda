@@ -1,116 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
     tools:context="com.emo.audomeda.view.EqualizerActivity">
 
     <FrameLayout
         android:id="@+id/fragmentHolder_SettingsActivity"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/panel_fixed_trebleAndbass">
+        android:layout_height="0dp"
+        android:layout_weight="6">
     </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/panel_fixed_trebleAndbass"
+
+    <RelativeLayout
+        android:id="@+id/subPanel_eq"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/btn_equ"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Equ"/>
-
-            <Button
-                android:id="@+id/btn_tone"
-                android:layout_below="@+id/btn_equ"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tone"/>
-
-            <Button
-                android:id="@+id/btn_limit"
-                android:layout_below="@+id/btn_tone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Limit"/>
-
-            <Button
-                android:id="@+id/btn_preset"
-                android:layout_toRightOf="@+id/btn_equ"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Preset"/>
-
-            <Button
-                android:id="@+id/btn_save"
-                android:layout_toRightOf="@+id/btn_preset"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Save"/>
-
-            <Button
-                android:id="@+id/btn_reset"
-                android:layout_toRightOf="@+id/btn_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Save"/>
-
-            <TextView
-                android:id="@+id/tv_static_bass"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/btn_preset"
-                android:layout_toRightOf="@id/btn_tone"
-                android:text="Bass"
-                android:layout_marginTop="@dimen/basic_multipleSeekBars_vertical_margin"
-                android:textAppearance="?android:textAppearanceSmall"/>
-
-            <android.support.v7.widget.AppCompatSeekBar
-                android:id="@+id/seekBar_Bass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/btn_preset"
-                android:layout_marginTop="@dimen/basic_multipleSeekBars_vertical_margin"
-                android:layout_toRightOf="@id/tv_static_bass" />
-
-            <TextView
-                android:id="@+id/tv_static_treble"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/seekBar_Bass"
-                android:layout_toRightOf="@id/btn_limit"
-                android:text="Treble"
-                android:layout_marginTop="@dimen/basic_multipleSeekBars_vertical_margin"
-                android:textAppearance="?android:textAppearanceSmall"/>
-
-            <android.support.v7.widget.AppCompatSeekBar
-                android:id="@+id/seekBar_Treble"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/seekBar_Bass"
-                android:layout_toRightOf="@id/tv_static_bass"
-                android:layout_marginTop="@dimen/basic_multipleSeekBars_vertical_margin"/>
-
-        </RelativeLayout>
-
-        <android.support.design.widget.BottomNavigationView
-            android:id="@+id/navView_EqualizerAcitiy"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_equ"
+            style="@style/StateButtonStyle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?android:attr/windowBackground"
-            app:menu="@menu/bottomnavigation_activity_equalizer" />
-    </LinearLayout>
+            android:layout_above="@+id/btn_tone"
+            android:text="Equ" />
+
+        <Button
+            android:id="@+id/btn_tone"
+            style="@style/StateButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_limit"
+            android:text="Tone" />
+
+        <Button
+            android:id="@+id/btn_limit"
+            style="@style/StateButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="Limit" />
+
+        <Button
+            android:id="@+id/btn_preset"
+            style="@style/StateButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_tone"
+            android:layout_toRightOf="@+id/btn_equ"
+            android:text="Preset" />
+
+        <Button
+            android:id="@+id/btn_save"
+            style="@style/StateButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_tone"
+            android:layout_toRightOf="@+id/btn_preset"
+            android:text="Save" />
+
+        <Button
+            android:id="@+id/btn_reset"
+            style="@style/StateButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_tone"
+            android:layout_toRightOf="@+id/btn_save"
+            android:text="Reset" />
 
 
-</RelativeLayout>
+        <com.emo.audomeda.customviews.KnobController
+            android:id="@+id/knob_bass"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_below="@+id/btn_preset"
+            android:layout_marginTop="@dimen/basic_multipleSeekBars_vertical_margin"
+            android:layout_toRightOf="@+id/btn_tone">
+
+        </com.emo.audomeda.customviews.KnobController>
+
+        <com.emo.audomeda.customviews.KnobController
+            android:id="@+id/knob_treble"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_below="@+id/btn_save"
+            android:layout_marginTop="@dimen/basic_multipleSeekBars_vertical_margin"
+            android:layout_toRightOf="@id/knob_bass"></com.emo.audomeda.customviews.KnobController>
+
+    </RelativeLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navView_EqualizerAcitiy"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="?android:attr/windowBackground"
+        app:menu="@menu/bottomnavigation_activity_equalizer" />
+
+
+</LinearLayout>

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.emo.audomeda.R;
 import com.emo.audomeda.customviews.KnobController;
@@ -21,6 +22,7 @@ public class ToneAndVolFragment extends Fragment {
     private KnobController knobControllerVolume;
     private KnobController knobControllerStereoX;
     private KnobController knobControllerMono;
+    private Button btn_monoSwtich;
 
     public ToneAndVolFragment() {
         // Required empty public constructor
@@ -53,6 +55,20 @@ public class ToneAndVolFragment extends Fragment {
         knobControllerVolume    = (KnobController) rootView.findViewById(R.id.knob_volume);
         knobControllerStereoX   = (KnobController) rootView.findViewById(R.id.knob_stereoX);
         knobControllerMono      = (KnobController) rootView.findViewById(R.id.knob_mono);
+        btn_monoSwtich          = (Button)         rootView.findViewById(R.id.btn_switchMono);
+        btn_monoSwtich.setActivated(true);
+
+        btn_monoSwtich.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v.isActivated()){
+                    v.setActivated(false);
+                }else{
+                    v.setActivated(true);
+                }
+
+            }
+        });
 
         knobControllerVolume.setTopRightText("Volume");
 

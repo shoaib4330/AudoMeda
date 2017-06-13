@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_activated="true">
+        <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <!--<item>-->
+                <!--<shape android:shape="rectangle">-->
+                    <!--<solid android:color="@color/customStateButton_active_layer1"></solid>-->
+                <!--</shape>-->
+            <!--</item>-->
+
+            <item android:bottom="3dp" android:right="2dp" android:left="2dp" android:top="3dp">
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/colorPrimary"></solid>
+                </shape>
+            </item>
+
+        </layer-list>
+    </item>
+
+    <item  android:state_activated="false">
+        <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/customStateButton_active_layer1"></solid>
+                </shape>
+            </item>
+
+            <item android:bottom="0dp">
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/customStateButton_active_layer2"></solid>
+                </shape>
+            </item>
+
+        </layer-list>
+    </item>
+
+</selector>

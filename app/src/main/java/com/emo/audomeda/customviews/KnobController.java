@@ -145,9 +145,11 @@ public class KnobController extends RelativeLayout {
             if (imageHeight==-1 && imageWidth==-1){
                 imageWidth = getWidth();
                 imageHeight = getHeight();
+
+                scalerBitmap = Bitmap.createScaledBitmap(scalerBitmap, imageWidth, imageHeight, true);
+                rotatorBitmap = Bitmap.createScaledBitmap(rotatorBitmap, imageWidth, imageHeight, true);
             }
-            scalerBitmap = Bitmap.createScaledBitmap(scalerBitmap, imageWidth, imageHeight, true);
-            rotatorBitmap = Bitmap.createScaledBitmap(rotatorBitmap, imageWidth, imageHeight, true);
+
 
             canvas.drawBitmap(scalerBitmap, 0.0f,0.0f, null);
             canvas.drawBitmap(rotatorBitmap, rotationMatrix, null);
