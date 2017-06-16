@@ -1,4 +1,4 @@
-package com.emo.audomeda.model;
+package com.emo.lkplayer.model;
 
 /**
  * Created by shoaibanwar on 6/8/17.

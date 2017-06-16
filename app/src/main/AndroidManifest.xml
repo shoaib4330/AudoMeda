@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.emo.audomeda">
+    package="com.emo.lkplayer">
 
     <application
         android:allowBackup="true"
@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.PlaybackActivity">
+        <activity android:name="com.emo.lkplayer.view.PlaybackActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,11 +18,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.NagizarActivity"
-            android:label="@string/title_activity_nagizar" />
+            android:name="com.emo.lkplayer.view.NagizarActivity"
+            android:label="@string/title_activity_nagizar"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".view.EqualizerActivity"
-            android:label="@string/title_activity_equalizer"></activity>
+            android:name="com.emo.lkplayer.view.EqualizerActivity"
+            android:label="@string/title_activity_equalizer"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

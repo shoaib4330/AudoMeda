@@ -1,4 +1,4 @@
-package com.emo.audomeda.customviews;
+package com.emo.lkplayer.customviews;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -8,8 +8,8 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.emo.audomeda.R;
-import com.emo.audomeda.model.iPlayable;
+import com.emo.lkplayer.R;
+import com.emo.lkplayer.model.iPlayable;
 
 /**
  * Created by shoaibanwar on 6/7/17.

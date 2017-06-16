@@ -1,4 +1,4 @@
-package com.emo.audomeda.view.fragments;
+package com.emo.lkplayer.view.fragments;
 
 
 import android.os.Bundle;
@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.emo.audomeda.R;
-import com.emo.audomeda.customviews.KnobController;
+import com.emo.lkplayer.R;
+import com.emo.lkplayer.customviews.KnobController;
 
 public class ToneAndVolFragment extends Fragment {
 

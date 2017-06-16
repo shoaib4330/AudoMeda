@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.emo.audomeda.view.fragments.ToneAndVolFragment">
+    tools:context="com.emo.lkplayer.view.fragments.ToneAndVolFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,24 +19,24 @@
             android:text="Mono"
             android:textColor="#ffffff" />
 
-        <com.emo.audomeda.customviews.KnobController
+        <com.emo.lkplayer.customviews.KnobController
             android:id="@+id/knob_mono"
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_centerHorizontal="true">
 
-        </com.emo.audomeda.customviews.KnobController>
+        </com.emo.lkplayer.customviews.KnobController>
     </LinearLayout>
 
 
-    <com.emo.audomeda.customviews.KnobController
+    <com.emo.lkplayer.customviews.KnobController
         android:id="@+id/knob_volume"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true" />
 
-    <com.emo.audomeda.customviews.KnobController
+    <com.emo.lkplayer.customviews.KnobController
         android:id="@+id/knob_stereoX"
         android:layout_width="160dp"
         android:layout_height="160dp"

@@ -1,13 +1,12 @@
-package com.emo.audomeda.view.navigation;
+package com.emo.lkplayer.view.navigation;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.emo.audomeda.R;
-import com.emo.audomeda.view.fragments.EqualizerFragment;
-import com.emo.audomeda.view.fragments.ToneAndVolFragment;
-import com.emo.audomeda.view.navigation.NavigationManagerContentFlow;
+import com.emo.lkplayer.R;
+import com.emo.lkplayer.view.fragments.EqualizerFragment;
+import com.emo.lkplayer.view.fragments.ToneAndVolFragment;
 
 /**
  * Created by shoaibanwar on 6/9/17.
@@ -111,7 +110,7 @@ public final class NavigationManagerSettingsFlow {
 
 
     public void startUpInitialFragment_Equalizer(){
-        Fragment fragment = EqualizerFragment.newInstance(null,null);
+        Fragment fragment = ToneAndVolFragment.newInstance(null,null);
         openAsRoot(fragment);
     }
 

@@ -1,4 +1,4 @@
-package com.emo.audomeda;
+package com.emo.lkplayer;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

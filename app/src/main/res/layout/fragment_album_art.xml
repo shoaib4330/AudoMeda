@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#9a000000"
     android:padding="20dp"
-    tools:context="com.emo.audomeda.view.fragments.AlbumArtFragment">
+    tools:context="com.emo.lkplayer.view.fragments.AlbumArtFragment">
 
     <android.support.v7.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardElevation="12dp"
-        tools:context="com.emo.audomeda.view.fragments.AlbumArtFragment">
+        tools:context="com.emo.lkplayer.view.fragments.AlbumArtFragment">
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/imgV_SliderAlbumArt"

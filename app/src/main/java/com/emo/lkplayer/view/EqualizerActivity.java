@@ -1,4 +1,4 @@
-package com.emo.audomeda.view;
+package com.emo.lkplayer.view;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,10 +8,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.emo.audomeda.R;
-import com.emo.audomeda.customviews.KnobController;
-import com.emo.audomeda.view.navigation.NavigationManagerContentFlow;
-import com.emo.audomeda.view.navigation.NavigationManagerSettingsFlow;
+import com.emo.lkplayer.R;
+import com.emo.lkplayer.customviews.KnobController;
+import com.emo.lkplayer.view.navigation.NavigationManagerContentFlow;
+import com.emo.lkplayer.view.navigation.NavigationManagerSettingsFlow;
 
 public class EqualizerActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationManagerContentFlow.NavigationListener, View.OnClickListener {
 
@@ -34,9 +34,10 @@ public class EqualizerActivity extends AppCompatActivity implements BottomNaviga
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_equalizer);
+        getSupportActionBar().hide();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navView_EqualizerAcitiy);
-        navigation.getMenu().findItem(R.id.navMenu_toEqualizerFrag_EqualizerActivity).setChecked(true);
+        navigation.getMenu().findItem(R.id.navMenu_toToneAndVolFrag_EqualizerActivity).setChecked(true);
         navigation.setOnNavigationItemSelectedListener(this);
 
         knob_bass       = (KnobController) findViewById(R.id.knob_bass);

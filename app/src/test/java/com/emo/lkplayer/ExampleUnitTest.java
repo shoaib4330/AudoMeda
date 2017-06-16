@@ -1,4 +1,4 @@
-package com.emo.audomeda;
+package com.emo.lkplayer;
 
 import org.junit.Test;
 

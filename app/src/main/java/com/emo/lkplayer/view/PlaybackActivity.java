@@ -1,6 +1,10 @@
-package com.emo.audomeda.view;
+package com.emo.lkplayer.view;
 
 import android.content.Intent;
+import android.graphics.drawable.ClipDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -9,9 +13,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.SeekBar;
 
-import com.emo.audomeda.R;
-import com.emo.audomeda.view.fragments.AlbumArtFragment;
+import com.emo.lkplayer.R;
+import com.emo.lkplayer.view.fragments.AlbumArtFragment;
 
 public class PlaybackActivity extends AppCompatActivity {
 
@@ -22,10 +28,13 @@ public class PlaybackActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playback);
+        getSupportActionBar().setTitle("");
 
         fragmentStatePagerAdapter = new SliderPagerAdapter(getSupportFragmentManager());
         albumArtSlider = (ViewPager) findViewById(R.id.vp_AlbumArtSlider);
         albumArtSlider.setAdapter(fragmentStatePagerAdapter);
+
+        //SeekBar seekBar = new SeekBar();
     }
 
     @Override

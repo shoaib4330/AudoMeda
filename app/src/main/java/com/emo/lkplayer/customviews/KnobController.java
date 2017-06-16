@@ -1,4 +1,4 @@
-package com.emo.audomeda.customviews;
+package com.emo.lkplayer.customviews;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.emo.audomeda.R;
+import com.emo.lkplayer.R;
 
 /**
  * Created by shoaibanwar on 6/12/17.
@@ -83,7 +83,7 @@ public class KnobController extends RelativeLayout {
         this.rotatingKnobController.setCurrentPercent(currentLevel);
     }
 
-    private static class RotatingKnobController extends View implements GestureDetector.OnGestureListener {
+    public static class RotatingKnobController extends View implements GestureDetector.OnGestureListener {
 
         private static final int NUM_OF_DEGREES_STANDING_FOR_ONE_PERCENT = 3;
         private Context context;
@@ -101,8 +101,8 @@ public class KnobController extends RelativeLayout {
 
             this.context = context;
             this.gestureDetector = new GestureDetector(this.context, this);
-            scalerBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.dots);
-            rotatorBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.knob);
+            scalerBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.cus_stator);
+            rotatorBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.cus_rotator);
         }
 
         public void setMinPercent(int minPercent){
