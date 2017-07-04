@@ -2,9 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.emo.lkplayer.view.fragments.EqualizerFragment">
+    tools:context="com.emo.lkplayer.view.fragments.NavEqualizerFragment">
 
-    <com.emo.lkplayer.customviews.VerticalSlider
+    <com.emo.lkplayer.customviews.VerticalSliderWrapped
         android:id="@+id/slider_preAmp"
         android:layout_width="100dp"
         android:layout_height="match_parent"
@@ -26,70 +26,70 @@
             android:background="#000"
             android:orientation="horizontal">
 
-            <com.emo.lkplayer.customviews.VerticalSlider
+            <com.emo.lkplayer.customviews.VerticalSliderWrapped
                 android:id="@+id/slider_eq1"
                 android:layout_width="90dp"
                 android:layout_height="match_parent"
                 android:padding="@dimen/customSlider_allSidedPadding"
                 android:background="@color/customSlider_back_color"/>
 
-            <com.emo.lkplayer.customviews.VerticalSlider
+            <com.emo.lkplayer.customviews.VerticalSliderWrapped
                 android:id="@+id/slider_eq2"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:padding="@dimen/customSlider_allSidedPadding"
                 android:background="@color/customSlider_back_color"/>
 
-            <com.emo.lkplayer.customviews.VerticalSlider
+            <com.emo.lkplayer.customviews.VerticalSliderWrapped
                 android:id="@+id/slider_eq3"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:padding="@dimen/customSlider_allSidedPadding"
                 android:background="@color/customSlider_back_color"/>
 
-            <com.emo.lkplayer.customviews.VerticalSlider
+            <com.emo.lkplayer.customviews.VerticalSliderWrapped
                 android:id="@+id/slider_eq4"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:padding="@dimen/customSlider_allSidedPadding"
                 android:background="@color/customSlider_back_color"/>
 
-            <com.emo.lkplayer.customviews.VerticalSlider
+            <com.emo.lkplayer.customviews.VerticalSliderWrapped
                 android:id="@+id/slider_eq5"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:padding="@dimen/customSlider_allSidedPadding"
                 android:background="@color/customSlider_back_color"/>
 
-            <com.emo.lkplayer.customviews.VerticalSlider
+            <com.emo.lkplayer.customviews.VerticalSliderWrapped
                 android:id="@+id/slider_eq6"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:padding="@dimen/customSlider_allSidedPadding"
                 android:background="@color/customSlider_back_color"/>
 
-            <com.emo.lkplayer.customviews.VerticalSlider
+            <com.emo.lkplayer.customviews.VerticalSliderWrapped
                 android:id="@+id/slider_eq7"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:padding="@dimen/customSlider_allSidedPadding"
                 android:background="@color/customSlider_back_color"/>
 
-            <com.emo.lkplayer.customviews.VerticalSlider
+            <com.emo.lkplayer.customviews.VerticalSliderWrapped
                 android:id="@+id/slider_eq8"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:padding="@dimen/customSlider_allSidedPadding"
                 android:background="@color/customSlider_back_color"/>
 
-            <com.emo.lkplayer.customviews.VerticalSlider
+            <com.emo.lkplayer.customviews.VerticalSliderWrapped
                 android:id="@+id/slider_eq9"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:padding="@dimen/customSlider_allSidedPadding"
                 android:background="@color/customSlider_back_color"/>
 
-            <com.emo.lkplayer.customviews.VerticalSlider
+            <com.emo.lkplayer.customviews.VerticalSliderWrapped
                 android:id="@+id/slider_eq10"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"

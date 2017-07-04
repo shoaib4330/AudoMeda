@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/navigation_GoToPlayback"
-        android:icon="@drawable/play"
+        android:icon="@drawable/mediacontroller_icon_play"
         android:title="@string/title_home" />
 
     <item

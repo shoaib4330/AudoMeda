@@ -2,138 +2,167 @@ package com.emo.lkplayer.view.navigation;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.emo.lkplayer.R;
-import com.emo.lkplayer.view.fragments.FolderFragment;
-import com.emo.lkplayer.view.fragments.LibraryFragment;
+import com.emo.lkplayer.model.entities.AudioTrack;
+import com.emo.lkplayer.view.fragments.ListTrackFragment;
+import com.emo.lkplayer.view.fragments.NavFolderFragment;
+import com.emo.lkplayer.view.fragments.NavLibraryFragment;
+import com.emo.lkplayer.view.fragments.NavPlayBackFragment;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by shoaibanwar on 6/9/17.
  */
 
-public final class NavigationManagerContentFlow {
-    /**
-     * Listener interface for navigation events.
-     */
-    public interface NavigationListener {
+public final class NavigationManagerContentFlow extends BaseNavigationManager {
 
-        /**
-         * Callback on backstack changed.
-         */
-        void onBackstackChanged();
+    //private List<Fragment> existingFragmentsList;
+
+    //private NavPlayBackFragment playBackFragment =null;
+    private static final String BACKSTACK_STATE_PLAYBACK_FRAGMENT_ONTOP = "only_navplaybackfrag_added_yet";
+    private static final String BACKSTACK_STATE_FOLDER_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT = "folder_fragment_on_top_of_navplaybackfrag";
+    private static final String BACKSTACK_STATE_LIBRARY_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT = "library_fragment_on_top_of_navplaybackfrag";
+
+    private NavFolderFragment folderFragment = null;
+    private NavLibraryFragment libraryFragment = null;
+
+
+    /* Shoaib: Constructors here */
+    public NavigationManagerContentFlow()
+    {
+        //this.existingFragmentsList = new ArrayList<>();
     }
 
 
-    // ------------------------------------------------------------------------
-    // STATIC FIELDS
-    // ------------------------------------------------------------------------
+    /* Shoaib: Methods here */
+    public boolean bringExistingFragment(String fragmentClassQualifiedName, boolean beAddedToBackStack)
+    {
+//        for (int i = 0; i < this.existingFragmentsList.size(); i++) {
+//            String name = this.existingFragmentsList.get(i).getClass().toString();
+//            if (this.existingFragmentsList.get(i).getClass().toString().equals(fragmentClassQualifiedName)) {
+//                open(this.existingFragmentsList.get(i), false,beAddedToBackStack);
+//                return true;
+//            }
+//        }
+        return false;
+    }
 
-    // ------------------------------------------------------------------------
-    // STATIC METHODS
-    // ------------------------------------------------------------------------
+    private void addToFragmentInstancesList(Fragment fragment)
+    {
+        /* Shoaib: Added to list, so that this is not recreated again, we store its reference */
+        //this.existingFragmentsList.add(fragment);
+    }
 
-    // ------------------------------------------------------------------------
-    // FIELDS
-    // ------------------------------------------------------------------------
+    private void addTransactionToBackStack(FragmentTransaction transaction, Fragment fragment)
+    {
+        transaction.addToBackStack(fragment.toString());
+    }
 
-    private FragmentManager mFragmentManager;
+    public void open(Fragment fragment, boolean beAddedToFragmentReferenceList,
+                     boolean beAddedToBackStack)
+    {
 
-    private NavigationListener mNavigationListener;
+        if (mFragmentManager == null)
+            return;
 
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        transaction.replace(this.Fragment_Container_ID, fragment);
+        if (beAddedToBackStack)
+            addTransactionToBackStack(transaction, fragment);
+        transaction.commit();
+        if (beAddedToFragmentReferenceList)
+            addToFragmentInstancesList(fragment);
+    }
 
-    // ------------------------------------------------------------------------
-    // CONSTRUCTORS
-    // ------------------------------------------------------------------------
+    public void startPlayBackFragment(int position, List<AudioTrack> list)
+    {
+        Fragment fragment = NavPlayBackFragment.newInstance();
+        openAsRoot(fragment, BACKSTACK_STATE_PLAYBACK_FRAGMENT_ONTOP); /* Opened as root and added to backstack */
+    }
 
-    // ------------------------------------------------------------------------
-    // METHODS
-    // ------------------------------------------------------------------------
+    public void startFolderFragment(boolean addToBackStack)
+    {
+        if (folderFragment == null)
+            folderFragment = NavFolderFragment.newInstance(null, null);
+        /* if top fragment on backstack is the NavPlayBackFragment Instance */
+        int index = mFragmentManager.getBackStackEntryCount() - 1;
+        FragmentManager.BackStackEntry backStackEntry = mFragmentManager.getBackStackEntryAt(index);
+        String entryTag = backStackEntry.getName();
+        if (entryTag.equals(BACKSTACK_STATE_PLAYBACK_FRAGMENT_ONTOP))
+        {
+            open(folderFragment, BACKSTACK_STATE_FOLDER_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT);
+        } else if (entryTag.equals(BACKSTACK_STATE_LIBRARY_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT))
+        {
+            mFragmentManager.popBackStack(BACKSTACK_STATE_LIBRARY_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            open(folderFragment, BACKSTACK_STATE_FOLDER_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT);
+        } else
+        {
+            mFragmentManager.popBackStack(BACKSTACK_STATE_FOLDER_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT, 0);
+        }
+    }
 
-    /**
-     * Initialize the NavigationManager with a FragmentManager, which will be used at the
-     * fragment transactions.
-     *
-     * @param fragmentManager
-     */
-    public void init(FragmentManager fragmentManager) {
-        mFragmentManager = fragmentManager;
-        mFragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                if (mNavigationListener != null) {
-                    mNavigationListener.onBackstackChanged();
-                }
+    public void startLibraryFragment()
+    {
+        if (libraryFragment == null)
+            libraryFragment = NavLibraryFragment.newInstance(null, null);
+        /* if top fragment on backstack is the NavPlayBackFragment Instance */
+        int index = mFragmentManager.getBackStackEntryCount() - 1;
+        FragmentManager.BackStackEntry backStackEntry = mFragmentManager.getBackStackEntryAt(index);
+        String entryTag = backStackEntry.getName();
+        if (entryTag.equals(BACKSTACK_STATE_PLAYBACK_FRAGMENT_ONTOP))
+        {
+            open(libraryFragment, BACKSTACK_STATE_LIBRARY_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT);
+        } else if (entryTag.equals(BACKSTACK_STATE_FOLDER_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT))
+        {
+            mFragmentManager.popBackStack(BACKSTACK_STATE_FOLDER_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            open(libraryFragment, BACKSTACK_STATE_LIBRARY_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT);
+        } else
+        {
+            if (index - 1 < 0)
+                return;
+            FragmentManager.BackStackEntry backStackEntry1 = mFragmentManager.getBackStackEntryAt(index - 1);
+            String entryTag1 = backStackEntry1.getName();
+            if (entryTag1.equals(BACKSTACK_STATE_FOLDER_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT))
+            {
+                mFragmentManager.popBackStack(BACKSTACK_STATE_FOLDER_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                open(libraryFragment, BACKSTACK_STATE_LIBRARY_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT);
+                return;
             }
-        });
+            /* there is no instance of library fragment on stack already, */
+            mFragmentManager.popBackStack(BACKSTACK_STATE_LIBRARY_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT, 0);
+        }
     }
 
-    private void open(Fragment fragment) {
-        if (mFragmentManager != null) {
+    @Override
+    protected void openAsRoot(Fragment fragment)
+    {
+        popEveryFragment();
+        open(fragment, false, false);
+    }
+
+    private void openAsRoot(Fragment fragment, String backStackEntryTag)
+    {
+        popEveryFragment();
+        open(fragment, backStackEntryTag);
+    }
+
+    private void open(Fragment fragment, String backStackEntryTag)
+    {
+        if (mFragmentManager != null)
+        {
             //@formatter:off
             mFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentHolder_NagizarActivity, fragment)
-                    //.addToBackStack(fragment.toString())
+                    .replace(this.Fragment_Container_ID, fragment, fragment.getClass().getName())
+                    .addToBackStack(backStackEntryTag)
                     .commit();
             //@formatter:on
         }
     }
 
-    private void openAsRoot(Fragment fragment) {
-        popEveryFragment();
-        open(fragment);
-    }
-
-    private void popEveryFragment() {
-        // Clear all back stack.
-        int backStackCount = mFragmentManager.getBackStackEntryCount();
-        for (int i = 0; i < backStackCount; i++) {
-
-            // Get the back stack fragment id.
-            int backStackId = mFragmentManager.getBackStackEntryAt(i).getId();
-
-            mFragmentManager.popBackStack(backStackId, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-        }
-    }
-
-    public void navigateBack(AppCompatActivity baseActivity) {
-
-        if (mFragmentManager.getBackStackEntryCount() <= 1) {
-            // we can finish the base activity since we have no other fragments
-            baseActivity.finish();
-        } else {
-            mFragmentManager.popBackStackImmediate();
-        }
-    }
-
-    public void startUpInitialFragment_Nagizar(){
-        Fragment fragment = FolderFragment.newInstance(null,null);
-        openAsRoot(fragment);
-    }
-    public void startFolderFragment(){
-        Fragment fragment = FolderFragment.newInstance(null,null);
-        open(fragment);
-    }
-
-    public void startLibraryFragment(){
-        Fragment fragment = LibraryFragment.newInstance(null,null);
-        open(fragment);
-    }
-
-    public boolean isRootFragmentVisible() {
-        return mFragmentManager.getBackStackEntryCount() <= 1;
-    }
-
-    public NavigationListener getNavigationListener() {
-        return mNavigationListener;
-    }
-
-    public void setNavigationListener(NavigationListener navigationListener) {
-        mNavigationListener = navigationListener;
-    }
-
-    // ------------------------------------------------------------------------
-    // GETTERS / SETTTERS
-    // ------------------------------------------------------------------------
 }

@@ -10,6 +10,8 @@ import android.widget.Button;
 
 import com.emo.lkplayer.R;
 import com.emo.lkplayer.customviews.KnobController;
+import com.emo.lkplayer.view.fragments.NavEqualizerFragment;
+import com.emo.lkplayer.view.fragments.NavToneAndVolFragment;
 import com.emo.lkplayer.view.navigation.NavigationManagerContentFlow;
 import com.emo.lkplayer.view.navigation.NavigationManagerSettingsFlow;
 
@@ -26,7 +28,6 @@ public class EqualizerActivity extends AppCompatActivity implements BottomNaviga
     private Button btn_preset;
     private Button btn_save;
     private Button btn_reset;
-
 
 
 
@@ -61,7 +62,7 @@ public class EqualizerActivity extends AppCompatActivity implements BottomNaviga
         knob_treble.setBottomLeftText("Treble");
 
         mNavigationManager = new NavigationManagerSettingsFlow();
-        mNavigationManager.init(getSupportFragmentManager());
+        mNavigationManager.init(getSupportFragmentManager(),R.id.fragmentHolder_SettingsActivity);
         mNavigationManager.startUpInitialFragment_Equalizer();
     }
 
@@ -74,10 +75,16 @@ public class EqualizerActivity extends AppCompatActivity implements BottomNaviga
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.navMenu_toEqualizerFrag_EqualizerActivity:
-                mNavigationManager.startEqualizerFragment();
+                if(!mNavigationManager.bringExistingFragment(NavEqualizerFragment.class.toString(),false))
+                {
+                    mNavigationManager.open(NavEqualizerFragment.newInstance(null,null),true,false);
+                }
                 return true;
             case R.id.navMenu_toToneAndVolFrag_EqualizerActivity:
-                mNavigationManager.startToneandVolFragment();
+                if(!mNavigationManager.bringExistingFragment(NavToneAndVolFragment.class.toString(),false))
+                {
+                    mNavigationManager.open(NavToneAndVolFragment.newInstance(null,null),true,false);
+                }
                 return true;
             case R.id.navMenu_toPlaybackActivity_EqualizerActivity:
                 finish();

@@ -6,7 +6,14 @@
 
     <color name="customStateButton_active_layer1">#72d4dc</color>
     <color name="customStateButton_active_layer2">#353e40</color>
+    <color name="customStateButton_active_state_activated">#4DD0E1</color>
+
+    <color name="list_items_background_selector_Selected">#7eb9d9e7</color>
+    <color name="list_items_background_selector_NotSelected">#303030</color>
 
     <color name="customSlider_back_color">#202020</color>
     <color name="customSlider_PreAmp_back_color">#303030</color>
+
+    <color name="bottomNavigationBar_icon_highlight_color">#F5F5F5</color>
+    <color name="bottomNavigationBar_text_highlight_color">#F5F5F5</color>
 </resources>

@@ -8,4 +8,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_equalizer">EqualizerActivity</string>
+
+    <string name="mediaServiceDescription">This service handles playing music and audio content.</string>
+
 </resources>

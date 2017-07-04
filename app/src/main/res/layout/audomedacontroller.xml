@@ -21,7 +21,6 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/play"
             android:scaleType="fitXY"/>
 
         <android.support.v7.widget.AppCompatImageButton
@@ -57,7 +56,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/skipnext"
+            app:srcCompat="@drawable/mediacontroller_icon_skipnext"
             android:scaleType="fitXY"/>
 
         <android.support.v7.widget.AppCompatImageButton
@@ -69,7 +68,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/skipprev"
+            app:srcCompat="@drawable/mediacontroller_icon_skipprev"
             android:scaleType="fitXY"/>
     </RelativeLayout>
 
@@ -118,7 +117,7 @@
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_margin="@dimen/basic_inbetween_components_margin"
-                app:srcCompat="@drawable/track"
+                app:srcCompat="@drawable/icon_audiotrack"
                 android:scaleType="fitCenter"/>
 
             <TextView
@@ -138,6 +137,7 @@
                 android:layout_toRightOf="@+id/img_StaticTrackIcon"
                 android:padding="@dimen/basic_textview_padding"
                 android:textAppearance="?android:textAppearanceMedium"
+                android:lines="1"
                 android:text="I am an album" />
 
         </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.emo.lkplayer.view.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatImageView;
@@ -22,6 +23,10 @@ public class AlbumArtFragment extends Fragment {
 
     private AppCompatImageView imgv_AlbumArt;
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
 
     public AlbumArtFragment() {
         // Required empty public constructor

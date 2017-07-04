@@ -4,15 +4,23 @@
     <dimen name="basic_textview_padding">5dp</dimen>
     <dimen name="basic_textview_vertical_margin">5dp</dimen>
     <dimen name="basic_multipleSeekBars_vertical_margin">20dp</dimen>
-    <dimen name="knobcontroller_basic_padding_">10dp</dimen>
+    <dimen name="basic_allSides_margin">10dp</dimen>
+    <dimen name="basic_allSides_padding">10dp</dimen>
+    <dimen name="basic_albumview_imageview_size">150dp</dimen>
+
+    <dimen name="basic_SideIcon_artist_LxW_dimen">30dp</dimen>
+
 
     <dimen name="knobcontroller_smallScreen_minWidth">100dp</dimen>
+    <dimen name="knobcontroller_basic_padding_">10dp</dimen>
 
     <!-- CustomViews Dimensions Here -->
     <dimen name="customStateButton_rightMargin_dot">10dp</dimen>
     <dimen name="customStateButton_bottomMargin_dot">10dp</dimen>
 
     <dimen name="customSlider_allSidedPadding">10dp</dimen>
+
+    <dimen name="custom_verticalSlider_minWidth">20dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>

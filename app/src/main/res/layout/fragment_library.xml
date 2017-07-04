@@ -1,28 +1,230 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.emo.lkplayer.view.fragments.LibraryFragment">
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.emo.lkplayer.view.fragments.NavLibraryFragment">
 
-    <include
-        layout="@layout/libraryitem_view">
-    </include>
+        <LinearLayout
+            android:id="@+id/leadItem_allSongs"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:background="@drawable/list_item_background_selector">
 
-    <include
-        layout="@layout/libraryitem_view">
-    </include>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.25"
+                android:minHeight="35dp"
+                app:srcCompat="@drawable/icon_audiotrack" />
 
-    <include
-        layout="@layout/libraryitem_view">
-    </include>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.75"
+                android:text="All Songs"
+                android:textAppearance="?android:textAppearanceLarge" />
 
-    <include
-        layout="@layout/libraryitem_view">
-    </include>
+        </LinearLayout>
 
-    <include
-        layout="@layout/libraryitem_view">
-    </include>
+        <LinearLayout
+            android:id="@+id/leadItem_albums"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:background="@drawable/list_item_background_selector">
 
-</LinearLayout>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.25"
+                android:minHeight="35dp"
+                app:srcCompat="@drawable/icon_albumcircle" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.75"
+                android:text="Albums"
+                android:textAppearance="?android:textAppearanceLarge" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/leadItem_artists"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:background="@drawable/list_item_background_selector">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.25"
+                android:minHeight="35dp"
+                app:srcCompat="@drawable/icon_mic" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.75"
+                android:text="Artists"
+                android:textAppearance="?android:textAppearanceLarge" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/leadItem_genres"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:background="@drawable/list_item_background_selector">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.25"
+                android:minHeight="35dp"
+                app:srcCompat="@drawable/icon_genre" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.75"
+                android:text="Genres"
+                android:textAppearance="?android:textAppearanceLarge" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/leadItem_playlists"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:background="@drawable/list_item_background_selector">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.25"
+                android:minHeight="35dp"
+                app:srcCompat="@drawable/icon_playlist" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.75"
+                android:text="Playlists"
+                android:textAppearance="?android:textAppearanceLarge" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/leadItem_queue"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:background="@drawable/list_item_background_selector">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.25"
+                android:minHeight="35dp"
+                app:srcCompat="@drawable/icon_queue" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.75"
+                android:text="Queue"
+                android:textAppearance="?android:textAppearanceLarge" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/leadItem_topRated"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:background="@drawable/list_item_background_selector">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.25"
+                android:minHeight="35dp"
+                app:srcCompat="@drawable/icon_toprated" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.75"
+                android:text="Top Rated"
+                android:textAppearance="?android:textAppearanceLarge" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/leadItem_recentlyAdded"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:background="@drawable/list_item_background_selector">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.25"
+                android:minHeight="35dp"
+                app:srcCompat="@drawable/icon_recentlyadded" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.75"
+                android:text="Recently Added"
+                android:textAppearance="?android:textAppearanceLarge" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

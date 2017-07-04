@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navMenu_toPlaybackActivity_EqualizerActivity"
-        android:icon="@drawable/play"
+        android:icon="@drawable/mediacontroller_icon_play"
         android:title="Back" />
 
     <item
@@ -12,6 +12,6 @@
 
     <item
         android:id="@+id/navMenu_toToneAndVolFrag_EqualizerActivity"
-        android:icon="@drawable/toneandvol"
+        android:icon="@drawable/toolbar_icon_toneandcol"
         android:title="Tone/Vol" />
 </menu>

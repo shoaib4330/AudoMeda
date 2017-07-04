@@ -2,99 +2,63 @@ package com.emo.lkplayer.view.navigation;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.emo.lkplayer.R;
-import com.emo.lkplayer.view.fragments.EqualizerFragment;
-import com.emo.lkplayer.view.fragments.ToneAndVolFragment;
+import com.emo.lkplayer.view.fragments.NavToneAndVolFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by shoaibanwar on 6/9/17.
  */
 
-public final class NavigationManagerSettingsFlow {
-    /**
-     * Listener interface for navigation events.
-     */
-    public interface NavigationListener {
+public final class NavigationManagerSettingsFlow extends BaseNavigationManager {
 
-        /**
-         * Callback on backstack changed.
-         */
-        void onBackstackChanged();
+    private List<Fragment> existingFragmentsList;
+
+    /* Shoaib: Constructors here */
+    public NavigationManagerSettingsFlow() {
+        this.existingFragmentsList = new ArrayList<>();
     }
 
 
-    // ------------------------------------------------------------------------
-    // STATIC FIELDS
-    // ------------------------------------------------------------------------
-
-    // ------------------------------------------------------------------------
-    // STATIC METHODS
-    // ------------------------------------------------------------------------
-
-    // ------------------------------------------------------------------------
-    // FIELDS
-    // ------------------------------------------------------------------------
-
-    private FragmentManager mFragmentManager;
-
-    private NavigationManagerContentFlow.NavigationListener mNavigationListener;
-
-
-    // ------------------------------------------------------------------------
-    // CONSTRUCTORS
-    // ------------------------------------------------------------------------
-
-    // ------------------------------------------------------------------------
-    // METHODS
-    // ------------------------------------------------------------------------
-
-    /**
-     * Initialize the NavigationManager with a FragmentManager, which will be used at the
-     * fragment transactions.
-     *
-     * @param fragmentManager
-     */
-    public void init(FragmentManager fragmentManager) {
-        mFragmentManager = fragmentManager;
-        mFragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                if (mNavigationListener != null) {
-                    mNavigationListener.onBackstackChanged();
-                }
+    /* Shoaib: Methods here */
+    public boolean bringExistingFragment(String fragmentClassQualifiedName, boolean beAddedToBackStack) {
+        for (int i = 0; i < this.existingFragmentsList.size(); i++) {
+            if (this.existingFragmentsList.get(i).getClass().toString().equals(fragmentClassQualifiedName)) {
+                open(this.existingFragmentsList.get(i), false, beAddedToBackStack);
+                return true;
             }
-        });
-    }
-
-    private void open(Fragment fragment) {
-        if (mFragmentManager != null) {
-            //@formatter:off
-            mFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentHolder_SettingsActivity, fragment)
-                    //.addToBackStack(fragment.toString())
-                    .commit();
-            //@formatter:on
         }
+        return false;
     }
 
-    private void openAsRoot(Fragment fragment) {
-        popEveryFragment();
-        open(fragment);
+    private void addToFragmentInstancesList(Fragment fragment) {
+        /* Shoaib: Added to list, so that this is not recreated again, we store its reference */
+        this.existingFragmentsList.add(fragment);
     }
 
-    private void popEveryFragment() {
-        // Clear all back stack.
-        int backStackCount = mFragmentManager.getBackStackEntryCount();
-        for (int i = 0; i < backStackCount; i++) {
+    private void addTransactionToBackStack(FragmentTransaction transaction, Fragment fragment) {
+        transaction.addToBackStack(fragment.toString());
+    }
 
-            // Get the back stack fragment id.
-            int backStackId = mFragmentManager.getBackStackEntryAt(i).getId();
+    /* Shoaib: This open method overloaded only to give default boolean param*/
+    public void open(Fragment fragment, boolean beAddedToFragmentReferenceList,
+                     boolean beAddedToBackStack) {
 
-            mFragmentManager.popBackStack(backStackId, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        if (mFragmentManager == null)
+            return;
 
-        }
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        transaction.replace(this.Fragment_Container_ID, fragment);
+        if (beAddedToBackStack)
+            addTransactionToBackStack(transaction, fragment);
+        transaction.commit();
+        if (beAddedToFragmentReferenceList)
+            addToFragmentInstancesList(fragment);
     }
 
     public void navigateBack(AppCompatActivity baseActivity) {
@@ -107,36 +71,9 @@ public final class NavigationManagerSettingsFlow {
         }
     }
 
-
-
-    public void startUpInitialFragment_Equalizer(){
-        Fragment fragment = ToneAndVolFragment.newInstance(null,null);
+    public void startUpInitialFragment_Equalizer() {
+        Fragment fragment = NavToneAndVolFragment.newInstance(null, null);
         openAsRoot(fragment);
     }
 
-    public void startEqualizerFragment(){
-        Fragment fragment = EqualizerFragment.newInstance(null,null);
-        open(fragment);
-    }
-
-    public void startToneandVolFragment(){
-        Fragment fragment = ToneAndVolFragment.newInstance(null,null);
-        open(fragment);
-    }
-
-    public boolean isRootFragmentVisible() {
-        return mFragmentManager.getBackStackEntryCount() <= 1;
-    }
-
-    public NavigationManagerContentFlow.NavigationListener getNavigationListener() {
-        return mNavigationListener;
-    }
-
-    public void setNavigationListener(NavigationManagerContentFlow.NavigationListener navigationListener) {
-        mNavigationListener = navigationListener;
-    }
-
-    // ------------------------------------------------------------------------
-    // GETTERS / SETTTERS
-    // ------------------------------------------------------------------------
 }
