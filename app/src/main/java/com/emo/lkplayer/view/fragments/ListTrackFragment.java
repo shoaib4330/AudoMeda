@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,6 +83,7 @@ public class ListTrackFragment extends Fragment implements TracksProvider.MediaP
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Track CLicked "+(int)v.getTag(), Toast.LENGTH_SHORT).show();
                 new CurrentDataController().setNewTrackListPlusIndex(trackList,(int)v.getTag());
+                Log.d("--ListTrackFragment: ","List Set with size= "+trackList.size()+" and index= "+v.getTag());
                 navigationManager.startPlayBackFragment((int)v.getTag(),trackList);
             }
         });

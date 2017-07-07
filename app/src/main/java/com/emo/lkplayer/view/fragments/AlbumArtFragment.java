@@ -2,9 +2,12 @@ package com.emo.lkplayer.view.fragments;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatImageView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,9 @@ public class AlbumArtFragment extends Fragment {
     private String albumArtPath;
 
     private AppCompatImageView imgv_AlbumArt;
+    private AppCompatImageView imgv_background_blurred;
+    //private int full_frame_width;
+    //private int full_frame_height;
 
     @Override
     public void onAttach(Context context) {
@@ -32,10 +38,10 @@ public class AlbumArtFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static AlbumArtFragment newInstance(String param1) {
+    public static AlbumArtFragment newInstance(String trackArtUri) {
         AlbumArtFragment fragment = new AlbumArtFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM1, trackArtUri);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,6 +52,8 @@ public class AlbumArtFragment extends Fragment {
         if (getArguments() != null) {
             albumArtPath = getArguments().getString(ARG_PARAM1);
         }
+
+
     }
 
     @Override
@@ -54,10 +62,17 @@ public class AlbumArtFragment extends Fragment {
         // Inflate the layout for this fragment
         View layout     = inflater.inflate(R.layout.fragment_album_art, container, false);
         imgv_AlbumArt   = (AppCompatImageView) layout.findViewById(R.id.imgV_SliderAlbumArt);
+        imgv_background_blurred = (AppCompatImageView) layout.findViewById(R.id.imgV_back_blurred);
 
         if (albumArtPath!=null)
         {
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 8;
+            Bitmap blurTemplate = BitmapFactory.decodeFile(albumArtPath, options);
 
+            Bitmap trackBitmap = BitmapFactory.decodeFile(albumArtPath);
+            this.imgv_AlbumArt.setImageBitmap(trackBitmap);
+            this.imgv_background_blurred.setImageBitmap(blurTemplate);
         }
         return layout;
     }

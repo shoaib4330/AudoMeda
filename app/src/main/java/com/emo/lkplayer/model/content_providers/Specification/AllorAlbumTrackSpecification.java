@@ -39,7 +39,7 @@ public final class AllorAlbumTrackSpecification extends BaseLoaderSpecification<
                 MediaStore.Audio.Media.ARTIST,
                 MediaStore.Audio.Media.DURATION,
                 MediaStore.Audio.Media.TITLE,
-                MediaStore.Audio.Albums._ID,
+                MediaStore.Audio.Media.ALBUM_ID,
                 MediaStore.Audio.Media.ALBUM
         };
         return projection;
@@ -82,7 +82,7 @@ public final class AllorAlbumTrackSpecification extends BaseLoaderSpecification<
                 String trackArtist  = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                 String albumName    = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                 long trackDuration  = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
-                long trackAlbumID   = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Albums._ID));
+                long trackAlbumID   = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
 
                 newAudioTrack = new AudioTrack();
 
@@ -196,4 +196,6 @@ public final class AllorAlbumTrackSpecification extends BaseLoaderSpecification<
             return trackList;
         }
     }
+
+
 }

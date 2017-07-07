@@ -7,7 +7,10 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 
+import com.emo.lkplayer.model.content_providers.Specification.AlbumsSpecification;
+import com.emo.lkplayer.model.content_providers.Specification.GenreSpecification;
 import com.emo.lkplayer.model.content_providers.Specification.iLoaderSpecification;
+import com.emo.lkplayer.model.entities.Album;
 import com.emo.lkplayer.model.entities.AudioTrack;
 
 import java.util.List;
@@ -16,7 +19,7 @@ import java.util.List;
  * Created by shoaibanwar on 6/23/17.
  */
 
-public class TracksProvider implements LoaderManager.LoaderCallbacks<Cursor>  {
+public class TracksProvider implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public interface MediaProviderEventsListener {
         void onListCreated(List<AudioTrack> pTrackList);
@@ -37,56 +40,91 @@ public class TracksProvider implements LoaderManager.LoaderCallbacks<Cursor>  {
     /* shoaib: Old cursor, only kept to be given back to loader when we receive new cursor */
     private Cursor cursor;
 
-    public TracksProvider(Context context, LoaderManager loaderManager) {
+    public TracksProvider(Context context, LoaderManager loaderManager)
+    {
         this.context = context;
         this.loaderManager = loaderManager;
     }
 
-    public void setSpecification(iLoaderSpecification specification){
+    public void setSpecification(iLoaderSpecification specification)
+    {
         this.specification = specification;
     }
 
-    public void requestTrackData() {
+    public void requestTrackData()
+    {
         dataRequestMade = true;
         init();
     }
 
-    private void init() {
+    private void init()
+    {
         loaderManager.initLoader(ID_LOADER_TRACKS, null, this);
     }
 
-    public void register(TracksProvider.MediaProviderEventsListener mediaProviderEventsListener) {
+    public void register(TracksProvider.MediaProviderEventsListener mediaProviderEventsListener)
+    {
         this.mediaProviderEventsListener = mediaProviderEventsListener;
         if (dataRequestMade)
             this.mediaProviderEventsListener.onListCreated(this.tracksList);
     }
 
-    public void unRegister() {
+    public void unRegister()
+    {
         this.mediaProviderEventsListener = null;
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    public Loader<Cursor> onCreateLoader(int id, Bundle args)
+    {
         CursorLoader cursorLoader = new CursorLoader(context, specification.getUriForLoader(), specification.getProjection(), specification.getSelection(), specification.getSelectionArgs(), specification.getSortOrder());
         return cursorLoader;
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data)
+    {
         tracksList = specification.returnMappedList(data);
         if (this.mediaProviderEventsListener != null)
             this.mediaProviderEventsListener.onListCreated(tracksList);
+//        iLoaderSpecification mSpec;
+//        //for (int i=0; i < tracksList.size(); i++)
+//        //{
+//            mSpec       = new AlbumsSpecification(tracksList.get(i).getContainingAlbumID());
+//            Cursor c    = context.getContentResolver().query(mSpec.getUriForLoader(),mSpec.getProjection(),
+//                    mSpec.getSelection(),mSpec.getSelectionArgs(),null);
+//            if (((List<Album> )mSpec.returnMappedList(c)).size()>0){
+//                Album album   = ((List<Album> )mSpec.returnMappedList(c)).get(0);
+//                tracksList.get(i).setTrackArtUri(album.getAlbumArtURI());
+//            }
+//        //}
         /* swap the cursor */
         this.swapCursor(data, data = cursor);
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(Loader<Cursor> loader)
+    {
         swapCursor(null, null);
     }
 
-    private void swapCursor(Cursor cursorNew, Cursor dummy) {
+    private void swapCursor(Cursor cursorNew, Cursor dummy)
+    {
         /* shoaib: we keep reference of the old cursor, it will be swapped with new one */
         this.cursor = cursorNew;
+    }
+
+    public String getTrackArtUriByID(long albumID)
+    {
+        iLoaderSpecification mSpec;
+        mSpec = new AlbumsSpecification(albumID);
+        Cursor c = context.getContentResolver().query(mSpec.getUriForLoader(), mSpec.getProjection(),
+                mSpec.getSelection(), mSpec.getSelectionArgs(), null);
+        if (((List<Album>) mSpec.returnMappedList(c)).size() > 0)
+        {
+            Album album = ((List<Album>) mSpec.returnMappedList(c)).get(0);
+            return album.getAlbumArtURI();
+        }
+        return null;
     }
 }

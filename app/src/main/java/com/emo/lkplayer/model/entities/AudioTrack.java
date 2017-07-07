@@ -5,12 +5,25 @@ package com.emo.lkplayer.model.entities;
  */
 
 public final class AudioTrack implements iPlayable {
+
     private long trackID;
     private String trackTitle;
     private String artistName;
     private String albumName;
     private long containingAlbumID;
     private long trackDuration;
+
+    public String getTrackArtUri()
+    {
+        return trackArtUri;
+    }
+
+    public void setTrackArtUri(String trackArtUri)
+    {
+        this.trackArtUri = trackArtUri;
+    }
+
+    private String trackArtUri;
 
     public long getTrackID()
     {
@@ -89,7 +102,7 @@ public final class AudioTrack implements iPlayable {
     @Override
     public String getAssociatedArtPath()
     {
-        return null;
+        return this.trackArtUri;
     }
 
     @Override

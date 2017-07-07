@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,15 +32,17 @@ import com.emo.lkplayer.controller.AudoMediaController;
 import com.emo.lkplayer.controller.CurrentDataController;
 import com.emo.lkplayer.controller.MediaController;
 import com.emo.lkplayer.customviews.AudoMedaController;
+import com.emo.lkplayer.model.content_providers.TracksProvider;
 import com.emo.lkplayer.model.entities.AudioTrack;
 import com.emo.lkplayer.view.EqualizerActivity;
 import com.emo.lkplayer.view.FragmentInteractionListener;
 import com.emo.lkplayer.view.navigation.NavigationManagerContentFlow;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class NavPlayBackFragment extends Fragment implements AudoMediaController.MediaControllerCallbacks {
+public class NavPlayBackFragment extends Fragment implements AudoMediaController.MediaControllerCallbacks, ViewPager.OnPageChangeListener {
 
     public interface NavPlayBackFragmentInteractionListener extends FragmentInteractionListener {
         void showToolbar();
@@ -73,7 +76,7 @@ public class NavPlayBackFragment extends Fragment implements AudoMediaController
     private NavPlayBackFragment.SliderPagerAdapter fragmentStatePagerAdapter;
     private AudoMediaController audoMediaController;
 
-    private CurrentDataController dataController;
+    private ServiceConnection serviceConnection;
 
     public NavPlayBackFragment()
     {
@@ -91,19 +94,23 @@ public class NavPlayBackFragment extends Fragment implements AudoMediaController
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Log.d("--NavPlayback Frag:","Oncreate called");
         if (getArguments() != null)
         {
         }
         Intent intent = new Intent(getActivity(), MediaController.class);
-        getActivity().startService(intent);
-        getActivity().bindService(intent, new ServiceConnection() {
+        serviceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service)
             {
+                Log.d("--Service Connection:","Service Connected");
                 audoMediaController = ((MediaController.MusicBinder) service).getServiceInstance();
-                audoMediaController.setDataSource(new CurrentDataController());
+                //audoMediaController.registerForMediaControllerCallbacks(NavPlayBackFragment.this);
+                List<AudioTrack> list = new CurrentDataController().getCurrentListPlayed(getContext(),getLoaderManager());
+                int listindex = new CurrentDataController().getCurrentPlayedTrackIndex();
+                audoMediaController.setDataSource(list,listindex);
+                Log.d("--Service Connection:","List Sent with size= "+list.size()+" and index= "+listindex);
                 audoMediaController.registerForMediaControllerCallbacks(NavPlayBackFragment.this);
-                //initPlaybackControlTool();
             }
 
             @Override
@@ -111,7 +118,10 @@ public class NavPlayBackFragment extends Fragment implements AudoMediaController
             {
 
             }
-        }, Context.BIND_AUTO_CREATE);
+        };
+
+        getActivity().startService(intent);
+        getActivity().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
 
 
     }
@@ -120,6 +130,7 @@ public class NavPlayBackFragment extends Fragment implements AudoMediaController
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
+        Log.d("--NavPlayback Frag:","OncreateView called");
         // Inflate the layout for this fragment
         setHasOptionsMenu(true);
         if (interactionListener != null)
@@ -131,39 +142,17 @@ public class NavPlayBackFragment extends Fragment implements AudoMediaController
 
         View rootView = inflater.inflate(R.layout.fragment_nav_playback, container, false);
         playback_control_tool = (AudoMedaController) rootView.findViewById(R.id.view_mediaConroller);
+
         initPlaybackControlTool();
 
         fragmentStatePagerAdapter = new NavPlayBackFragment.SliderPagerAdapter(getChildFragmentManager());
         albumArtSlider = (ViewPager) rootView.findViewById(R.id.vp_AlbumArtSlider);
         albumArtSlider.setAdapter(fragmentStatePagerAdapter);
-        albumArtSlider.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
-            {
-
-            }
-
-            @Override
-            public void onPageSelected(int position)
-            {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state)
-            {
-
-            }
-        });
         return rootView;
     }
 
     private void initPlaybackControlTool()
     {
-        if (audoMediaController != null)
-        {
-            //playback_control_tool.setPlayPauseButtonState(audoMediaController.isAudioPlaying());
-        }
         playback_control_tool.setTouchEventsListener(new AudoMedaController.AudoMedaControllerTouchEventsListener() {
             @Override
             public void onPlayButton_Click()
@@ -174,10 +163,9 @@ public class NavPlayBackFragment extends Fragment implements AudoMediaController
                     playback_control_tool.setPlayPauseButtonState(false);
                 } else
                 {
-                    audoMediaController.play();
+                    audoMediaController.play(new CurrentDataController().getCurrentPlayedTrackIndex());
                     playback_control_tool.setPlayPauseButtonState(true);
                 }
-
             }
 
             @Override
@@ -230,7 +218,9 @@ public class NavPlayBackFragment extends Fragment implements AudoMediaController
     @Override
     public void onStart()
     {
+        Log.d("--NavPlayback Frag:","OnStart called");
         super.onStart();
+        albumArtSlider.addOnPageChangeListener(this);
         if (audoMediaController != null)
             audoMediaController.registerForMediaControllerCallbacks(this);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver, new IntentFilter(MediaController.ACTION_SEEKBAR_UPDATE));
@@ -240,6 +230,7 @@ public class NavPlayBackFragment extends Fragment implements AudoMediaController
     @Override
     public void onResume()
     {
+        Log.d("--NavPlayback Frag:","OnResume called");
         super.onResume();
 
     }
@@ -247,13 +238,16 @@ public class NavPlayBackFragment extends Fragment implements AudoMediaController
     @Override
     public void onPause()
     {
+        Log.d("--NavPlayback Frag:","OnPause called");
         super.onPause();
     }
 
     @Override
     public void onStop()
     {
+        Log.d("--NavPlayback Frag:","OnStop called");
         super.onStop();
+        albumArtSlider.removeOnPageChangeListener(this);
         if (audoMediaController != null)
             audoMediaController.unregisterMediaUpdateEvents();
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(broadcastReceiver);
@@ -263,6 +257,7 @@ public class NavPlayBackFragment extends Fragment implements AudoMediaController
     @Override
     public void onDestroyView()
     {
+        Log.d("--NavPlayback Frag:","OnDestroyView called");
         super.onDestroyView();
         if (interactionListener != null)
         {
@@ -274,6 +269,7 @@ public class NavPlayBackFragment extends Fragment implements AudoMediaController
     @Override
     public void onDetach()
     {
+        Log.d("--NavPlayback Frag:","onDetach called");
         super.onDetach();
         if (interactionListener != null)
         {
@@ -286,6 +282,12 @@ public class NavPlayBackFragment extends Fragment implements AudoMediaController
     @Override
     public void onDestroy()
     {
+        Log.d("--NavPlayback Frag:","OnDestroy called");
+        if (audoMediaController != null)
+        {
+            audoMediaController.unregisterMediaUpdateEvents();
+        }
+        getActivity().unbindService(serviceConnection);
         super.onDestroy();
     }
 
@@ -321,32 +323,94 @@ public class NavPlayBackFragment extends Fragment implements AudoMediaController
         return true;
     }
 
+    /*---------------------- Required Private Methods --------------------------------------------*/
 
-    /*---------------------- MediaController Callbacks ------------------- */
-
-    @Override
-    public void onTrackChanged(boolean sourceChanged, int newIndex, List<AudioTrack> newTracksList)
+    private String getTrackArtUri(int trackIndex)
     {
+        AudioTrack track = new CurrentDataController().getCurrentListPlayed().get(trackIndex);
+        String uri = new TracksProvider(getContext(), getLoaderManager()).getTrackArtUriByID(track.getContainingAlbumID());
+        return uri;
+    }
+
+    /*---------------------- MediaController Callbacks + Implemented Interfaces ------------------- */
+    @Override
+    public void onRegisterReceiveCurrentPlaybackTrack(int currentTrackIndex,boolean isPlaying)
+    {
+        //--cond to be removed -- start
+        if (currentTrackIndex==-1)
+            return;
+        //--cond to be removed -- end
+
         if (this.playback_control_tool != null)
-            this.playback_control_tool.setPlayable(newTracksList.get(newIndex));
+            this.playback_control_tool.setPlayPauseButtonState(isPlaying);
+
+        if (this.playback_control_tool != null)
+        {
+            List<AudioTrack> list = new CurrentDataController().getCurrentListPlayed();
+            if (list == null || list.size()==0)
+                return;
+            this.playback_control_tool.setPlayable(list.get(currentTrackIndex));
+            playback_control_tool.setBackImageBlurred(getTrackArtUri(currentTrackIndex));
+        }
+        albumArtSlider.setCurrentItem(currentTrackIndex);
     }
 
     @Override
-    public void onTrackPlay()
+    public void onTrackChanged(int newIndex)
     {
-        if (this.playback_control_tool!=null)
+        //android.os.Debug.waitForDebugger();
+
+    }
+
+    @Override
+    public void onTrackPlay(int newIndex, boolean isNew)
+    {
+        if (this.playback_control_tool != null)
             this.playback_control_tool.setPlayPauseButtonState(true);
+        if (isNew)
+        {
+            if (this.playback_control_tool != null)
+            {
+                List<AudioTrack> list = new CurrentDataController().getCurrentListPlayed();
+                if (list == null)
+                    return;
+                this.playback_control_tool.setPlayable(list.get(newIndex));
+                playback_control_tool.setBackImageBlurred(getTrackArtUri(newIndex));
+            }
+            albumArtSlider.setCurrentItem(newIndex);
+        }
     }
 
     @Override
     public void onTrackPause()
     {
-        if (this.playback_control_tool!=null)
+        if (this.playback_control_tool != null)
             this.playback_control_tool.setPlayPauseButtonState(false);
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+    {
 
-    private static class SliderPagerAdapter extends FragmentStatePagerAdapter {
+    }
+
+    @Override
+    public void onPageSelected(int position)
+    {
+        /* This will only make a call when this client is bound/connected to service */
+        if (audoMediaController != null)
+        {
+            audoMediaController.play(position);
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state)
+    {
+
+    }
+
+    private class SliderPagerAdapter extends FragmentStatePagerAdapter {
 
 
         public SliderPagerAdapter(FragmentManager fragmentManager)
@@ -358,14 +422,16 @@ public class NavPlayBackFragment extends Fragment implements AudoMediaController
         @Override
         public Fragment getItem(int position)
         {
-            String uriForArtFragment = new CurrentDataController().getCurrentListPlayed().get(position).getAssociatedArtPath();
-            return AlbumArtFragment.newInstance(null);
+            TracksProvider tracksProvider = new TracksProvider(NavPlayBackFragment.this.getContext(), NavPlayBackFragment.this.getLoaderManager());
+            String uriForArtFragment = tracksProvider.getTrackArtUriByID(new CurrentDataController().getCurrentListPlayed().get(position).getContainingAlbumID());
+            //playback_control_tool.setBackImageBlurred(uriForArtFragment);
+            return AlbumArtFragment.newInstance(uriForArtFragment);
         }
 
         @Override
         public int getCount()
         {
-            if (new CurrentDataController().getCurrentListPlayed() == null)
+            if (new CurrentDataController().getCurrentListPlayed(getContext(),getLoaderManager()) == null)
             {
                 return 0;
             }
@@ -378,4 +444,5 @@ public class NavPlayBackFragment extends Fragment implements AudoMediaController
             //super.restoreState(state, loader);
         }
     }
+
 }

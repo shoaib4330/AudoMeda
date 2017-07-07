@@ -1,24 +1,32 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frame_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#9a000000"
-    android:padding="20dp"
     tools:context="com.emo.lkplayer.view.fragments.AlbumArtFragment">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/imgV_back_blurred"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardElevation="12dp"
+        android:layout_margin="20dp"
         tools:context="com.emo.lkplayer.view.fragments.AlbumArtFragment">
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/imgV_SliderAlbumArt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:srcCompat="@drawable/album_default_ico" />
+            app:srcCompat="@drawable/album_default_ico"
+            android:scaleType="fitXY"/>
 
     </android.support.v7.widget.CardView>
 

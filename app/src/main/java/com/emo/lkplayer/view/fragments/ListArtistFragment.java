@@ -16,6 +16,9 @@ import com.emo.lkplayer.R;
 import com.emo.lkplayer.model.content_providers.ArtistsProvider;
 import com.emo.lkplayer.model.content_providers.Specification.ArtistSpecification;
 import com.emo.lkplayer.model.content_providers.Specification.LibraryLeadSelectionEventsListener;
+import com.emo.lkplayer.model.content_providers.Specification.TracksByArtistSpecification;
+import com.emo.lkplayer.model.content_providers.Specification.TracksByGenreSpecification;
+import com.emo.lkplayer.model.content_providers.Specification.iLoaderSpecification;
 import com.emo.lkplayer.model.entities.Artist;
 
 import java.util.List;
@@ -54,6 +57,8 @@ public class ListArtistFragment extends Fragment implements ArtistsProvider.Medi
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),(artistList.get( (int)v.getTag() )).getArtistName(),Toast.LENGTH_SHORT).show();
+                iLoaderSpecification specification = new TracksByArtistSpecification(artistList.get((int)v.getTag()).getArtistName());
+                eventsListener.onSelectionWithSpecificationProvision(specification, true);
             }
         });
 

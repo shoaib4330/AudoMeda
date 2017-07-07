@@ -12,8 +12,9 @@ import java.util.List;
 
 public interface AudoMediaController {
     interface MediaControllerCallbacks{
-        void onTrackChanged(boolean sourceChanged,int newIndex,List<AudioTrack> newTracksList);
-        void onTrackPlay();
+        void onRegisterReceiveCurrentPlaybackTrack(int currentTrackIndex,boolean isPlaying);
+        void onTrackChanged(int newIndex);
+        void onTrackPlay(int index,boolean isNew);
         void onTrackPause();
     }
     void play();
@@ -27,7 +28,7 @@ public interface AudoMediaController {
     void setShuffle(boolean shuffle);
     void seekTo(int pos);
     boolean isAudioPlaying();
-    void setDataSource(CurrentDataController currentDataController);
+    void setDataSource(List<AudioTrack> trackList,int selectedTrackIndex);
     void registerForMediaControllerCallbacks(MediaControllerCallbacks mediaUpdateCallbacks);
     void unregisterMediaUpdateEvents();
 

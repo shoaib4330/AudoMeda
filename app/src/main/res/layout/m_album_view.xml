@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:padding="@dimen/basic_allSides_padding"
+    android:layout_margin="@dimen/basic_malbumview_allsides_margin"
     app:cardElevation="4dp">
 
     <RelativeLayout

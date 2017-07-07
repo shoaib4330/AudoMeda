@@ -1,6 +1,9 @@
 package com.emo.lkplayer.customviews;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -39,6 +42,19 @@ public class AudoMedaController extends LinearLayoutCompat implements View.OnCli
         init(context);
     }
 
+    public void setBackImageBlurred(String uri){
+        if (uri==null)
+            return;
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 32;
+        Bitmap blurTemplate = BitmapFactory.decodeFile(uri, options);
+
+        AppCompatImageView imageView = (AppCompatImageView) rootView.findViewById(R.id.imgV_audoMedaControllerBackground);
+        imageView.setImageBitmap(blurTemplate);
+
+        View backView = rootView.findViewById(R.id.linlay_backwhole);
+        backView.setAlpha(0.7f);
+    }
     private void init(Context context)
     {
 

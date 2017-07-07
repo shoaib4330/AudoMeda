@@ -1,6 +1,14 @@
 package com.emo.lkplayer.controller;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.provider.MediaStore;
+import android.support.v4.app.LoaderManager;
+import android.util.Log;
+
 import com.emo.lkplayer.model.CurrentDataMaintainer;
+import com.emo.lkplayer.model.content_providers.Specification.AllorAlbumTrackSpecification;
+import com.emo.lkplayer.model.content_providers.TracksProvider;
 import com.emo.lkplayer.model.entities.AudioTrack;
 
 import java.util.List;
@@ -18,12 +26,14 @@ public class CurrentDataController implements Observer {
     }
 
     private DataEventsCallBacks dataEventsListener;
+    List<AudioTrack> list;
 
     public CurrentDataController()
     {
     }
 
-    public void isObservant(boolean beObservant){
+    public void isObservant(boolean beObservant)
+    {
         if (beObservant)
             CurrentDataMaintainer.getInstance().addObserver(this);
         else
@@ -43,6 +53,7 @@ public class CurrentDataController implements Observer {
 
     public void setNewTrackListPlusIndex(List<AudioTrack> audioTracks, int index)
     {
+        Log.d("--Data Controller: ","News List Set with size= "+audioTracks.size()+" and index= "+index);
         CurrentDataMaintainer.getInstance().setAudioTrackList(audioTracks);
         CurrentDataMaintainer.getInstance().setCurrentTrackIndex(index);
         if (dataEventsListener != null)
@@ -54,12 +65,30 @@ public class CurrentDataController implements Observer {
         return CurrentDataMaintainer.getInstance().getAudioTrackList();
     }
 
+    public List<AudioTrack> getCurrentListPlayed(Context context, LoaderManager loaderManager)
+    {
+
+        if (CurrentDataMaintainer.getInstance().getAudioTrackList() == null)
+        {
+            AllorAlbumTrackSpecification spec = new AllorAlbumTrackSpecification();
+            Cursor c = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, spec.getProjection(),
+                    spec.getSelection(), spec.getSelectionArgs(), spec.getSortOrder());
+
+            list = spec.returnMappedList(c);
+            CurrentDataMaintainer.getInstance().setAudioTrackList(list);
+            CurrentDataMaintainer.getInstance().setCurrentTrackIndex(0);
+
+        }
+        return CurrentDataMaintainer.getInstance().getAudioTrackList();
+    }
+
     public int getCurrentPlayedTrackIndex()
     {
         return CurrentDataMaintainer.getInstance().getCurrentTrackIndex();
     }
 
-    public AudioTrack getCurrentPlayedTrack(){
+    public AudioTrack getCurrentPlayedTrack()
+    {
         return CurrentDataMaintainer.getInstance().getAudioTrackList().get(this.getCurrentPlayedTrackIndex());
     }
 

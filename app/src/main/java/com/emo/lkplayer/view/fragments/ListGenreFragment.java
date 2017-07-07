@@ -1,6 +1,7 @@
 package com.emo.lkplayer.view.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,8 @@ import com.emo.lkplayer.R;
 import com.emo.lkplayer.model.content_providers.GenreProvider;
 import com.emo.lkplayer.model.content_providers.Specification.GenreSpecification;
 import com.emo.lkplayer.model.content_providers.Specification.LibraryLeadSelectionEventsListener;
+import com.emo.lkplayer.model.content_providers.Specification.TracksByGenreSpecification;
+import com.emo.lkplayer.model.content_providers.Specification.iLoaderSpecification;
 import com.emo.lkplayer.model.entities.Genre;
 
 import java.util.List;
@@ -42,6 +45,18 @@ public class ListGenreFragment extends Fragment implements GenreProvider.MediaPr
     }
 
     @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+        if (context instanceof LibraryLeadSelectionEventsListener) {
+            eventsListener = (LibraryLeadSelectionEventsListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -52,6 +67,8 @@ public class ListGenreFragment extends Fragment implements GenreProvider.MediaPr
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),genreList.get( (int)v.getTag() ).getGenreName(),Toast.LENGTH_SHORT ).show();
+                iLoaderSpecification specification = new TracksByGenreSpecification(genreList.get((int)v.getTag()).getId());
+                eventsListener.onSelectionWithSpecificationProvision(specification, true);
             }
         });
     }

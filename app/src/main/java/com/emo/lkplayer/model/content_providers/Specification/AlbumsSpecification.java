@@ -17,6 +17,16 @@ public final class AlbumsSpecification extends BaseLoaderSpecification<Album> {
 
     private boolean immuted = false;
 
+    private long albumID=-1;
+
+    public AlbumsSpecification(){
+
+    }
+
+    public AlbumsSpecification(long id){
+        this.albumID = id;
+    }
+
     @Override
     public Uri getUriForLoader() {
         return MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
@@ -34,17 +44,26 @@ public final class AlbumsSpecification extends BaseLoaderSpecification<Album> {
 
     @Override
     public String getSelection() {
+        if (this.albumID!=-1)
+        {
+            String selection = MediaStore.Audio.Albums._ID + " = ?";
+            return selection;
+        }
         return null;
     }
 
     @Override
     public String[] getSelectionArgs() {
+        if (this.albumID!=-1)
+        {
+            return new String[]{String.valueOf(this.albumID)};
+        }
         return null;
     }
 
     @Override
     public String getSortOrder() {
-        String sortOrder = MediaStore.Audio.AlbumColumns.ARTIST + " ASC";
+        String sortOrder = MediaStore.Audio.AlbumColumns.ALBUM + " ASC";
         return sortOrder;
     }
 

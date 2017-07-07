@@ -7,7 +7,7 @@
     <dimen name="basic_allSides_margin">10dp</dimen>
     <dimen name="basic_allSides_padding">10dp</dimen>
     <dimen name="basic_albumview_imageview_size">150dp</dimen>
-
+    <dimen name="basic_malbumview_allsides_margin">5dp</dimen>
     <dimen name="basic_SideIcon_artist_LxW_dimen">30dp</dimen>
 
 
