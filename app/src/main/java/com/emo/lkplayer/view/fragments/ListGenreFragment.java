@@ -14,18 +14,25 @@ import android.widget.Toast;
 
 import com.emo.lkplayer.R;
 import com.emo.lkplayer.model.content_providers.GenreProvider;
+import com.emo.lkplayer.model.content_providers.Specification.AudioTracksSpecification;
 import com.emo.lkplayer.model.content_providers.Specification.GenreSpecification;
 import com.emo.lkplayer.model.content_providers.Specification.LibraryLeadSelectionEventsListener;
-import com.emo.lkplayer.model.content_providers.Specification.TracksByGenreSpecification;
 import com.emo.lkplayer.model.content_providers.Specification.iLoaderSpecification;
 import com.emo.lkplayer.model.entities.Genre;
+import com.emo.lkplayer.view.navigation.BaseNavigationManager;
+import com.emo.lkplayer.view.navigation.NavigationManagerContentFlow;
 
 import java.util.List;
 
 
 public class ListGenreFragment extends Fragment implements GenreProvider.MediaProviderEventsListener {
 
+    public interface InteractionListener{
+        BaseNavigationManager getNavigationManager();
+    }
+
     private LibraryLeadSelectionEventsListener eventsListener;
+    private NavigationManagerContentFlow frag_NavigationManager;
 
     private GenreProvider genreProvider;
 
@@ -50,6 +57,8 @@ public class ListGenreFragment extends Fragment implements GenreProvider.MediaPr
         super.onAttach(context);
         if (context instanceof LibraryLeadSelectionEventsListener) {
             eventsListener = (LibraryLeadSelectionEventsListener) context;
+            frag_NavigationManager = (NavigationManagerContentFlow) ((ListGenreFragment.InteractionListener)context).getNavigationManager();
+
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -67,8 +76,7 @@ public class ListGenreFragment extends Fragment implements GenreProvider.MediaPr
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),genreList.get( (int)v.getTag() ).getGenreName(),Toast.LENGTH_SHORT ).show();
-                iLoaderSpecification specification = new TracksByGenreSpecification(genreList.get((int)v.getTag()).getId());
-                eventsListener.onSelectionWithSpecificationProvision(specification, true);
+                frag_NavigationManager.startListTracksFragment(null,null,null,genreList.get((int)v.getTag()).getId());
             }
         });
     }

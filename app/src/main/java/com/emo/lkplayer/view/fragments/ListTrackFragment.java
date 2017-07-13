@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.emo.lkplayer.R;
 import com.emo.lkplayer.Utility;
 import com.emo.lkplayer.controller.CurrentDataController;
+import com.emo.lkplayer.controller.TrackController;
 import com.emo.lkplayer.model.content_providers.TracksProvider;
 import com.emo.lkplayer.model.content_providers.Specification.iLoaderSpecification;
 import com.emo.lkplayer.model.entities.AudioTrack;
@@ -25,72 +26,99 @@ import com.emo.lkplayer.view.navigation.NavigationManagerContentFlow;
 import java.util.List;
 
 
-public class ListTrackFragment extends Fragment implements TracksProvider.MediaProviderEventsListener {
+public class ListTrackFragment extends Fragment implements TrackController.TrackControllerEventsListener {
 
+    public static final String ARG_VAL_OPEN_AS_ALL_RECENTS = "as_all_recents";
 
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_FOLDER_NAME = "param1";
+    private static final String ARG_ALBUM_NAME = "param2";
+    private static final String ARG_ARTIST_NAME = "param3";
+    private static final String ARG_GENRE_ID = "param4";
+    private static final String ARG_IF_AS_ALL_RECENTS = "param5";
+
     private FragmentInteractionListener interactionListener;
 
     private NavigationManagerContentFlow navigationManager;
 
     private View rootView;
     private RecyclerView recyclerView;
-
     private TrackRecylerAdapter trackRecylerAdapter;
 
-    /* shoaib: logical part */
-    private iLoaderSpecification specification;
-    private TracksProvider tracksProvider;
-
     private List<AudioTrack> trackList;
+    private TrackController trackController;
 
-    public ListTrackFragment() {
+    public ListTrackFragment()
+    {
         // Required empty public constructor
     }
 
-
-    public static ListTrackFragment newInstance(iLoaderSpecification param1) {
+    public static ListTrackFragment newInstance(String folderName, String albumName, String artistName, long genreID)
+    {
         ListTrackFragment fragment = new ListTrackFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, param1);
+        args.putString(ARG_FOLDER_NAME, folderName);
+        args.putString(ARG_ALBUM_NAME, albumName);
+        args.putString(ARG_ARTIST_NAME, artistName);
+        args.putLong(ARG_GENRE_ID, genreID);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof FragmentInteractionListener) {
-            interactionListener = (FragmentInteractionListener) context;
-            this.navigationManager = (NavigationManagerContentFlow) interactionListener.getNavigationManager();
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            specification = (iLoaderSpecification) getArguments().getSerializable(ARG_PARAM1);
+
+        String folderName;
+        String albumName;
+        String artistName;
+        long genreID;
+
+        trackController = new TrackController(getContext(), getLoaderManager());
+
+        if (getArguments() != null)
+        {
+            folderName = getArguments().getString(ARG_FOLDER_NAME);
+            albumName = getArguments().getString(ARG_ALBUM_NAME);
+            artistName = getArguments().getString(ARG_ARTIST_NAME);
+            genreID = getArguments().getLong(ARG_GENRE_ID, -1);
+
+            if (folderName != null)
+            {
+                trackController.retrieveAudioVideoTracksByFolder(folderName);
+            } else if (albumName != null)
+            {
+                trackController.retrieveAudioVideoTracksByAlbum(albumName);
+            } else if (artistName != null)
+            {
+                trackController.retrieveAudioVideoTracksByArtist(artistName);
+            } else if (genreID != -1)
+            {
+                trackController.retrieveAudioTracksByGenre(genreID);
+            }
+            else if (getArguments().getString(ARG_IF_AS_ALL_RECENTS)!=null && getArguments().getString(ARG_IF_AS_ALL_RECENTS).equals(ARG_VAL_OPEN_AS_ALL_RECENTS)){
+                trackController.retrieveAudioVideoTracksRecentlyAdded();
+            }
+            else{
+                trackController.retrieveAudioVideoTracksAll();
+            }
         }
-        tracksProvider = new TracksProvider(getContext(), getLoaderManager());
-        tracksProvider.setSpecification(specification);
-        tracksProvider.requestTrackData();
+
         trackRecylerAdapter = new TrackRecylerAdapter(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Track CLicked "+(int)v.getTag(), Toast.LENGTH_SHORT).show();
-                new CurrentDataController().setNewTrackListPlusIndex(trackList,(int)v.getTag());
-                Log.d("--ListTrackFragment: ","List Set with size= "+trackList.size()+" and index= "+v.getTag());
-                navigationManager.startPlayBackFragment((int)v.getTag(),trackList);
+            public void onClick(View v)
+            {
+                Toast.makeText(getContext(), "Track CLicked " + (int) v.getTag(), Toast.LENGTH_SHORT).show();
+                new CurrentDataController().setNewTrackListPlusIndex(trackList, (int) v.getTag());
+                Log.d("--ListTrackFragment: ", "List Set with size= " + trackList.size() + " and index= " + v.getTag());
+                navigationManager.startPlayBackFragment((int) v.getTag(), trackList);
             }
         });
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         rootView = inflater.inflate(R.layout.fragment_track_list, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_tracksList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -99,27 +127,43 @@ public class ListTrackFragment extends Fragment implements TracksProvider.MediaP
         return rootView;
     }
 
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+        if (context instanceof FragmentInteractionListener)
+        {
+            interactionListener = (FragmentInteractionListener) context;
+            this.navigationManager = (NavigationManagerContentFlow) interactionListener.getNavigationManager();
+        } else
+        {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
 
     @Override
-    public void onStart() {
+    public void onStart()
+    {
         super.onStart();
         /* shoaib: register to the provider's data delivery events */
-        tracksProvider.register(this);
+        trackController.register(this);
     }
 
     @Override
-    public void onStop() {
+    public void onStop()
+    {
         super.onStop();
         /* shoaib: Unregister from the provider's data delivery events */
-        tracksProvider.unRegister();
+        trackController.unregister();
     }
 
     @Override
-    public void onListCreated(List<AudioTrack> pTrackList) {
-        this.trackList = pTrackList;
-        this.trackRecylerAdapter.updateFoldersList(pTrackList);
+    public void onTrackListProvision(List<AudioTrack> list)
+    {
+        this.trackList = list;
+        this.trackRecylerAdapter.updateFoldersList(list);
     }
-
 
     private static class TrackRecylerAdapter extends RecyclerView.Adapter<ListTrackFragment.TrackRecylerAdapter.TrackViewHolder> {
 
@@ -128,14 +172,16 @@ public class ListTrackFragment extends Fragment implements TracksProvider.MediaP
 
             private static View.OnClickListener mOnClickListener;
 
-            public TrackViewHolder(View itemView) {
+            public TrackViewHolder(View itemView)
+            {
                 super(itemView);
                 tv_trackTitle = (TextView) itemView.findViewById(R.id.tv_trackTitle);
                 tv_Duration = (TextView) itemView.findViewById(R.id.tv_trackDuration);
                 tv_ArtistName = (TextView) itemView.findViewById(R.id.tv_trackArtist);
             }
 
-            public void bind(AudioTrack track, int position) {
+            public void bind(AudioTrack track, int position)
+            {
                 this.itemView.setTag(position); /* shoaib: to get clicked item position */
                 tv_trackTitle.setText(track.getTrackTitle());
                 tv_ArtistName.setText(track.getArtistName());
@@ -144,24 +190,28 @@ public class ListTrackFragment extends Fragment implements TracksProvider.MediaP
                 this.itemView.setOnClickListener(this.mOnClickListener);
             }
 
-            public static void setItemViewOnClickListener(View.OnClickListener listener) {
+            public static void setItemViewOnClickListener(View.OnClickListener listener)
+            {
                 mOnClickListener = listener;
             }
         }
 
         private List<AudioTrack> adapterTrackList;
 
-        public TrackRecylerAdapter(View.OnClickListener listener) {
+        public TrackRecylerAdapter(View.OnClickListener listener)
+        {
             TrackRecylerAdapter.TrackViewHolder.setItemViewOnClickListener(listener);
         }
 
-        public void updateFoldersList(List<AudioTrack> tracksList) {
+        public void updateFoldersList(List<AudioTrack> tracksList)
+        {
             this.adapterTrackList = tracksList;
             notifyDataSetChanged();
         }
 
         @Override
-        public TrackRecylerAdapter.TrackViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public TrackRecylerAdapter.TrackViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+        {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View itemView = inflater.inflate(R.layout.m_track_view, parent, false);
             TrackRecylerAdapter.TrackViewHolder fvh = new TrackRecylerAdapter.TrackViewHolder(itemView);
@@ -169,12 +219,14 @@ public class ListTrackFragment extends Fragment implements TracksProvider.MediaP
         }
 
         @Override
-        public void onBindViewHolder(TrackRecylerAdapter.TrackViewHolder holder, int position) {
+        public void onBindViewHolder(TrackRecylerAdapter.TrackViewHolder holder, int position)
+        {
             holder.bind(this.adapterTrackList.get(position), position);
         }
 
         @Override
-        public int getItemCount() {
+        public int getItemCount()
+        {
             if (this.adapterTrackList != null)
                 return this.adapterTrackList.size();
             return 0;

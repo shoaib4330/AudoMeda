@@ -10,13 +10,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.emo.lkplayer.R;
-import com.emo.lkplayer.model.content_providers.Specification.AlbumsSpecification;
-import com.emo.lkplayer.model.content_providers.Specification.AllorAlbumTrackSpecification;
+import com.emo.lkplayer.model.content_providers.Specification.AudioAlbumsSpecification;
 import com.emo.lkplayer.model.content_providers.Specification.ArtistSpecification;
 import com.emo.lkplayer.model.content_providers.Specification.GenreSpecification;
 import com.emo.lkplayer.model.content_providers.Specification.LibraryLeadSelectionEventsListener;
 import com.emo.lkplayer.model.content_providers.Specification.PlaylistSpecification;
 import com.emo.lkplayer.model.content_providers.Specification.iLoaderSpecification;
+import com.emo.lkplayer.view.navigation.BaseNavigationManager;
+import com.emo.lkplayer.view.navigation.NavigationManagerContentFlow;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,15 +26,18 @@ import com.emo.lkplayer.model.content_providers.Specification.iLoaderSpecificati
  */
 public class NavLibraryFragment extends Fragment implements View.OnClickListener {
 
+    public interface InteractionListener{
+        BaseNavigationManager getNavigationManager();
+    }
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1,mParam2;
 
     private View libraryLead_allSongs,libraryLead_albums,libraryLead_artists,libraryLead_genres,
     libraryLead_playlists,libraryLead_queue,libraryLead_topRated,libraryLead_recentlyAdded;
 
     private LibraryLeadSelectionEventsListener eventsListener;
+    private NavigationManagerContentFlow frag_NavigationManager;
 
     public NavLibraryFragment() {
         // Required empty public constructor
@@ -53,15 +57,13 @@ public class NavLibraryFragment extends Fragment implements View.OnClickListener
     public void onAttach(Context context) {
         super.onAttach(context);
         eventsListener = (LibraryLeadSelectionEventsListener) context;
+        frag_NavigationManager = (NavigationManagerContentFlow) ((NavLibraryFragment.InteractionListener)context).getNavigationManager();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        if (getArguments() != null) {}
 
     }
 
@@ -100,13 +102,12 @@ public class NavLibraryFragment extends Fragment implements View.OnClickListener
         if (leadID==R.id.leadItem_allSongs)
         {
             Toast.makeText(getContext(), "All Songs Clicked", Toast.LENGTH_SHORT).show();
-            iLoaderSpecification specification = new AllorAlbumTrackSpecification();
-            eventsListener.onSelectionWithSpecificationProvision(specification,true);
+            frag_NavigationManager.startListTracksFragment(null,null,null);
             return;
         }
         else if (leadID==R.id.leadItem_albums){
             Toast.makeText(getContext(), "All Albums Clicked", Toast.LENGTH_SHORT).show();
-            iLoaderSpecification specification = new AlbumsSpecification();
+            iLoaderSpecification specification = new AudioAlbumsSpecification();
             eventsListener.onSelectionWithSpecificationProvision(specification,false);
             return;
         }
@@ -136,8 +137,7 @@ public class NavLibraryFragment extends Fragment implements View.OnClickListener
         }
         else if (leadID==R.id.leadItem_recentlyAdded){
             Toast.makeText(getContext(), "Recently Added Clicked", Toast.LENGTH_SHORT).show();
-            iLoaderSpecification specification = new AllorAlbumTrackSpecification.RecentlyAddedTracksSpecification();
-            eventsListener.onSelectionWithSpecificationProvision(specification,true);
+            frag_NavigationManager.startListTracksFragment_WithRecentTracks();
             return;
         }
         Toast.makeText(getContext(),"Item: "+leadID,Toast.LENGTH_LONG).show();

@@ -65,20 +65,18 @@ public final class FoldersProvider implements LoaderManager.LoaderCallbacks<Curs
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String[] projection = new String[]{"COUNT(" + MediaStore.Audio.Media.DATA + ") AS totalFiles",
+        String[] projection = new String[]{"COUNT(" + MediaStore.Files.FileColumns.DATA + ") AS totalFiles",
                 MediaStore.Files.FileColumns.MEDIA_TYPE,
                 MediaStore.Files.FileColumns.PARENT,
-                MediaStore.Audio.Media.DATA,
-                MediaStore.Audio.Media.DISPLAY_NAME,
-                MediaStore.Audio.Media.ALBUM_ID};
+                MediaStore.Files.FileColumns.DATA,
+                MediaStore.Files.FileColumns.DISPLAY_NAME
+                };
 
-        //String tt="count("+MediaStore.Audio.Media.DISPLAY_NAME+") as totalFiles,"+MediaStore.Files.FileColumns.PARENT+","+
-        //MediaStore.Audio.Media.DISPLAY_NAME;
-
-        String selection = MediaStore.Files.FileColumns.MEDIA_TYPE + "=" + MediaStore.Files.FileColumns.MEDIA_TYPE_AUDIO +
+        String selection = MediaStore.Files.FileColumns.MEDIA_TYPE + " = " + MediaStore.Files.FileColumns.MEDIA_TYPE_AUDIO +
+                " OR "+ MediaStore.Files.FileColumns.MEDIA_TYPE + "=" + MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO +
                 ") GROUP BY (" + MediaStore.Files.FileColumns.PARENT;
 
-        String sortOrder = MediaStore.Audio.Media.DISPLAY_NAME + " ASC";
+        String sortOrder = MediaStore.Files.FileColumns.DISPLAY_NAME + " ASC";
 
         CursorLoader cursorLoader = new CursorLoader(context, MEDIA_FOLDERS_URI, projection, selection, null, sortOrder);
         return cursorLoader;
@@ -90,8 +88,8 @@ public final class FoldersProvider implements LoaderManager.LoaderCallbacks<Curs
         if (data.moveToFirst()) {
             Folder newFolder;
             do {
-                String absFolderPath = data.getString(data.getColumnIndex(MediaStore.Audio.Media.DATA));
-                String fileDisplayName = data.getString(data.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
+                String absFolderPath = data.getString(data.getColumnIndex(MediaStore.Files.FileColumns.DATA));
+                String fileDisplayName = data.getString(data.getColumnIndex(MediaStore.Files.FileColumns.DISPLAY_NAME));
 
                 newFolder = new Folder();
                 newFolder.setPath(extractFolderPath(absFolderPath, fileDisplayName));

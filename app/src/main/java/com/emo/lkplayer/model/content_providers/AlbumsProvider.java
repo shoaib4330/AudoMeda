@@ -9,83 +9,123 @@ import android.support.v4.content.Loader;
 
 import com.emo.lkplayer.model.content_providers.Specification.iLoaderSpecification;
 import com.emo.lkplayer.model.entities.Album;
+import com.emo.lkplayer.model.entities.AudioTrack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by shoaibanwar on 6/29/17.
  */
 
-public final class AlbumsProvider implements LoaderManager.LoaderCallbacks<Cursor>   {
+public final class AlbumsProvider implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public interface MediaProviderEventsListener {
         void onListCreated(List<Album> pAlbumsList);
     }
 
-    private static final int ID_LOADER_TRACKS = 4;
-
     private AlbumsProvider.MediaProviderEventsListener mediaProviderEventsListener;
+
+    private static final int ID_LOADER_ALBUMS_AUDIO = 4419;
+    private static final int ID_LOADER_ALBUMS_VIDEO = 9879;
+
     private boolean dataRequestMade = false;
 
     private Context context;
     private LoaderManager loaderManager;
 
     private List<Album> albumList;
-
-    private iLoaderSpecification specification;
+    private List<Album> audioAlbumsList;
+    private List<Album> videoAlbumsList;
+    private boolean audioAlbumsLoaderDone = false;
+    private boolean videoAlbumsLoaderDone = false;
+    private iLoaderSpecification audioAlbumsSpecification;
+    private iLoaderSpecification videoAlbumsSpecification;
 
     /* shoaib: Old cursor, only kept to be given back to loader when we receive new cursor */
     private Cursor cursor;
 
-    public AlbumsProvider(Context context, LoaderManager loaderManager) {
+    public AlbumsProvider(Context context, LoaderManager loaderManager, iLoaderSpecification audioAlbumsSpecification, iLoaderSpecification videoAlbumsSpecification)
+    {
         this.context = context;
         this.loaderManager = loaderManager;
+        this.audioAlbumsSpecification = audioAlbumsSpecification;
+        this.videoAlbumsSpecification = videoAlbumsSpecification;
     }
 
-    public void setSpecification(iLoaderSpecification specification) {
-        this.specification = specification;
-    }
-
-    public void requestTrackData() {
+    public void requestTrackData()
+    {
         dataRequestMade = true;
         init();
     }
 
-    private void init() {
-        loaderManager.initLoader(ID_LOADER_TRACKS, null, this);
+    private void init()
+    {
+        loaderManager.initLoader(ID_LOADER_ALBUMS_AUDIO, null, this);
+        loaderManager.initLoader(ID_LOADER_ALBUMS_VIDEO, null, this);
     }
 
-    public void register(AlbumsProvider.MediaProviderEventsListener mediaProviderEventsListener) {
+    public void register(AlbumsProvider.MediaProviderEventsListener mediaProviderEventsListener)
+    {
         this.mediaProviderEventsListener = mediaProviderEventsListener;
         if (dataRequestMade)
             this.mediaProviderEventsListener.onListCreated(this.albumList);
     }
 
-    public void unRegister() {
+    public void unRegister()
+    {
         this.mediaProviderEventsListener = null;
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        CursorLoader cursorLoader = new CursorLoader(context, specification.getUriForLoader(), specification.getProjection(), specification.getSelection(), specification.getSelectionArgs(), specification.getSortOrder());
+    public Loader<Cursor> onCreateLoader(int id, Bundle args)
+    {
+        CursorLoader cursorLoader;
+        if (id == ID_LOADER_ALBUMS_AUDIO)
+            cursorLoader = new CursorLoader(context, audioAlbumsSpecification.getUriForLoader(), audioAlbumsSpecification.getProjection(), audioAlbumsSpecification.getSelection(), audioAlbumsSpecification.getSelectionArgs(), audioAlbumsSpecification.getSortOrder());
+        else
+            cursorLoader = new CursorLoader(context, videoAlbumsSpecification.getUriForLoader(), videoAlbumsSpecification.getProjection(), videoAlbumsSpecification.getSelection(), videoAlbumsSpecification.getSelectionArgs(), videoAlbumsSpecification.getSortOrder());
         return cursorLoader;
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        albumList = specification.returnMappedList(data);
-        if (this.mediaProviderEventsListener != null)
-            this.mediaProviderEventsListener.onListCreated(albumList);
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data)
+    {
+        if (loader.getId() == ID_LOADER_ALBUMS_AUDIO)
+        {
+            this.audioAlbumsLoaderDone = true;
+            this.audioAlbumsList = audioAlbumsSpecification.returnMappedList(data);
+        } else if (loader.getId() == ID_LOADER_ALBUMS_VIDEO)
+        {
+            this.videoAlbumsLoaderDone = true;
+            this.videoAlbumsList = videoAlbumsSpecification.returnMappedList(data);
+        }
+
+        if (this.audioAlbumsLoaderDone && this.videoAlbumsLoaderDone)
+        {
+            albumList = new ArrayList<>();
+            albumList.addAll(this.audioAlbumsList);
+            albumList.addAll(this.videoAlbumsList);
+            if (this.mediaProviderEventsListener != null)
+                this.mediaProviderEventsListener.onListCreated(albumList);
+        }
         /* swap the cursor */
         this.swapCursor(data, data = cursor);
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(Loader<Cursor> loader)
+    {
+        if (loader.getId() == ID_LOADER_ALBUMS_AUDIO)
+            this.audioAlbumsLoaderDone = false;
+        if (loader.getId() == ID_LOADER_ALBUMS_VIDEO)
+            this.videoAlbumsLoaderDone = false;
+
         swapCursor(null, null);
     }
 
-    private void swapCursor(Cursor cursorNew, Cursor dummy) {
+    private void swapCursor(Cursor cursorNew, Cursor dummy)
+    {
         /* shoaib: we keep reference of the old cursor, it will be swapped with new one */
         this.cursor = cursorNew;
     }

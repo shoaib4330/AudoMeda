@@ -1,11 +1,5 @@
 package com.emo.lkplayer.model;
 
-import android.content.Context;
-import android.support.v4.app.LoaderManager;
-
-import com.emo.lkplayer.controller.CurrentDataController;
-import com.emo.lkplayer.model.content_providers.Specification.AllorAlbumTrackSpecification;
-import com.emo.lkplayer.model.content_providers.TracksProvider;
 import com.emo.lkplayer.model.entities.AudioTrack;
 
 import java.util.List;

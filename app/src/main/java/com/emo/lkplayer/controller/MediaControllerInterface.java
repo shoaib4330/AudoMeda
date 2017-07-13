@@ -10,7 +10,7 @@ import java.util.List;
  * Created by shoaibanwar on 7/3/17.
  */
 
-public interface AudoMediaController {
+public interface MediaControllerInterface {
     interface MediaControllerCallbacks{
         void onRegisterReceiveCurrentPlaybackTrack(int currentTrackIndex,boolean isPlaying);
         void onTrackChanged(int newIndex);

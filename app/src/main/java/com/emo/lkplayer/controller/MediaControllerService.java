@@ -18,7 +18,6 @@ import android.os.PowerManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -33,7 +32,7 @@ import java.util.List;
  * Created by shoaibanwar on 7/3/17.
  */
 
-public class MediaController extends Service implements AudoMediaController, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener,
+public class MediaControllerService extends Service implements MediaControllerInterface, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener,
         MediaPlayer.OnPreparedListener {
 
     interface Constants {
@@ -51,9 +50,9 @@ public class MediaController extends Service implements AudoMediaController, Med
     }
 
     public class MusicBinder extends Binder {
-        public AudoMediaController getServiceInstance()
+        public MediaControllerInterface getServiceInstance()
         {
-            return MediaController.this;
+            return MediaControllerService.this;
         }
     }
 
@@ -63,7 +62,7 @@ public class MediaController extends Service implements AudoMediaController, Med
     private static final int HANDLER_DELAY_REPEATING_SEEKBAR = 1000;
 
     private boolean serviceInstanceStarted = false;
-    private AudoMediaController.MediaControllerCallbacks serviceCallbackReceiver;
+    private MediaControllerInterface.MediaControllerCallbacks serviceCallbackReceiver;
 
     private LocalBroadcastManager broadcaster;
 
@@ -76,7 +75,7 @@ public class MediaController extends Service implements AudoMediaController, Med
             {
                 broadcastPlaybackProgress(mediaPlayer.getCurrentPosition());
             }
-            handler.postDelayed(handlerRunnable, MediaController.HANDLER_DELAY_REPEATING_SEEKBAR);
+            handler.postDelayed(handlerRunnable, MediaControllerService.HANDLER_DELAY_REPEATING_SEEKBAR);
         }
     };
 
@@ -157,7 +156,7 @@ public class MediaController extends Service implements AudoMediaController, Med
             stopSelf();
             android.os.Process.killProcess(android.os.Process.myPid());
         }
-        return START_STICKY;
+        return START_NOT_STICKY;
         //return super.onStartCommand(intent,flags,startId);
     }
 
@@ -182,19 +181,19 @@ public class MediaController extends Service implements AudoMediaController, Med
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-        Intent previousIntent = new Intent(this, MediaController.class);
+        Intent previousIntent = new Intent(this, MediaControllerService.class);
         previousIntent.setAction(Constants.PREV_ACTION);
         PendingIntent ppreviousIntent = PendingIntent.getService(this, 0, previousIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        Intent playIntent = new Intent(this, MediaController.class);
+        Intent playIntent = new Intent(this, MediaControllerService.class);
         playIntent.setAction(Constants.PLAY_ACTION);
         PendingIntent pplayIntent = PendingIntent.getService(this, 0, playIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        Intent nextIntent = new Intent(this, MediaController.class);
+        Intent nextIntent = new Intent(this, MediaControllerService.class);
         nextIntent.setAction(Constants.NEXT_ACTION);
         PendingIntent pnextIntent = PendingIntent.getService(this, 0, nextIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        Intent stopIntent = new Intent(this, MediaController.class);
+        Intent stopIntent = new Intent(this, MediaControllerService.class);
         stopIntent.setAction(Constants.STOP_ACTION);
         PendingIntent pStopIntent = PendingIntent.getService(this, 0, stopIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
@@ -290,7 +289,6 @@ public class MediaController extends Service implements AudoMediaController, Med
         /* This method works if mediaplayer is stopped,paused, it will play the paused or stopped
         track, given the indexOfTrackToBePlayed is already set by play(int pos) method.
          */
-
         /* Track is already Playing, I will return. If it was paused I will play it */
         if (isAudioPlaying())
             return;
@@ -316,7 +314,13 @@ public class MediaController extends Service implements AudoMediaController, Med
         }
 
         long trackID = new CurrentDataController().getCurrentListPlayed().get(new CurrentDataController().getCurrentPlayedTrackIndex()).getTrackID();
-        Uri trackUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, trackID);
+        Uri cUri;
+        if (this.serviceTracksList.get(currentTrackIndex).getTrackType()==AudioTrack.TRACK_TYPE_AUDIO)
+            cUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        else
+            cUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+
+        Uri trackUri = ContentUris.withAppendedId(cUri, trackID);
         mediaPlayer.reset();
         try
         {

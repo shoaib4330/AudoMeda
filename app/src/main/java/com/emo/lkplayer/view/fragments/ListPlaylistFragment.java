@@ -1,6 +1,7 @@
 package com.emo.lkplayer.view.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,13 +17,20 @@ import com.emo.lkplayer.model.content_providers.PlaylistProvider;
 import com.emo.lkplayer.model.content_providers.Specification.LibraryLeadSelectionEventsListener;
 import com.emo.lkplayer.model.content_providers.Specification.PlaylistSpecification;
 import com.emo.lkplayer.model.entities.Playlist;
+import com.emo.lkplayer.view.navigation.BaseNavigationManager;
+import com.emo.lkplayer.view.navigation.NavigationManagerContentFlow;
 
 import java.util.List;
 
 
 public class ListPlaylistFragment extends Fragment implements PlaylistProvider.MediaProviderEventsListener {
 
+    public interface InteractionListener{
+        BaseNavigationManager getNavigationManager();
+    }
+
     private LibraryLeadSelectionEventsListener eventsListener;
+    private NavigationManagerContentFlow frag_NavigationManager;
 
     private TextView tv_noContent;
     private RecyclerView recyclerView;
@@ -66,6 +74,13 @@ public class ListPlaylistFragment extends Fragment implements PlaylistProvider.M
         recyclerView.setAdapter(recyclerAdapter);
         tv_noContent = (TextView) rootView.findViewById(R.id.tv_noContent);
         return rootView;
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        frag_NavigationManager = (NavigationManagerContentFlow) ((ListPlaylistFragment.InteractionListener)context).getNavigationManager();
     }
 
     @Override

@@ -1,29 +1,48 @@
 package com.emo.lkplayer.model.entities;
 
+import android.net.Uri;
+import android.provider.MediaStore;
+
 /**
  * Created by shoaibanwar on 6/20/17.
  */
 
 public final class AudioTrack implements iPlayable {
 
+    public static final Uri URI_AUDIO_TRACKS = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+    public static final Uri URI_VIDEO_TRACKS = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+
+    public static final String TRACK_TYPE_AUDIO = "audio";
+    public static final String TRACK_TYPE_VIDEO = "from_video";
+
     private long trackID;
     private String trackTitle;
     private String artistName;
     private String albumName;
-    private long containingAlbumID;
+    private String trackType;
     private long trackDuration;
-
-    public String getTrackArtUri()
-    {
-        return trackArtUri;
-    }
-
-    public void setTrackArtUri(String trackArtUri)
-    {
-        this.trackArtUri = trackArtUri;
-    }
-
+    private long containingAlbumID;
     private String trackArtUri;
+
+//    public String getTrackArtUri()
+//    {
+//        return trackArtUri;
+//    }
+//
+//    public void setTrackArtUri(String trackArtUri)
+//    {
+//        this.trackArtUri = trackArtUri;
+//    }
+
+    public String getTrackType()
+    {
+        return trackType;
+    }
+
+    public void setTrackType(String trackType)
+    {
+        this.trackType = trackType;
+    }
 
     public long getTrackID()
     {

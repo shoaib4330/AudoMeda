@@ -15,45 +15,51 @@ import java.util.List;
 
 public final class GenreSpecification extends BaseLoaderSpecification<Genre> {
 
-    private boolean immuted = false;
-
     @Override
-    public Uri getUriForLoader() {
+    public Uri getUriForLoader()
+    {
         return MediaStore.Audio.Genres.EXTERNAL_CONTENT_URI;
     }
 
     @Override
-    public String[] getProjection() {
+    public String[] getProjection()
+    {
         String[] projection = new String[]{
                 MediaStore.Audio.Genres._ID,
                 MediaStore.Audio.Genres.NAME
                 //MediaStore.Audio.Genres._COUNT
-         };
+        };
         return projection;
     }
 
     @Override
-    public String getSelection() {
+    public String getSelection()
+    {
         return null;
     }
 
     @Override
-    public String[] getSelectionArgs() {
+    public String[] getSelectionArgs()
+    {
         return null;
     }
 
     @Override
-    public String getSortOrder() {
+    public String getSortOrder()
+    {
         String sortOrder = MediaStore.Audio.Genres.NAME + " ASC";
         return sortOrder;
     }
 
     @Override
-    public List<Genre> returnMappedList(Cursor cursor) {
+    public List<Genre> returnMappedList(Cursor cursor)
+    {
         List<Genre> list = new ArrayList<>();
-        if (cursor.moveToFirst()) {
+        if (cursor.moveToFirst())
+        {
             Genre newGenre;
-            do {
+            do
+            {
                 long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Genres._ID));
                 String name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Genres.NAME));
 
@@ -71,16 +77,19 @@ public final class GenreSpecification extends BaseLoaderSpecification<Genre> {
         return list;
     }
 
-    public static class GenreTrackCountSpecification extends BaseLoaderSpecification<Integer>{
+    public static class GenreTrackCountSpecification extends BaseLoaderSpecification<Integer> {
 
         private long genreID;
 
-        public GenreTrackCountSpecification(long genreID){
+        public GenreTrackCountSpecification(long genreID)
+        {
             this.genreID = genreID;
         }
 
-        private int getTrackCountForGenre(Cursor cursor){
-            if (cursor.moveToFirst()){
+        private int getTrackCountForGenre(Cursor cursor)
+        {
+            if (cursor.moveToFirst())
+            {
                 int count = cursor.getInt(cursor.getColumnIndex("totalAudios"));
                 return count;
             }
@@ -88,32 +97,38 @@ public final class GenreSpecification extends BaseLoaderSpecification<Genre> {
         }
 
         @Override
-        public Uri getUriForLoader() {
-            return MediaStore.Audio.Genres.Members.getContentUri("external",genreID);
+        public Uri getUriForLoader()
+        {
+            return MediaStore.Audio.Genres.Members.getContentUri("external", genreID);
         }
 
         @Override
-        public String[] getProjection() {
+        public String[] getProjection()
+        {
             return new String[]{"COUNT(" + MediaStore.Audio.Genres.Members.AUDIO_ID + ") AS totalAudios"};
         }
 
         @Override
-        public String getSelection() {
+        public String getSelection()
+        {
             return null;
         }
 
         @Override
-        public String[] getSelectionArgs() {
+        public String[] getSelectionArgs()
+        {
             return null;
         }
 
         @Override
-        public String getSortOrder() {
-            return MediaStore.Audio.Genres.DEFAULT_SORT_ORDER+" LIMIT 1";
+        public String getSortOrder()
+        {
+            return MediaStore.Audio.Genres.DEFAULT_SORT_ORDER + " LIMIT 1";
         }
 
         @Override
-        public List<Integer> returnMappedList(Cursor cursor) {
+        public List<Integer> returnMappedList(Cursor cursor)
+        {
             int count = getTrackCountForGenre(cursor);
             List<Integer> list = new ArrayList<>();
             list.add(count);

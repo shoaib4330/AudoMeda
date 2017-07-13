@@ -3,17 +3,16 @@ package com.emo.lkplayer.view.navigation;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 
-import com.emo.lkplayer.R;
+import com.emo.lkplayer.model.content_providers.Specification.AudioTracksSpecification;
+import com.emo.lkplayer.model.content_providers.Specification.VideoTracksSpecification;
+import com.emo.lkplayer.model.content_providers.Specification.iLoaderSpecification;
 import com.emo.lkplayer.model.entities.AudioTrack;
 import com.emo.lkplayer.view.fragments.ListTrackFragment;
 import com.emo.lkplayer.view.fragments.NavFolderFragment;
 import com.emo.lkplayer.view.fragments.NavLibraryFragment;
 import com.emo.lkplayer.view.fragments.NavPlayBackFragment;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +30,6 @@ public final class NavigationManagerContentFlow extends BaseNavigationManager {
 
     private NavFolderFragment folderFragment = null;
     private NavLibraryFragment libraryFragment = null;
-
 
     /* Shoaib: Constructors here */
     public NavigationManagerContentFlow()
@@ -139,6 +137,24 @@ public final class NavigationManagerContentFlow extends BaseNavigationManager {
         }
     }
 
+    public void startListTracksFragment(String viaFolderQuery, String viaAlbumQuery, String viaArtistQuery)
+    {
+        Fragment listTrackFragment = ListTrackFragment.newInstance(viaFolderQuery, viaAlbumQuery, viaArtistQuery, -1);
+        open(listTrackFragment, false, true);
+    }
+
+    public void startListTracksFragment_WithRecentTracks()
+    {
+        Fragment listTrackFragment = ListTrackFragment.newInstance(null, null, null, -1);
+        open(listTrackFragment, false, true);
+    }
+
+    public void startListTracksFragment(String viaFolderQuery, String viaAlbumQuery, String viaArtistQuery, long genreID)
+    {
+        Fragment listTrackFragment = ListTrackFragment.newInstance(viaFolderQuery, viaAlbumQuery, viaArtistQuery, genreID);
+        open(listTrackFragment, false, true);
+    }
+
     @Override
     protected void openAsRoot(Fragment fragment)
     {
@@ -164,5 +180,4 @@ public final class NavigationManagerContentFlow extends BaseNavigationManager {
             //@formatter:on
         }
     }
-
 }

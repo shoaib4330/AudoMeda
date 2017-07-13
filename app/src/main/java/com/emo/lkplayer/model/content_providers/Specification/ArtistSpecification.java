@@ -14,7 +14,6 @@ import java.util.List;
  */
 
 public final class ArtistSpecification extends BaseLoaderSpecification<Artist> {
-    private boolean immuted = false;
 
     @Override
     public Uri getUriForLoader() {

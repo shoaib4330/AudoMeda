@@ -6,13 +6,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.emo.lkplayer.R;
-import com.emo.lkplayer.model.content_providers.Specification.AlbumsSpecification;
+import com.emo.lkplayer.model.content_providers.Specification.AudioAlbumsSpecification;
 import com.emo.lkplayer.model.content_providers.Specification.ArtistSpecification;
 import com.emo.lkplayer.model.content_providers.Specification.GenreSpecification;
 import com.emo.lkplayer.model.content_providers.Specification.LibraryLeadSelectionEventsListener;
@@ -22,13 +21,16 @@ import com.emo.lkplayer.view.fragments.ListAlbumsFragment;
 import com.emo.lkplayer.view.fragments.ListArtistFragment;
 import com.emo.lkplayer.view.fragments.ListGenreFragment;
 import com.emo.lkplayer.view.fragments.ListPlaylistFragment;
-import com.emo.lkplayer.view.fragments.ListTrackFragment;
+import com.emo.lkplayer.view.fragments.NavFolderFragment;
+import com.emo.lkplayer.view.fragments.NavLibraryFragment;
 import com.emo.lkplayer.view.fragments.NavPlayBackFragment;
 import com.emo.lkplayer.view.navigation.BaseNavigationManager;
 import com.emo.lkplayer.view.navigation.NavigationManagerContentFlow;
 
 public class NagizarActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener,
-        NavigationManagerContentFlow.NavigationListener, LibraryLeadSelectionEventsListener, NavPlayBackFragment.NavPlayBackFragmentInteractionListener{
+        NavigationManagerContentFlow.NavigationListener, LibraryLeadSelectionEventsListener, NavPlayBackFragment.NavPlayBackFragmentInteractionListener,
+        NavFolderFragment.InteractionListener, NavLibraryFragment.InteractionListener,ListAlbumsFragment.InteractionListener,
+        ListGenreFragment.InteractionListener,ListArtistFragment.InteractionListener,ListPlaylistFragment.InteractionListener{
 
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE=1011398;
     private NavigationManagerContentFlow mNavigationManager;
@@ -141,7 +143,7 @@ public class NagizarActivity extends AppCompatActivity implements BottomNavigati
     @Override
     public void onSelectionWithSpecificationProvision(iLoaderSpecification specification, boolean specNeed)
     {
-        if (specification instanceof AlbumsSpecification)
+        if (specification instanceof AudioAlbumsSpecification)
         {
             mNavigationManager.open(ListAlbumsFragment.newInstance(), false, true);
             return;
@@ -161,7 +163,7 @@ public class NagizarActivity extends AppCompatActivity implements BottomNavigati
             mNavigationManager.open(ListPlaylistFragment.newInstance(), false, true);
             return;
         }
-        mNavigationManager.open(ListTrackFragment.newInstance(specification), false, true);
+        //mNavigationManager.open(ListTrackFragment.newInstance(specification), false, true);
 
     }
 

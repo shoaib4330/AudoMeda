@@ -15,67 +15,66 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emo.lkplayer.R;
+import com.emo.lkplayer.controller.AlbumsController;
 import com.emo.lkplayer.model.content_providers.AlbumsProvider;
-import com.emo.lkplayer.model.content_providers.Specification.AlbumsSpecification;
-import com.emo.lkplayer.model.content_providers.Specification.AllorAlbumTrackSpecification;
+import com.emo.lkplayer.model.content_providers.Specification.AudioAlbumsSpecification;
 import com.emo.lkplayer.model.content_providers.Specification.LibraryLeadSelectionEventsListener;
 import com.emo.lkplayer.model.content_providers.Specification.iLoaderSpecification;
 import com.emo.lkplayer.model.entities.Album;
+import com.emo.lkplayer.view.navigation.BaseNavigationManager;
+import com.emo.lkplayer.view.navigation.NavigationManagerContentFlow;
 
 import java.util.List;
 
 
-public class ListAlbumsFragment extends Fragment implements AlbumsProvider.MediaProviderEventsListener {
+public class ListAlbumsFragment extends Fragment implements AlbumsController.AlbumsControllerEventsListener {
+
+    public interface InteractionListener {
+        BaseNavigationManager getNavigationManager();
+    }
 
     private View rootView;
     private RecyclerView recyclerView;
-
     private AlbumRecyclerAdapter albumRecyclerAdapter;
+    private NavigationManagerContentFlow frag_NavigationManager;
 
     /* shoaib: logical part */
-    private iLoaderSpecification specification;
-    private AlbumsProvider albumsProvider;
-
-    private LibraryLeadSelectionEventsListener eventsListener;
-
     private List<Album> albumList;
+    private AlbumsController albumsController;
 
-    public ListAlbumsFragment() {
+    public ListAlbumsFragment()
+    {
         // Required empty public constructor
     }
 
-    public static ListAlbumsFragment newInstance() {
+    public static ListAlbumsFragment newInstance()
+    {
         ListAlbumsFragment fragment = new ListAlbumsFragment();
         fragment.setArguments(null);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
-        specification = new AlbumsSpecification();
-        albumsProvider = new AlbumsProvider(getContext(), getLoaderManager());
-        albumsProvider.setSpecification(specification);
-        albumsProvider.requestTrackData();
+        albumsController = new AlbumsController(getContext(), getLoaderManager());
+        albumsController.retrieveAudioVideoAlbumsAll();
         albumRecyclerAdapter = new ListAlbumsFragment.AlbumRecyclerAdapter(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Toast.makeText(getContext(), "Folder number: " + (int) v.getTag(), Toast.LENGTH_SHORT).show();
-                AllorAlbumTrackSpecification specification = new AllorAlbumTrackSpecification();
-                try {
-                    specification.setAlbumSpec((albumList.get((int) v.getTag())).getAlbumTitle());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                eventsListener.onSelectionWithSpecificationProvision(specification, true);
+                frag_NavigationManager.startListTracksFragment(null, (albumList.get((int) v.getTag())).getAlbumTitle(), null);
             }
         });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState)
+    {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_all_albums, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_albumsList);
@@ -85,40 +84,45 @@ public class ListAlbumsFragment extends Fragment implements AlbumsProvider.Media
         return rootView;
     }
 
-
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(Context context)
+    {
         super.onAttach(context);
-        if (context instanceof LibraryLeadSelectionEventsListener) {
-            eventsListener = (LibraryLeadSelectionEventsListener) context;
-        } else {
+        if (context instanceof LibraryLeadSelectionEventsListener)
+        {
+            frag_NavigationManager = (NavigationManagerContentFlow) ((ListAlbumsFragment.InteractionListener) context).getNavigationManager();
+        } else
+        {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }
 
     @Override
-    public void onDetach() {
+    public void onDetach()
+    {
         super.onDetach();
-        eventsListener = null;
     }
 
     @Override
-    public void onStart() {
+    public void onStart()
+    {
         super.onStart();
-        this.albumsProvider.register(this);
+        this.albumsController.register(this);
     }
 
     @Override
-    public void onStop() {
+    public void onStop()
+    {
         super.onStop();
-        this.albumsProvider.unRegister();
+        this.albumsController.unregister();
     }
 
     @Override
-    public void onListCreated(List<Album> pAlbumsList) {
-        this.albumList = pAlbumsList;
-        this.albumRecyclerAdapter.updateFoldersList(pAlbumsList);
+    public void onAlbumListProvision(List<Album> list)
+    {
+        this.albumList = list;
+        this.albumRecyclerAdapter.updateFoldersList(list);
     }
 
     public interface OnFragmentInteractionListener {
@@ -134,44 +138,52 @@ public class ListAlbumsFragment extends Fragment implements AlbumsProvider.Media
 
             private static View.OnClickListener mOnClickListener;
 
-            public AlbumViewHolder(View itemView) {
+            public AlbumViewHolder(View itemView)
+            {
                 super(itemView);
                 tv_albumTitle = (TextView) itemView.findViewById(R.id.tv_albumTitle);
                 tv_albumArtist = (TextView) itemView.findViewById(R.id.tv_albumArtist);
                 iv_albumImage = (ImageView) itemView.findViewById(R.id.iv_albumImage);
             }
 
-            public void bind(Album album, int position) {
+            public void bind(Album album, int position)
+            {
                 this.itemView.setTag(position); /* shoaib: to get clicked item position */
                 tv_albumTitle.setText(album.getAlbumTitle());
                 tv_albumArtist.setText(album.getAlbumArtist());
-                if (album.getAlbumArtURI() == null) {
+                if (album.getAlbumArtURI() == null)
+                {
                     iv_albumImage.setImageResource(R.drawable.album_default_ico);
-                } else {
+                } else
+                {
                     iv_albumImage.setImageBitmap(BitmapFactory.decodeFile(album.getAlbumArtURI()));
                 }
                 /* shoaib: this onCickListener will be initialized and assigned by setItemViewOnClickListener */
                 this.itemView.setOnClickListener(this.mOnClickListener);
             }
 
-            public static void setItemViewOnClickListener(View.OnClickListener listener) {
+            public static void setItemViewOnClickListener(View.OnClickListener listener)
+            {
                 mOnClickListener = listener;
             }
         }
 
         private List<Album> adapterAlbumList;
 
-        public AlbumRecyclerAdapter(View.OnClickListener listener) {
+        public AlbumRecyclerAdapter(View.OnClickListener listener)
+        {
             ListAlbumsFragment.AlbumRecyclerAdapter.AlbumViewHolder.setItemViewOnClickListener(listener);
         }
 
-        public void updateFoldersList(List<Album> albumList) {
+        public void updateFoldersList(List<Album> albumList)
+        {
             this.adapterAlbumList = albumList;
             notifyDataSetChanged();
         }
 
         @Override
-        public ListAlbumsFragment.AlbumRecyclerAdapter.AlbumViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ListAlbumsFragment.AlbumRecyclerAdapter.AlbumViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+        {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View itemView = inflater.inflate(R.layout.m_album_view, parent, false);
             ListAlbumsFragment.AlbumRecyclerAdapter.AlbumViewHolder fvh = new ListAlbumsFragment.AlbumRecyclerAdapter.AlbumViewHolder(itemView);
@@ -179,12 +191,14 @@ public class ListAlbumsFragment extends Fragment implements AlbumsProvider.Media
         }
 
         @Override
-        public void onBindViewHolder(ListAlbumsFragment.AlbumRecyclerAdapter.AlbumViewHolder holder, int position) {
+        public void onBindViewHolder(ListAlbumsFragment.AlbumRecyclerAdapter.AlbumViewHolder holder, int position)
+        {
             holder.bind(this.adapterAlbumList.get(position), position);
         }
 
         @Override
-        public int getItemCount() {
+        public int getItemCount()
+        {
             if (this.adapterAlbumList != null)
                 return this.adapterAlbumList.size();
             return 0;

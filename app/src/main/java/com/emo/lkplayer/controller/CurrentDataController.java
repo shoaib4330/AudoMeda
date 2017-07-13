@@ -7,8 +7,7 @@ import android.support.v4.app.LoaderManager;
 import android.util.Log;
 
 import com.emo.lkplayer.model.CurrentDataMaintainer;
-import com.emo.lkplayer.model.content_providers.Specification.AllorAlbumTrackSpecification;
-import com.emo.lkplayer.model.content_providers.TracksProvider;
+import com.emo.lkplayer.model.content_providers.Specification.AudioTracksSpecification;
 import com.emo.lkplayer.model.entities.AudioTrack;
 
 import java.util.List;
@@ -70,7 +69,7 @@ public class CurrentDataController implements Observer {
 
         if (CurrentDataMaintainer.getInstance().getAudioTrackList() == null)
         {
-            AllorAlbumTrackSpecification spec = new AllorAlbumTrackSpecification();
+            AudioTracksSpecification spec = new AudioTracksSpecification();
             Cursor c = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, spec.getProjection(),
                     spec.getSelection(), spec.getSelectionArgs(), spec.getSortOrder());
 

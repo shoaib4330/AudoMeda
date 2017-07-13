@@ -14,15 +14,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emo.lkplayer.R;
-import com.emo.lkplayer.model.content_providers.Specification.FolderTracksSpecification;
 import com.emo.lkplayer.model.content_providers.FoldersProvider;
-import com.emo.lkplayer.model.content_providers.Specification.LibraryLeadSelectionEventsListener;
 import com.emo.lkplayer.model.entities.Folder;
+import com.emo.lkplayer.view.navigation.BaseNavigationManager;
+import com.emo.lkplayer.view.navigation.NavigationManagerContentFlow;
 
 import java.util.List;
 
 
 public class NavFolderFragment extends Fragment implements FoldersProvider.MediaProviderEventsListener {
+
+    public interface InteractionListener{
+        BaseNavigationManager getNavigationManager();
+    }
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -36,7 +40,8 @@ public class NavFolderFragment extends Fragment implements FoldersProvider.Media
     private List<Folder> folderList;
     private FoldersProvider foldersProvider;
 
-    private LibraryLeadSelectionEventsListener eventsListener;
+    private NavigationManagerContentFlow frag_NavigationManager;
+    //private LibraryLeadSelectionEventsListener eventsListener;
 
     public NavFolderFragment() {
         // Required empty public constructor
@@ -54,7 +59,7 @@ public class NavFolderFragment extends Fragment implements FoldersProvider.Media
     @Override
     public void onAttach(Context activity) {
         super.onAttach(activity);
-        eventsListener = (LibraryLeadSelectionEventsListener) activity;
+        this.frag_NavigationManager = (NavigationManagerContentFlow) ((InteractionListener) activity).getNavigationManager();
     }
 
     @Override
@@ -70,13 +75,7 @@ public class NavFolderFragment extends Fragment implements FoldersProvider.Media
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Folder number: " + (int) v.getTag(), Toast.LENGTH_SHORT).show();
-                FolderTracksSpecification specification = new FolderTracksSpecification();
-                try {
-                    specification.setFolderPathToQueryTracksFor((folderList.get((int)v.getTag())).getPath());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                eventsListener.onSelectionWithSpecificationProvision(specification,true);
+                frag_NavigationManager.startListTracksFragment((folderList.get((int)v.getTag())).getPath(),null,null);
             }
         });
     }
