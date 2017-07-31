@@ -385,12 +385,12 @@ public class VerticalSliderWrapped extends LinearLayout {
 
         private float getLineTopY()
         {
-            return getPaddingTop() + 0 + moverHeight / 2;
+            return getPaddingTop() + 0 + mover.getHeight() / 2;
         }
 
         private float getLineEndY()
         {
-            return getPaddingTop() + 0 + moverHeight / 2 + minusFactoredLineHeight;
+            return getPaddingTop() + 0 + mover.getHeight() / 2 + minusFactoredLineHeight;
         }
 
         private float getZeroPos()
