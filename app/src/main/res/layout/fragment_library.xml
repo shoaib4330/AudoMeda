@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="com.emo.lkplayer.view.fragments.NavLibraryFragment">
+        tools:context=".outerlayer.view.fragments.NavLibraryFragment">
 
         <LinearLayout
             android:id="@+id/leadItem_allSongs"

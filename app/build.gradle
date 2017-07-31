@@ -32,5 +32,15 @@ dependencies {
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:support-vector-drawable:25.3.1'
     compile 'com.android.support:percent:25.3.1'
+
+    compile "com.h6ah4i.android:openslmediaplayer:0.7.5"
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+
+    compile "android.arch.lifecycle:runtime:1.0.0-alpha3"
+    compile "android.arch.lifecycle:extensions:1.0.0-alpha3"
+    compile "android.arch.persistence.room:runtime:1.0.0-alpha1"
+    annotationProcessor "android.arch.persistence.room:compiler:1.0.0-alpha1"
+    annotationProcessor "android.arch.lifecycle:compiler:1.0.0-alpha3"
+
     testCompile 'junit:junit:4.12'
 }

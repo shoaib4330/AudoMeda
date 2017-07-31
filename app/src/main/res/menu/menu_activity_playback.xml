@@ -1,67 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menuBtn_ToneVol"
         android:icon="@drawable/toolbar_icon_toneandcol"
+        android:orderInCategory="3"
         android:title="Tone/Vol"
-        app:showAsAction="always"
-        android:orderInCategory="3">
+        app:showAsAction="always">
     </item>
 
     <item
         android:id="@+id/menuBtn_Equalizer"
         android:icon="@drawable/equalizer"
+        android:orderInCategory="2"
         android:title="Equalizer"
-        app:showAsAction="always"
-        android:orderInCategory="2">
+        app:showAsAction="always">
     </item>
 
     <item
         android:id="@+id/menuBtn_Library"
         android:icon="@drawable/ic_libraryfoler"
+        android:orderInCategory="1"
         android:title="Library"
-        app:showAsAction="always"
-        android:orderInCategory="1">
+        app:showAsAction="always">
     </item>
+
     <item
         android:id="@+id/menu_playbackFrag_addToPlayList"
         android:orderInCategory="1"
-        android:title="Add to Playlist"></item>
+        android:title="Add to Playlist">
+    </item>
+
     <item
         android:id="@+id/menu_playbackFrag_lyrics"
         android:orderInCategory="2"
-        android:title="Lyrics"></item>
+        android:title="Lyrics">
+    </item>
+
     <item
         android:id="@+id/menu_playbackFrag_delete"
         android:orderInCategory="3"
-        android:title="Delete"></item>
+        android:title="Delete">
+    </item>
+
     <item
         android:id="@+id/menu_playbackFrag_preset"
         android:orderInCategory="4"
-        android:title="Preset"></item>
+        android:title="Preset">
+    </item>
+
     <item
         android:id="@+id/menu_playbackFrag_SleepTimer"
         android:orderInCategory="5"
-        android:title="Sleep Timer"></item>
+        android:title="Sleep Timer">
+    </item>
+
     <item
         android:id="@+id/menu_playbackFrag_search"
         android:orderInCategory="6"
-        android:title="Search"></item>
+        android:title="Search">
+    </item>
+
     <item
         android:id="@+id/menu_playbackFrag_ringtone"
         android:orderInCategory="7"
-        android:title="Ringtone"></item>
+        android:title="Ringtone">
+    </item>
+
     <item
         android:id="@+id/menu_playbackFrag_info_or_tags"
         android:orderInCategory="8"
-        android:title="Info/Tags"></item>
+        android:title="Info/Tags">
+    </item>
+
     <item
         android:id="@+id/menu_playbackFrag_settings"
         android:orderInCategory="9"
-        android:title="Settings"></item>
+        android:title="Settings">
+    </item>
+
     <item
         android:id="@+id/menu_playbackFrag_help"
         android:orderInCategory="10"
-        android:title="Help"></item>
+        android:title="Help">
+    </item>
+
 </menu>

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="10"
-    tools:context="com.emo.lkplayer.view.EqualizerActivity">
+    tools:context=".outerlayer.view.EqualizerActivity">
 
     <FrameLayout
         android:id="@+id/fragmentHolder_SettingsActivity"
@@ -75,7 +75,7 @@
             android:text="Reset" />
 
 
-        <com.emo.lkplayer.customviews.KnobController
+        <com.emo.lkplayer.outerlayer.customviews.KnobController
             android:id="@+id/knob_bass"
             android:layout_width="130dp"
             android:layout_height="130dp"
@@ -83,15 +83,15 @@
             android:layout_marginTop="@dimen/basic_multipleSeekBars_vertical_margin"
             android:layout_toRightOf="@+id/btn_tone">
 
-        </com.emo.lkplayer.customviews.KnobController>
+        </com.emo.lkplayer.outerlayer.customviews.KnobController>
 
-        <com.emo.lkplayer.customviews.KnobController
+        <com.emo.lkplayer.outerlayer.customviews.KnobController
             android:id="@+id/knob_treble"
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_below="@+id/btn_save"
             android:layout_marginTop="@dimen/basic_multipleSeekBars_vertical_margin"
-            android:layout_toRightOf="@id/knob_bass"></com.emo.lkplayer.customviews.KnobController>
+            android:layout_toRightOf="@id/knob_bass"></com.emo.lkplayer.outerlayer.customviews.KnobController>
 
     </RelativeLayout>
 
