@@ -21,6 +21,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,7 +29,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
 import com.emo.lkplayer.R;
+import com.emo.lkplayer.innerlayer.model.entities.EQPreset;
+import com.emo.lkplayer.middlelayer.viewmodel.EqualizerViewModel;
 import com.emo.lkplayer.outerlayer.androidservices.MediaControllerInterface;
 import com.emo.lkplayer.outerlayer.androidservices.MediaControllerService;
 import com.emo.lkplayer.outerlayer.customviews.AudoMedaController;
@@ -39,11 +46,13 @@ import com.emo.lkplayer.outerlayer.view.FragmentInteractionListener;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
 import com.emo.lkplayer.middlelayer.viewmodel.PlayBackViewModel;
 import com.emo.lkplayer.outerlayer.androidservices.MediaControllerService.Constants.ServiceSentActionConstants;
+import com.emo.lkplayer.utilities.Utility;
+
 import java.util.List;
 
 
 public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageChangeListener,
-        LifecycleRegistryOwner{
+        LifecycleRegistryOwner {
 
     private LifecycleRegistry registry = new LifecycleRegistry(this);
 
@@ -98,6 +107,7 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
     private boolean isServiceConnected = false;
 
     private PlayBackViewModel viewModel;
+    private EqualizerViewModel equalizerViewModel;
     private LiveData<List<AudioTrack>> Live_trackList = null;
 
     public NavPlayBackFragment()
@@ -119,13 +129,14 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
         Log.d("--NavPlayback Frag:", "Oncreate called");
 
         viewModel = ViewModelProviders.of(this).get(PlayBackViewModel.class);
+        equalizerViewModel = ViewModelProviders.of(this).get(EqualizerViewModel.class);
         Live_trackList = viewModel.getTracksList();
         Live_trackList.observe(this, new Observer<List<AudioTrack>>() {
             @Override
             public void onChanged(@Nullable List<AudioTrack> list)
             {
                 Log.d("--Observerd List:", "onChanged List");
-                if (list==null || list.size()==0)
+                if (list == null || list.size() == 0)
                     return;
                 albumArtSlider.getAdapter().notifyDataSetChanged();
                 changePlayableForControl(viewModel.getCurrentTrackIndex().getValue());
@@ -221,8 +232,7 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
                 if (mediaControllerInterface.isAudioPlaying())
                 {
                     mediaControllerInterface.pause();
-                }
-                else
+                } else
                 {
                     mediaControllerInterface.play();
                 }
@@ -287,7 +297,7 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
         intentFilter.addAction(ServiceSentActionConstants.ACTION_SERVICE_STOPS_TRACK);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver, intentFilter);
 
-        if (mediaControllerInterface!=null)
+        if (mediaControllerInterface != null)
         {
             mediaControllerInterface.setClientConnected(true);
             changePlayPauseButtonStateForControl(mediaControllerInterface.isAudioPlaying());
@@ -319,7 +329,7 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
             mediaControllerInterface.unregisterMediaUpdateEvents();
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(broadcastReceiver);
 
-        if (mediaControllerInterface!=null)
+        if (mediaControllerInterface != null)
             mediaControllerInterface.setClientConnected(false);
 
     }
@@ -403,6 +413,35 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
             //new TrackListingViewModel(getContext(),getLoaderManager()).deleteTrack(this.);
         } else if (item.getItemId() == R.id.menu_playbackFrag_preset)
         {
+            final List<EQPreset> presetArr = equalizerViewModel.getAllEqPresets();
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.itemview_icon_text, R.id.tv_itemView_icon_text);
+            arrayAdapter.addAll(Utility.EQListToStringArray(presetArr));
+
+            ListView listView = new ListView(getContext());
+            listView.setAdapter(arrayAdapter);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setView(listView);
+            final AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+            alertDialog.getWindow().setLayout(800, 1000);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    try
+                    {
+                        presetArr.get(position).applyToEQ(equalizerViewModel.getEqualizerInstance());
+                        equalizerViewModel.setEqPreset(presetArr.get(position));
+                    } catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                    alertDialog.dismiss();
+                }
+            });
+            return true;
 
         } else if (item.getItemId() == R.id.menu_playbackFrag_SleepTimer)
         {

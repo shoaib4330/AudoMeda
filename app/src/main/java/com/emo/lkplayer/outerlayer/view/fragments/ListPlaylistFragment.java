@@ -1,8 +1,13 @@
 package com.emo.lkplayer.outerlayer.view.fragments;
 
 
+import android.arch.lifecycle.LifecycleRegistry;
+import android.arch.lifecycle.LifecycleRegistryOwner;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emo.lkplayer.R;
+import com.emo.lkplayer.middlelayer.viewmodel.PlaylistViewModel;
 import com.emo.lkplayer.outerlayer.storage.content_providers.PlaylistLoader;
 import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.LibraryLeadSelectionEventsListener;
 import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.PlaylistSpecification;
@@ -23,21 +29,29 @@ import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
 import java.util.List;
 
 
-public class ListPlaylistFragment extends Fragment implements PlaylistLoader.MediaProviderEventsListener {
+public class ListPlaylistFragment extends Fragment implements LifecycleRegistryOwner{
+
+    private LifecycleRegistry registry = new LifecycleRegistry(this);
+
+    @Override
+    public LifecycleRegistry getLifecycle()
+    {
+        return registry;
+    }
 
     public interface InteractionListener{
         BaseNavigationManager getNavigationManager();
     }
 
-    private LibraryLeadSelectionEventsListener eventsListener;
     private NavigationManagerContentFlow frag_NavigationManager;
 
     private TextView tv_noContent;
     private RecyclerView recyclerView;
     private PlaylistRecyclerAdapter recyclerAdapter;
 
-    private PlaylistLoader playlistProviderDAO;
-    private List<Playlist> plList;
+    private List<Playlist.UserDefinedPlaylist> plList;
+
+    private PlaylistViewModel playlistViewModel;
 
     public ListPlaylistFragment() {
         // Required empty public constructor
@@ -53,13 +67,22 @@ public class ListPlaylistFragment extends Fragment implements PlaylistLoader.Med
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        playlistProviderDAO = new PlaylistLoader(getContext(),getLoaderManager());
-        playlistProviderDAO.setSpecification(new PlaylistSpecification());
-        playlistProviderDAO.requestTrackData();
+
+        /*Get the viewModel instance firstly*/
+        playlistViewModel = ViewModelProviders.of(this).get(PlaylistViewModel.class);
+        /* Now start observing the list if it changes in model */
+        playlistViewModel.getUserDefinedPlaylists().observe(this, new Observer<List<Playlist.UserDefinedPlaylist>>() {
+            @Override
+            public void onChanged(@Nullable List<Playlist.UserDefinedPlaylist> userDefinedPlaylists)
+            {
+                onListProvided(userDefinedPlaylists);
+            }
+        });
         recyclerAdapter = new PlaylistRecyclerAdapter(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),plList.get( (int)v.getTag() ).getName(),Toast.LENGTH_SHORT ).show();
+                Toast.makeText(getContext(),plList.get( (int)v.getTag() ).getPlaylistName(),Toast.LENGTH_SHORT ).show();
+                frag_NavigationManager.startListTracksFragment(null,null,null,plList.get( (int)v.getTag() ).getPlaylistName());
             }
         });
     }
@@ -73,6 +96,8 @@ public class ListPlaylistFragment extends Fragment implements PlaylistLoader.Med
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recyclerAdapter);
         tv_noContent = (TextView) rootView.findViewById(R.id.tv_noContent);
+        /* give the list for the first time to the recyclerview via this methods */
+        onListProvided(playlistViewModel.getUserDefinedPlaylists().getValue());
         return rootView;
     }
 
@@ -86,17 +111,17 @@ public class ListPlaylistFragment extends Fragment implements PlaylistLoader.Med
     @Override
     public void onStart() {
         super.onStart();
-        playlistProviderDAO.register(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        playlistProviderDAO.unRegister();
     }
 
-    @Override
-    public void onListCreated(List<Playlist> list) {
+
+    private void onListProvided(List<Playlist.UserDefinedPlaylist> list) {
+        if(tv_noContent==null || recyclerView==null)
+            return;
         if (list==null || list.size()==0){
             tv_noContent.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
@@ -106,9 +131,9 @@ public class ListPlaylistFragment extends Fragment implements PlaylistLoader.Med
             recyclerView.setVisibility(View.VISIBLE);
         }
         this.plList = list;
-        recyclerAdapter.updateFoldersList(list);
+        recyclerAdapter.updatePlayList_List(list);
     }
-
+    /*---------------- Recycler view class defined here for this fragment ------------------------*/
     private static class PlaylistRecyclerAdapter extends RecyclerView.Adapter<ListPlaylistFragment.PlaylistRecyclerAdapter.PlaylistHolder> {
 
         public static class PlaylistHolder extends RecyclerView.ViewHolder {
@@ -122,10 +147,10 @@ public class ListPlaylistFragment extends Fragment implements PlaylistLoader.Med
                 tv_playListTracksCount = (TextView) itemView.findViewById(R.id.tv_playlistTotalTracks);
             }
 
-            public void bind(Playlist playlist, int position) {
+            public void bind(Playlist.UserDefinedPlaylist playlist, int position) {
                 this.itemView.setTag(position); /* shoaib: to get clicked item position */
-                tv_playlistName.setText(playlist.getName());
-                tv_playListTracksCount.setText(String.valueOf(playlist.getNumTracks())+" Track(s)");
+                tv_playlistName.setText(playlist.getPlaylistName());
+                tv_playListTracksCount.setText(String.valueOf(playlist.getNumOfTracks())+" Track(s)");
                 /* shoaib: this onCickListener will be initialized and assigned by setItemViewOnClickListener */
                 this.itemView.setOnClickListener(this.mOnClickListener);
             }
@@ -135,13 +160,13 @@ public class ListPlaylistFragment extends Fragment implements PlaylistLoader.Med
             }
         }
 
-        private List<Playlist> adapterList;
+        private List<Playlist.UserDefinedPlaylist> adapterList;
 
         public PlaylistRecyclerAdapter(View.OnClickListener listener) {
             ListPlaylistFragment.PlaylistRecyclerAdapter.PlaylistHolder.setItemViewOnClickListener(listener);
         }
 
-        public void updateFoldersList(List<Playlist> list) {
+        public void updatePlayList_List(List<Playlist.UserDefinedPlaylist> list) {
             this.adapterList = list;
             notifyDataSetChanged();
         }

@@ -6,15 +6,19 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
+import com.emo.lkplayer.innerlayer.model.entities.DynamicQueue;
 import com.emo.lkplayer.innerlayer.model.entities.EQPreset;
+import com.emo.lkplayer.innerlayer.model.entities.Playlist;
 import com.emo.lkplayer.outerlayer.storage.daos.DBConstants;
+import com.emo.lkplayer.outerlayer.storage.daos.DynamicQueueModelDao;
+import com.emo.lkplayer.outerlayer.storage.daos.PlaylistModelDao;
 import com.emo.lkplayer.outerlayer.storage.daos.PresetModelDao;
 import com.emo.lkplayer.outerlayer.storage.daos.TypeConverter_IntegerArray;
 
 /**
  * Created by shoaibanwar on 7/30/17.
  */
-@Database(entities = {EQPreset.UserDefPreset.class}, version = 1)
+@Database(entities = {EQPreset.UserDefPreset.class, Playlist.UserDefinedPlaylist.class, DynamicQueue.class}, version = 1)
 @TypeConverters({TypeConverter_IntegerArray.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -32,4 +36,8 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public abstract PresetModelDao presetModelDao();
+
+    public abstract PlaylistModelDao playlistModelDao();
+
+    public abstract DynamicQueueModelDao dynamicQueueModelDao();
 }

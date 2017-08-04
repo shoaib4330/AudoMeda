@@ -45,7 +45,7 @@ public abstract class EQPreset {
         {
             int numBands = equalizer.getNumberOfBands();
             if (numBands>10)
-                throw new Exception("Above 10 band not supported");
+                throw new Exception("Above 10 bands not supported");
             for (short i = 0; i < numBands ; i++)
             {
                 equalizer.setBandLevel(i,(short)arr[i]);

@@ -1,6 +1,7 @@
 package com.emo.lkplayer.utilities;
 
 import com.emo.lkplayer.innerlayer.model.entities.EQPreset;
+import com.emo.lkplayer.innerlayer.model.entities.Playlist;
 
 import java.util.List;
 
@@ -39,5 +40,34 @@ public final class Utility {
             strArr[i] = list.get(i).getPresetName();
         }
         return strArr;
+    }
+
+    public static String[] PlaylistListToStringArray(List<Playlist.UserDefinedPlaylist> list)
+    {
+        String[] strArr = new String[list.size()];
+        for (int i = 0; i < list.size() ; i++)
+        {
+            strArr[i] = list.get(i).getPlaylistName();
+        }
+        return strArr;
+    }
+
+    public static String LongArrListToINQueryString(List<Long> idList)
+    {
+        String qString = "(";
+        for (int i = 0; i < idList.size(); i++)
+        {
+            String idString = String.valueOf(idList.get(i));
+            idString = idString.replace(".0", "");
+            if (i + 1 == idList.size())
+            {
+                idString = "'" + idString + "'";
+            } else
+            {
+                idString = "'" + idString + "',";
+            }
+            qString = qString + idString;
+        }
+        return qString = qString + ")";
     }
 }

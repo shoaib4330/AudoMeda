@@ -5,7 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
-import com.emo.lkplayer.innerlayer.CurrentSessionInteractor;
+import com.emo.lkplayer.innerlayer.interactors.CurrentSessionInteractor;
 import com.emo.lkplayer.innerlayer.model.entities.EQPreset;
 import com.h6ah4i.android.media.audiofx.IEqualizer;
 import com.h6ah4i.android.media.audiofx.IPreAmp;

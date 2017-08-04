@@ -28,30 +28,14 @@ public final class NavigationManagerContentFlow extends BaseNavigationManager {
     private NavFolderFragment folderFragment = null;
     private NavLibraryFragment libraryFragment = null;
 
-    /* Shoaib: Constructors here */
+    /* -----------------Shoaib: Constructors here----------------------- */
     public NavigationManagerContentFlow()
     {
-        //this.existingFragmentsList = new ArrayList<>();
     }
 
-
-    /* Shoaib: Methods here */
-    public boolean bringExistingFragment(String fragmentClassQualifiedName, boolean beAddedToBackStack)
-    {
-//        for (int i = 0; i < this.existingFragmentsList.size(); i++) {
-//            String name = this.existingFragmentsList.get(i).getClass().toString();
-//            if (this.existingFragmentsList.get(i).getClass().toString().equals(fragmentClassQualifiedName)) {
-//                open(this.existingFragmentsList.get(i), false,beAddedToBackStack);
-//                return true;
-//            }
-//        }
-        return false;
-    }
-
+    /* -----------------Shoaib: Methods here -----------------------------*/
     private void addToFragmentInstancesList(Fragment fragment)
     {
-        /* Shoaib: Added to list, so that this is not recreated again, we store its reference */
-        //this.existingFragmentsList.add(fragment);
     }
 
     private void addTransactionToBackStack(FragmentTransaction transaction, Fragment fragment)
@@ -134,31 +118,35 @@ public final class NavigationManagerContentFlow extends BaseNavigationManager {
         }
     }
 
-    public void startListTracksFragment(String viaFolderQuery, String viaAlbumQuery, String viaArtistQuery)
+    public void startListTracksFragment(String viaFolderQuery, String viaAlbumQuery, String viaArtistQuery, String playlistName)
     {
-        Fragment listTrackFragment = ListTrackFragment.newInstance(viaFolderQuery, viaAlbumQuery, viaArtistQuery, -1);
+        Fragment listTrackFragment = ListTrackFragment.newInstance(viaFolderQuery, viaAlbumQuery, viaArtistQuery, playlistName, -1);
         open(listTrackFragment, false, true);
     }
 
-    public void startListTracksFragment(String viaFolderQuery, String viaAlbumQuery, String viaArtistQuery, long genreID)
+    public void startListTracksFragment(String viaFolderQuery, String viaAlbumQuery, String viaArtistQuery, String playlistName, long genreID)
     {
-        Fragment listTrackFragment = ListTrackFragment.newInstance(viaFolderQuery, viaAlbumQuery, viaArtistQuery, genreID);
+        Fragment listTrackFragment = ListTrackFragment.newInstance(viaFolderQuery, viaAlbumQuery, viaArtistQuery, playlistName, genreID);
         open(listTrackFragment, false, true);
     }
 
     public void startListTracksFragment_WithAllTracks()
     {
-        Fragment listTrackFragment = ListTrackFragment.newInstanceWithAllTracks();
+        Fragment listTrackFragment = ListTrackFragment.newInstance(ListTrackFragment.ListingMode.MODE_ALL,null);
         open(listTrackFragment, false, true);
     }
 
     public void startListTracksFragment_WithAllRecentTracks()
     {
-        Fragment listTrackFragment = ListTrackFragment.newInstanceWithAllRecents();
+        Fragment listTrackFragment = ListTrackFragment.newInstance(ListTrackFragment.ListingMode.MODE_ALLRECENT,null);
         open(listTrackFragment, false, true);
     }
 
-
+    public void startListTracksFragment_WithDQ()
+    {
+        Fragment listTrackFragment = ListTrackFragment.newInstance(ListTrackFragment.ListingMode.MODE_DQ,null);
+        open(listTrackFragment, false, true);
+    }
 
     @Override
     protected void openAsRoot(Fragment fragment)

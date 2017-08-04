@@ -74,7 +74,7 @@ public class ListGenreFragment extends Fragment implements GenreLoader.MediaProv
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),genreList.get( (int)v.getTag() ).getGenreName(),Toast.LENGTH_SHORT ).show();
-                frag_NavigationManager.startListTracksFragment(null,null,null,genreList.get((int)v.getTag()).getId());
+                frag_NavigationManager.startListTracksFragment(null,null,null,null,genreList.get((int)v.getTag()).getId());
             }
         });
     }

@@ -1,36 +1,46 @@
 package com.emo.lkplayer.innerlayer.repository;
 
-/**
- * Created by shoaibanwar on 7/15/17.
- */
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.content.Context;
+
+import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
+import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.BaseLoaderSpecification;
+import com.emo.lkplayer.outerlayer.storage.content_providers.TracksProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TrackRepository{
 
-//    //private WebService_Track webService_track;
-//    private TracksLoader tracksLoader;
-//
-//    public TrackRepository(Context context, LoaderManager loaderManager,int loaderID)
-//    {
-//        tracksLoader = new TracksLoader(context, loaderManager,loaderID,loaderID+loaderID);
-//    }
-//
-//    public LiveData<List<AudioTrack>> Query(iLoaderSpecification[] specifications)
-//    {
-//        tracksLoader.setSpecs(specifications);
-//        return tracksLoader.requestTrackData();
-//    }
-//
-//    public void deleteTrack(AudioTrack track, Context context)
-//    {
-//        iLoaderSpecification specification;
-//        ContentResolver contentResolver = context.getContentResolver();
-//        if (track.getTrackType().equals(AudioTrack.TRACK_TYPE_AUDIO))
-//            specification = new AudioTracksSpecification.AudioTrackDeletionSpecification(track.getTrackID());
-//        else
-//            specification = new VideoTracksSpecification.VideoTrackDeletionSpecification(track.getTrackID());
-//        contentResolver.delete(specification.getUriForLoader(), specification.getSelection(), specification.getSelectionArgs());
-//    }
-//
+    private Context context;
+    private TracksProvider tracksProvider;
+    private MutableLiveData <List<AudioTrack>> liveAudioTracksList = new MutableLiveData<>();
+
+    public TrackRepository(Context context)
+    {
+        this.context = context.getApplicationContext();
+        this.tracksProvider = new TracksProvider(context, new TracksProvider.ProviderCallBacks() {
+            @Override
+            public void onQueryComplete(List<AudioTrack> trackList)
+            {
+                if (trackList==null)
+                    trackList = new ArrayList<>();
+                liveAudioTracksList.setValue(trackList);
+            }
+        });
+    }
+
+    public LiveData<List<AudioTrack>> QueryTracks(BaseLoaderSpecification specification)
+    {
+        tracksProvider.Query(specification);
+        return liveAudioTracksList;
+    }
+
+    public void deleteTrack (BaseLoaderSpecification specification)
+    {
+        tracksProvider.remove(specification);
+    }
 //    public String getTrackArtUriByID(long albumID,Context context)
 //    {
 //        iLoaderSpecification mSpec;

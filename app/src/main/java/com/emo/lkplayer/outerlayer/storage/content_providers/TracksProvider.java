@@ -22,6 +22,8 @@ public class TracksProvider {
     }
 
     private static final int TOKEN_DEFAULT = 0;
+    private static final int TOKEN_DEFAULT_DELETE = 1;
+
     private Context context;
     private BaseLoaderSpecification specification;
     private AsyncQueryHandler asyncQueryHandler;
@@ -67,5 +69,15 @@ public class TracksProvider {
         if(this.asyncQueryHandler!=null)
             asyncQueryHandler.startQuery(TOKEN_DEFAULT,null,specification.getUriForLoader(),specification.getProjection(),
                     specification.getSelection(),specification.getSelectionArgs(),specification.getSortOrder());
+    }
+
+    public void remove (BaseLoaderSpecification specification)
+    {
+        this.specification = specification;
+        if (this.asyncQueryHandler!=null)
+        {
+            asyncQueryHandler.startDelete(TOKEN_DEFAULT_DELETE,null,specification.getUriForLoader(),
+                    specification.getSelection(),specification.getSelectionArgs());
+        }
     }
 }

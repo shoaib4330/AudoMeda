@@ -5,7 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
 
-import com.emo.lkplayer.innerlayer.CurrentSessionInteractor;
+import com.emo.lkplayer.innerlayer.interactors.CurrentSessionInteractor;
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
 
 import java.util.List;

@@ -148,7 +148,7 @@ public class EqualizerActivity extends AppCompatActivity implements BottomNaviga
         if (v.getId() == R.id.btn_preset)
         {
             final List<EQPreset> presetArr = equalizerViewModel.getAllEqPresets();
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(EqualizerActivity.this, R.layout.presets_listview_itemview, R.id.tv_presetName);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(EqualizerActivity.this, R.layout.itemview_icon_text, R.id.tv_itemView_icon_text);
             arrayAdapter.addAll(Utility.EQListToStringArray(presetArr));
 
             ListView listView = new ListView(EqualizerActivity.this);

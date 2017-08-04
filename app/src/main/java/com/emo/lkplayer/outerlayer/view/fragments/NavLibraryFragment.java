@@ -124,13 +124,11 @@ public class NavLibraryFragment extends Fragment implements View.OnClickListener
             return;
         }
         else if (leadID==R.id.leadItem_playlists){
-            //Toast.makeText(getContext(), "Playlist Clicked", Toast.LENGTH_SHORT).show();
-            iLoaderSpecification specification = new PlaylistSpecification();
-            eventsListener.onSelectionWithSpecificationProvision(specification,false);
+            eventsListener.onSelectionWithSpecificationProvision(null,false);
             return;
         }
         else if (leadID==R.id.leadItem_queue){
-
+            frag_NavigationManager.startListTracksFragment_WithDQ();
         }
         else if (leadID==R.id.leadItem_topRated){
 

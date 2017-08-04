@@ -4,8 +4,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.arch.lifecycle.LifecycleRegistry;
-import android.arch.lifecycle.LifecycleRegistryOwner;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.content.ContentUris;
@@ -26,7 +24,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.emo.lkplayer.R;
-import com.emo.lkplayer.innerlayer.CurrentSessionInteractor;
+import com.emo.lkplayer.innerlayer.interactors.CurrentSessionInteractor;
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
 import com.emo.lkplayer.outerlayer.view.NagizarActivity;
 import com.h6ah4i.android.media.IBasicMediaPlayer;
@@ -368,7 +366,7 @@ public class MediaControllerService extends Service implements MediaControllerIn
         this.currentTrackIndex = currentTrackIndex;
         sendServiceActionBroadCaset(Constants.ServiceSentActionConstants.ACTION_SERVICE_CHANGES_TRACK);
         if (tellModel)
-            this.currentSessionInteractor.updateCurrentProviderQueryPlusIndex(null,null,null,-1,currentTrackIndex);
+            this.currentSessionInteractor.updateCurrentProviderQueryPlusIndex(null,null,null,null,-1,currentTrackIndex);
     }
 
     /*-------------- Client interaction interface ------------------ */

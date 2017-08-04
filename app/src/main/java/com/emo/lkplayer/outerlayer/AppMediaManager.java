@@ -2,21 +2,15 @@ package com.emo.lkplayer.outerlayer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.media.audiofx.Equalizer;
 
-import com.emo.lkplayer.innerlayer.CurrentSessionInteractor;
+import com.emo.lkplayer.innerlayer.interactors.CurrentSessionInteractor;
 import com.emo.lkplayer.innerlayer.model.entities.EQPreset;
 import com.emo.lkplayer.outerlayer.androidservices.MediaControllerService;
 import com.h6ah4i.android.media.IBasicMediaPlayer;
 import com.h6ah4i.android.media.IMediaPlayerFactory;
 import com.h6ah4i.android.media.audiofx.IEqualizer;
 import com.h6ah4i.android.media.audiofx.IPreAmp;
-import com.h6ah4i.android.media.opensl.OpenSLMediaPlayerContext;
 import com.h6ah4i.android.media.opensl.OpenSLMediaPlayerFactory;
-
-import static com.h6ah4i.android.media.opensl.OpenSLMediaPlayerContext.OPTION_USE_EQUALIZER;
-import static com.h6ah4i.android.media.opensl.OpenSLMediaPlayerContext.OPTION_USE_HQ_EQUALIZER;
 
 /**
  * Created by shoaibanwar on 7/26/17.

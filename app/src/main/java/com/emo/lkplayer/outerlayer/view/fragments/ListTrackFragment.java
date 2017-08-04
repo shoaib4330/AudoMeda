@@ -9,49 +9,68 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emo.lkplayer.ConstantsHolder;
 import com.emo.lkplayer.R;
+import com.emo.lkplayer.innerlayer.interactors.Interactor_ModifyDQ;
+import com.emo.lkplayer.innerlayer.model.entities.Playlist;
+import com.emo.lkplayer.middlelayer.viewmodel.PlaylistViewModel;
+import com.emo.lkplayer.outerlayer.customviews.PlayListDialog;
 import com.emo.lkplayer.utilities.Utility;
 import com.emo.lkplayer.middlelayer.viewmodel.TrackListingViewModel;
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
 import com.emo.lkplayer.outerlayer.view.FragmentInteractionListener;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class ListTrackFragment extends Fragment implements LifecycleRegistryOwner {
 
+    public enum ListingMode {
+        MODE_FOLDER, MODE_ALL, MODE_ALBUMS, MODE_ARTISTS, MODE_GENRE, MODE_PLAYLIST, MODE_DQ, MODE_ALLRECENT;
+    }
+
     private LifecycleRegistry registry = new LifecycleRegistry(this);
 
     @Override
-    public LifecycleRegistry getLifecycle() {
+    public LifecycleRegistry getLifecycle()
+    {
         return registry;
     }
 
-    public static final int MY_LOADER_ID = ConstantsHolder.LOADER_ID_TRACKLISTING_FRAGMENT;
-
     public static final String ARG_VAL_OPEN_AS_ALL_RECENTS = "as_all_recents";
     public static final String ARG_VAL_OPEN_AS_ALL_TRACKS = "as_all_tracks";
+    public static final String ARG_VAL_OPEN_AS_DQ_TRACKS = "as_dq_tracks";
+
 
     private static final String ARG_FOLDER_NAME = "param1";
     private static final String ARG_ALBUM_NAME = "param2";
     private static final String ARG_ARTIST_NAME = "param3";
     private static final String ARG_GENRE_ID = "param4";
+    private static final String ARG_PLAYLSIT_NAME = "param5";
     private static final String ARG_AllTRACKS = "all_tracks";
     private static final String ARG_AllRECENTS = "all_recents";
+    private static final String ARG_DQTRACKS = "dq_tracks";
+
+    private static final String ARG_FRAG_OPEN_MODE = "mode_enum";
+    private static final String ARG_FRAG_PARAM_VAL = "val_according_to_mode";
 
     long genreID;
-    String folderName, albumName , artistName;
+    String folderName, albumName, artistName, playlistName;
 
     private FragmentInteractionListener interactionListener;
 
@@ -63,20 +82,43 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
 
     private List<AudioTrack> trackList;
     private TrackListingViewModel trackListingViewModel;
+    private PlaylistViewModel playlistViewModel;
+
+    Observer<List<AudioTrack>> observer = new Observer<List<AudioTrack>>() {
+        @Override
+        public void onChanged(@Nullable List<AudioTrack> audioTrackList)
+        {
+            trackList = audioTrackList;
+            trackRecylerAdapter.updateFoldersList(audioTrackList);
+        }
+    };
+
+    private ListingMode FRAG_MODE = null;
 
     public ListTrackFragment()
     {
         // Required empty public constructor
     }
 
-    public static ListTrackFragment newInstance(String folderName, String albumName, String artistName, long genreID)
+    public static ListTrackFragment newInstance(String folderName, String albumName, String artistName, String playlistName, long genreID)
     {
         ListTrackFragment fragment = new ListTrackFragment();
         Bundle args = new Bundle();
         args.putString(ARG_FOLDER_NAME, folderName);
         args.putString(ARG_ALBUM_NAME, albumName);
         args.putString(ARG_ARTIST_NAME, artistName);
+        args.putString(ARG_PLAYLSIT_NAME, playlistName);
         args.putLong(ARG_GENRE_ID, genreID);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static ListTrackFragment newInstance(ListingMode mode, String val)
+    {
+        ListTrackFragment fragment = new ListTrackFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_FRAG_OPEN_MODE, mode);
+        args.putString(ARG_FRAG_PARAM_VAL, val);
         fragment.setArguments(args);
         return fragment;
     }
@@ -100,67 +142,76 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
     }
 
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
         trackListingViewModel = ViewModelProviders.of(this).get(TrackListingViewModel.class);
+        playlistViewModel = ViewModelProviders.of(this).get(PlaylistViewModel.class);
 
-        if (getArguments() != null)
-        {
-            if (ARG_VAL_OPEN_AS_ALL_TRACKS.equals(getArguments().getString(ARG_AllTRACKS)))
+        /* If this call is not made, upon opening Playlist dialog by long click, playlists don't show up*/
+        playlistViewModel.getUserDefinedPlaylists().observe(this, new Observer<List<Playlist.UserDefinedPlaylist>>() {
+            @Override
+            public void onChanged(@Nullable List<Playlist.UserDefinedPlaylist> userDefinedPlaylists)
             {
-                trackListingViewModel.getAudioTracks(TrackListingViewModel.AllTracksSpecification).observe(this, new Observer<List<AudioTrack>>() {
-                    @Override
-                    public void onChanged(@Nullable List<AudioTrack> tracks)
-                    {
-                        trackList = tracks;
-                        trackRecylerAdapter.updateFoldersList(tracks);
-                    }
-                });
-            }
-            else if (ARG_VAL_OPEN_AS_ALL_RECENTS.equals(getArguments().getString(ARG_AllRECENTS)))
-            {
-                trackListingViewModel.getAudioTracks(TrackListingViewModel.RecentTracksSpecification).observe(this, new Observer<List<AudioTrack>>() {
-                    @Override
-                    public void onChanged(@Nullable List<AudioTrack> tracks)
-                    {
-                        trackList = tracks;
-                        trackRecylerAdapter.updateFoldersList(tracks);
-                    }
-                });
-            }
-            else{
-                genreID     = getArguments().getLong(ARG_GENRE_ID, -1);
-                albumName   = getArguments().getString(ARG_ALBUM_NAME);
-                folderName  = getArguments().getString(ARG_FOLDER_NAME);
-                artistName  = getArguments().getString(ARG_ARTIST_NAME);
 
-                trackListingViewModel.getAudioTracks(folderName,albumName,artistName,genreID).observe(this, new Observer<List<AudioTrack>>() {
-                    @Override
-                    public void onChanged(@Nullable List<AudioTrack> tracks)
-                    {
-                        trackList = tracks;
-                        trackRecylerAdapter.updateFoldersList(tracks);
-                    }
-                });
             }
-
-        }
-
+        });
+        /* Get the args passed to this frag and request made for trackslist */
+        makeTrackListCall();
+        /* Setting up recycler-view's adapter */
         trackRecylerAdapter = new TrackRecylerAdapter(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                trackListingViewModel.updateCurrentSpecification(folderName,albumName,artistName,genreID,(int) v.getTag());
-                Toast.makeText(getContext(), "Track CLicked " + (int) v.getTag(), Toast.LENGTH_SHORT).show();
-                Log.d("--ListTrackFragment: ", "List Set with size= " + trackList.size() + " and index= " + v.getTag());
+                if (FRAG_MODE == ListingMode.MODE_DQ)
+                    trackListingViewModel.updateCurrentSpecification(null, null, null, Interactor_ModifyDQ.DQ_AS_PLAYLIST, -1, (int) v.getTag());
+                else
+                    trackListingViewModel.updateCurrentSpecification(folderName, albumName, artistName, playlistName, genreID, (int) v.getTag());
                 navigationManager.startPlayBackFragment((int) v.getTag(), trackList);
             }
+        }, new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v)
+            {
+                buildAlerDialog((int) v.getTag());
+                return true;
+            }
         });
+    }
+
+    private void makeTrackListCall()
+    {
+
+        if (getArguments() != null)
+        {
+            if (getArguments().getSerializable(ARG_FRAG_OPEN_MODE) != null)
+            {
+                ListingMode mode = (ListingMode) getArguments().getSerializable(ARG_FRAG_OPEN_MODE);
+                String val = getArguments().getString(ARG_FRAG_PARAM_VAL);
+                /* Set the fragment mode, in which it is open */
+                FRAG_MODE = mode;
+                if (mode == ListingMode.MODE_ALL)
+                    trackListingViewModel.getAudioTracks(TrackListingViewModel.AllTracksSpecification).observe(this, observer);
+                else if (mode == ListingMode.MODE_ALLRECENT)
+                    trackListingViewModel.getAudioTracks(TrackListingViewModel.RecentTracksSpecification).observe(this, observer);
+                else if (mode == ListingMode.MODE_DQ)
+                    playlistName = Interactor_ModifyDQ.DQ_AS_PLAYLIST;
+                else if (mode == ListingMode.MODE_PLAYLIST)
+                    playlistName = val;
+                else if (mode == ListingMode.MODE_ALBUMS)
+                    albumName = val;
+                else if (mode == ListingMode.MODE_ARTISTS)
+                    artistName = val;
+                else if (mode == ListingMode.MODE_GENRE)
+                    genreID = Long.valueOf(val);
+                else if (mode == ListingMode.MODE_FOLDER)
+                    folderName = val;
+                trackListingViewModel.getAudioTracks(folderName, albumName, artistName, playlistName, genreID).observe(this, observer);
+            }
+        }
+
     }
 
     @Override
@@ -189,12 +240,93 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
         }
     }
 
+    /*----------------- private declared methods for this fragment ------------------*/
+    private void buildAlerDialog(final int trackPos)
+    {
+        final AlertDialog alertDialog;
+        View dialogView = View.inflate(getContext(), R.layout.dialog_track_options, null);
+        ImageButton btn_enqueue = (ImageButton) dialogView.findViewById(R.id.btn_dialog_enqueue);
+        ImageButton btn_play = (ImageButton) dialogView.findViewById(R.id.btn_dialog_play);
+        ImageButton btn_addToPlaylist = (ImageButton) dialogView.findViewById(R.id.btn_dialog_addToPlayList);
+        ImageButton btn_delete = (ImageButton) dialogView.findViewById(R.id.btn_dialog_delete);
+        ImageButton btn_info = (ImageButton) dialogView.findViewById(R.id.btn_dialog_info);
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+        alertDialog = builder.create();
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                int value = trackPos;
+                if (v.getId() == R.id.btn_dialog_enqueue)
+                {
+                    /* Add the track to the Dynamic Queue */
+                    trackListingViewModel.enqueueTrack(trackList.get(trackPos));
+                } else if (v.getId() == R.id.btn_dialog_play)
+                {
+
+                } else if (v.getId() == R.id.btn_dialog_addToPlayList)
+                {
+                    final List<Playlist.UserDefinedPlaylist> plist = playlistViewModel.getUserDefinedPlaylists().getValue();
+                    PlayListDialog dialog = new PlayListDialog(getContext(), playlistViewModel.getUserDefinedPlaylists().getValue());
+                    dialog.initPlusBuildDialog(new PlayListDialog.DialogInteractionEventsListener() {
+                        @Override
+                        public void onItemClickListener(AdapterView<?> parent, View view, int position, long id, AlertDialog playListDialog)
+                        {
+                            if (plist == null)
+                            {
+                                Toast.makeText(getContext(), "NULL", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            playListDialog.dismiss();
+                            String playlistName = plist.get(position).getPlaylistName();
+                            AudioTrack audioTrack = trackList.get(trackPos);
+                            playlistViewModel.addAudioTrackToPlaylist(audioTrack, playlistName);
+                        }
+
+                        @Override
+                        public void onNewPlayListCreated(String playListName)
+                        {
+                            if (playListName == null || playListName.isEmpty())
+                                return;
+                            playlistViewModel.addNewPlayList(playListName);
+                        }
+                    });
+                } else if (v.getId() == R.id.btn_dialog_delete)
+                {
+                    trackListingViewModel.deleteTrackFromDevice(trackList.get(trackPos));
+                    trackListingViewModel.getAudioTracks(folderName,albumName,artistName,playlistName,genreID).observe(ListTrackFragment.this,observer);
+
+                } else if (v.getId() == R.id.btn_dialog_info)
+                {
+
+                } else if (v.getId() == R.id.btn_dialog_ringtone)
+                {
+
+                }
+                alertDialog.dismiss();
+            }
+        };
+        btn_enqueue.setOnClickListener(onClickListener);
+        btn_addToPlaylist.setOnClickListener(onClickListener);
+        btn_delete.setOnClickListener(onClickListener);
+        btn_info.setOnClickListener(onClickListener);
+        btn_play.setOnClickListener(onClickListener);
+
+        alertDialog.show();
+        alertDialog.getWindow().setLayout(getActivity().getWindow().getDecorView().getWidth(), 500);
+    }
+
     private static class TrackRecylerAdapter extends RecyclerView.Adapter<ListTrackFragment.TrackRecylerAdapter.TrackViewHolder> {
 
         public static class TrackViewHolder extends RecyclerView.ViewHolder {
             private TextView tv_trackTitle, tv_Duration, tv_ArtistName;
 
             private static View.OnClickListener mOnClickListener;
+            private static View.OnLongClickListener mLongClickListener;
 
             public TrackViewHolder(View itemView)
             {
@@ -212,19 +344,21 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
                 tv_Duration.setText(Utility.millisToTrackTimeFormat(track.getTrackDuration()));
                 /* shoaib: this onCickListener will be initialized and assigned by setItemViewOnClickListener */
                 this.itemView.setOnClickListener(this.mOnClickListener);
+                this.itemView.setOnLongClickListener(mLongClickListener);
             }
 
-            public static void setItemViewOnClickListener(View.OnClickListener listener)
+            public static void setItemViewOnClickListener(View.OnClickListener listener, View.OnLongClickListener longClickListener)
             {
                 mOnClickListener = listener;
+                mLongClickListener = longClickListener;
             }
         }
 
         private List<AudioTrack> adapterTrackList;
 
-        public TrackRecylerAdapter(View.OnClickListener listener)
+        public TrackRecylerAdapter(View.OnClickListener listener, View.OnLongClickListener longClickListener)
         {
-            TrackRecylerAdapter.TrackViewHolder.setItemViewOnClickListener(listener);
+            TrackRecylerAdapter.TrackViewHolder.setItemViewOnClickListener(listener, longClickListener);
         }
 
         public void updateFoldersList(List<AudioTrack> tracksList)

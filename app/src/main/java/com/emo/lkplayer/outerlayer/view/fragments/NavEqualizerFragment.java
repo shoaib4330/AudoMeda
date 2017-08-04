@@ -5,7 +5,6 @@ import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.LifecycleRegistryOwner;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.media.audiofx.Equalizer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 
 import com.emo.lkplayer.R;
-import com.emo.lkplayer.innerlayer.CurrentSessionInteractor;
 import com.emo.lkplayer.innerlayer.model.entities.EQPreset;
 import com.emo.lkplayer.middlelayer.viewmodel.EqualizerViewModel;
 import com.emo.lkplayer.outerlayer.customviews.VerticalSliderWrapped;

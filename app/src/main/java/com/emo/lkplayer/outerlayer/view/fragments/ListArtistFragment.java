@@ -60,7 +60,7 @@ public class ListArtistFragment extends Fragment implements ArtistsLoader.MediaP
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),(artistList.get( (int)v.getTag() )).getArtistName(),Toast.LENGTH_SHORT).show();
-                frag_NavigationManager.startListTracksFragment(null,null,artistList.get((int)v.getTag()).getArtistName());
+                frag_NavigationManager.startListTracksFragment(null,null,artistList.get((int)v.getTag()).getArtistName(),null);
             }
         });
 

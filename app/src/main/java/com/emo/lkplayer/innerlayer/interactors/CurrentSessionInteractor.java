@@ -1,4 +1,4 @@
-package com.emo.lkplayer.innerlayer;
+package com.emo.lkplayer.innerlayer.interactors;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -33,9 +33,9 @@ public class CurrentSessionInteractor {
         currentSessionRepo = new CurrentSessionRepo(context);
     }
 
-    public void updateCurrentProviderQueryPlusIndex(String folderName, String albumName, String artistName, long genreID, int newIndex)
+    public void updateCurrentProviderQueryPlusIndex(String folderName, String albumName, String artistName,String playlistName ,long genreID, int newIndex)
     {
-        currentSessionRepo.updateCurrentProviderQueryPlusIndex(folderName, albumName, artistName, genreID, newIndex);
+        currentSessionRepo.updateCurrentProviderQueryPlusIndex(folderName, albumName, artistName, playlistName ,genreID, newIndex);
     }
 
     public void updateCurrentProviderQueryPlusIndexAllTracks(int newIndex)

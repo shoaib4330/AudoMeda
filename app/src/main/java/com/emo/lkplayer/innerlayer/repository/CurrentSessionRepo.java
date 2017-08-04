@@ -4,7 +4,9 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 
+import com.emo.lkplayer.innerlayer.interactors.Interactor_GetPlaylistDetail;
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
+import com.emo.lkplayer.innerlayer.model.entities.Playlist;
 import com.emo.lkplayer.outerlayer.storage.SessionStorage;
 import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.AudioTracksSpecification;
 import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.BaseLoaderSpecification;
@@ -76,7 +78,7 @@ public class CurrentSessionRepo {
         return currentLiveTrackIndex;
     }
 
-    public void updateCurrentProviderQueryPlusIndex(String folderName, String albumName, String artistName, long genreID, int newIndex)
+    public void updateCurrentProviderQueryPlusIndex(String folderName, String albumName, String artistName,String playlistName ,long genreID, int newIndex)
     {
 
         BaseLoaderSpecification specification = null;
@@ -86,6 +88,11 @@ public class CurrentSessionRepo {
             specification = new AudioTracksSpecification.AlbumAudioTracksSpecification(albumName);
         else if (artistName != null)
             specification = new AudioTracksSpecification.AudioTracksByArtistSpecification(artistName);
+        else if (playlistName !=null)
+        {
+            Playlist.UserDefinedPlaylist playlist = new Interactor_GetPlaylistDetail(mContext).detailsForPlaylist(playlistName);
+            specification = new AudioTracksSpecification.AudioTracksByPlaylistSpecification(playlist);
+        }
         else if (genreID != -1)
             specification = new AudioTracksSpecification.AudioTracksByGenreSpecification(genreID);
         else

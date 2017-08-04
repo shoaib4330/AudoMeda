@@ -63,7 +63,7 @@ public class ListAlbumsFragment extends Fragment implements AlbumsListingViewMod
             public void onClick(View v)
             {
                 Toast.makeText(getContext(), "Folder number: " + (int) v.getTag(), Toast.LENGTH_SHORT).show();
-                frag_NavigationManager.startListTracksFragment(null, (albumList.get((int) v.getTag())).getAlbumTitle(), null);
+                frag_NavigationManager.startListTracksFragment(null, (albumList.get((int) v.getTag())).getAlbumTitle(), null,null);
             }
         });
     }

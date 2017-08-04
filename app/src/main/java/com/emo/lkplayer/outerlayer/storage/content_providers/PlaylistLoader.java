@@ -34,9 +34,7 @@ public final class PlaylistLoader implements LoaderManager.LoaderCallbacks<Curso
 
     private Context context;
     private LoaderManager loaderManager;
-
     private List<Playlist> playlistList;
-
     private iLoaderSpecification specification;
 
     /* shoaib: Old cursor, only kept to be given back to loader when we receive new cursor */

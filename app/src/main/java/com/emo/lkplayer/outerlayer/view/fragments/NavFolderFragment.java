@@ -75,7 +75,7 @@ public class NavFolderFragment extends Fragment implements FoldersLoader.MediaPr
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Folder number: " + (int) v.getTag(), Toast.LENGTH_SHORT).show();
-                frag_NavigationManager.startListTracksFragment((folderList.get((int)v.getTag())).getPath(),null,null);
+                frag_NavigationManager.startListTracksFragment((folderList.get((int)v.getTag())).getPath(),null,null,null);
             }
         });
     }

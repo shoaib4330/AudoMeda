@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.provider.MediaStore;
 
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
+import com.emo.lkplayer.innerlayer.model.entities.Playlist;
+import com.emo.lkplayer.utilities.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +66,8 @@ public class AudioTracksSpecification extends BaseLoaderSpecification<AudioTrack
     public List<AudioTrack> returnMappedList(Cursor cursor)
     {
         List<AudioTrack> trackList = new ArrayList<>();
+        if (cursor == null)
+            return trackList;
         if (cursor.moveToFirst())
         {
             AudioTrack newAudioTrack;
@@ -328,6 +332,35 @@ public class AudioTracksSpecification extends BaseLoaderSpecification<AudioTrack
         }
     }
 
+    public static final class AudioTracksByPlaylistSpecification extends AudioTracksSpecification {
+
+        private String[] selArgArr = new String[1];
+
+        public AudioTracksByPlaylistSpecification(Playlist.UserDefinedPlaylist playlist)
+        {
+            ArrayList<Long> idList = playlist.getTracksIds();
+            selArgArr[0] = Utility.LongArrListToINQueryString(idList);
+        }
+
+        @Override
+        public String getSelection()
+        {
+            return MediaStore.Audio.Media._ID + " IN "+selArgArr[0];
+        }
+
+        @Override
+        public String[] getSelectionArgs()
+        {
+            return null;
+        }
+
+        @Override
+        public String getSortOrder()
+        {
+            String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
+            return sortOrder;
+        }
+    }
 
     /*---------------- SPECIFICATIONS FOR DELETION AND ETCETRA --------------------- */
     public static final class AudioTrackDeletionSpecification extends AudioTracksSpecification {
@@ -337,6 +370,13 @@ public class AudioTracksSpecification extends BaseLoaderSpecification<AudioTrack
         public AudioTrackDeletionSpecification(long trackID)
         {
             this.trackID = trackID;
+        }
+
+        @Override
+        public String[] getProjection()
+        {
+            String[] projection = new String[]{MediaStore.Audio.Media._ID};
+            return projection;
         }
 
         @Override

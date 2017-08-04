@@ -8,12 +8,13 @@
     android:padding="@dimen/basic_allSides_margin">
 
     <ImageView
+        android:id="@+id/imgV_itemView_icon_text"
         android:layout_width="20dp"
         android:layout_height="20dp"
         app:srcCompat="@drawable/equalizer"/>
 
     <TextView
-        android:id="@+id/tv_presetName"
+        android:id="@+id/tv_itemView_icon_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/basic_extensive_margin"
