@@ -23,15 +23,6 @@ public final class AudioTrack implements iPlayable {
     private long trackDuration;
     private long containingAlbumID;
 
-//    public String getTrackArtUri()
-//    {
-//        return trackArtUri;
-//    }
-//
-//    public void setTrackArtUri(String trackArtUri)
-//    {
-//        this.trackArtUri = trackArtUri;
-//    }
 
     public String getTrackType()
     {
@@ -102,28 +93,6 @@ public final class AudioTrack implements iPlayable {
     {
         this.trackDuration = trackDuration;
     }
-
-
-//    @Override
-//    public boolean equals(Object object)
-//    {
-//        AudioTrack audioTrack = (AudioTrack) object;
-//        if (this.trackID == audioTrack.trackID && this.trackDuration == audioTrack.trackDuration
-//                && this.containingAlbumID == audioTrack.containingAlbumID)
-//        {
-//            if (this.trackTitle != null && audioTrack.trackTitle!= null)
-//            {
-//
-//            }
-//            if (this.trackTitle == null && audioTrack.trackTitle == null)
-//            {
-//
-//            }
-//            if ()
-//
-//        }
-//        return false;
-//    }
 
     /* ------ playable interface methods ------- */
     @Override

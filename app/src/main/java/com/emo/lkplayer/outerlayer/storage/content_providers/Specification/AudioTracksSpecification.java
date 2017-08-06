@@ -17,6 +17,7 @@ import java.util.List;
 
 public class AudioTracksSpecification extends BaseLoaderSpecification<AudioTrack> {
 
+    public static final Uri AUDIO_CONTENT_URI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
     public AudioTracksSpecification()
     {
@@ -26,7 +27,7 @@ public class AudioTracksSpecification extends BaseLoaderSpecification<AudioTrack
     @Override
     public Uri getUriForLoader()
     {
-        return MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        return AUDIO_CONTENT_URI;
     }
 
     @Override

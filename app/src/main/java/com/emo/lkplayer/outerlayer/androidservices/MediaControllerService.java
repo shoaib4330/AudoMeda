@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.content.ContentUris;
 import android.content.Intent;
@@ -190,6 +191,12 @@ public class MediaControllerService extends Service implements MediaControllerIn
                     /* when list is changed, we call playOnly(int newPos), since its implied
                     that index would have changed...
                      */
+                    /*--fix---*/
+//                    if (live_currentTrackIndex.getValue() >= audioTrackList.size())
+//                    {
+//                        ((MutableLiveData)live_currentTrackIndex).setValue(audioTrackList.size()-1);
+//                        return;
+//                    }
                     playOnly(live_currentTrackIndex.getValue());
                 }
             });
@@ -440,7 +447,6 @@ public class MediaControllerService extends Service implements MediaControllerIn
                 return;
             throw new IllegalStateException("PlaybackService play(int pos) called while data (trackList) is not set");
         }
-
         changeCurrentTrackPlayedIndex(pos,false);
         stop();
         play();

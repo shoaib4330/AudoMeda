@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/basic_allSides_padding"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:text="Sleep after"/>
+
+    <EditText
+        android:id="@+id/editText_sleepDialog_minutes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="(Enter minutes e.g 10)"/>
+
+    <Button
+        android:id="@+id/btn_sleepDialog_set"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="set"/>
+
+    <Button
+        android:id="@+id/btn_sleepDialog_offtimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Disable"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>

@@ -28,6 +28,7 @@ import com.emo.lkplayer.innerlayer.interactors.Interactor_ModifyDQ;
 import com.emo.lkplayer.innerlayer.model.entities.Playlist;
 import com.emo.lkplayer.middlelayer.viewmodel.PlaylistViewModel;
 import com.emo.lkplayer.outerlayer.customviews.PlayListDialog;
+import com.emo.lkplayer.outerlayer.customviews.TrackInfoDialog;
 import com.emo.lkplayer.utilities.Utility;
 import com.emo.lkplayer.middlelayer.viewmodel.TrackListingViewModel;
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
@@ -165,10 +166,7 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
             @Override
             public void onClick(View v)
             {
-                if (FRAG_MODE == ListingMode.MODE_DQ)
-                    trackListingViewModel.updateCurrentSpecification(null, null, null, Interactor_ModifyDQ.DQ_AS_PLAYLIST, -1, (int) v.getTag());
-                else
-                    trackListingViewModel.updateCurrentSpecification(folderName, albumName, artistName, playlistName, genreID, (int) v.getTag());
+                trackListingViewModel.updateCurrentSpecification(folderName, albumName, artistName, playlistName, genreID, (int) v.getTag());
                 navigationManager.startPlayBackFragment((int) v.getTag(), trackList);
             }
         }, new View.OnLongClickListener() {
@@ -208,7 +206,8 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
                     genreID = Long.valueOf(val);
                 else if (mode == ListingMode.MODE_FOLDER)
                     folderName = val;
-                trackListingViewModel.getAudioTracks(folderName, albumName, artistName, playlistName, genreID).observe(this, observer);
+                if (trackListingViewModel.getAudioTracks(folderName, albumName, artistName, playlistName, genreID)!=null)
+                    trackListingViewModel.getAudioTracks(folderName, albumName, artistName, playlistName, genreID).observe(this, observer);
             }
         }
 
@@ -250,7 +249,7 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
         ImageButton btn_addToPlaylist = (ImageButton) dialogView.findViewById(R.id.btn_dialog_addToPlayList);
         ImageButton btn_delete = (ImageButton) dialogView.findViewById(R.id.btn_dialog_delete);
         ImageButton btn_info = (ImageButton) dialogView.findViewById(R.id.btn_dialog_info);
-
+        ImageButton btn_ringtone = (ImageButton) dialogView.findViewById(R.id.btn_dialog_ringtone);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(dialogView);
@@ -267,8 +266,9 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
                     trackListingViewModel.enqueueTrack(trackList.get(trackPos));
                 } else if (v.getId() == R.id.btn_dialog_play)
                 {
-
-                } else if (v.getId() == R.id.btn_dialog_addToPlayList)
+                    trackListingViewModel.updateCurrentSpecification(folderName, albumName, artistName, playlistName, genreID, trackPos);
+                }
+                else if (v.getId() == R.id.btn_dialog_addToPlayList)
                 {
                     final List<Playlist.UserDefinedPlaylist> plist = playlistViewModel.getUserDefinedPlaylists().getValue();
                     PlayListDialog dialog = new PlayListDialog(getContext(), playlistViewModel.getUserDefinedPlaylists().getValue());
@@ -295,17 +295,19 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
                             playlistViewModel.addNewPlayList(playListName);
                         }
                     });
-                } else if (v.getId() == R.id.btn_dialog_delete)
+                }
+                else if (v.getId() == R.id.btn_dialog_delete)
                 {
                     trackListingViewModel.deleteTrackFromDevice(trackList.get(trackPos));
-                    trackListingViewModel.getAudioTracks(folderName,albumName,artistName,playlistName,genreID).observe(ListTrackFragment.this,observer);
+                    trackListingViewModel.getAudioTracks(folderName, albumName, artistName, playlistName, genreID).observe(ListTrackFragment.this, observer);
 
                 } else if (v.getId() == R.id.btn_dialog_info)
                 {
-
+                    TrackInfoDialog trackInfoDialog = new TrackInfoDialog(getContext(),trackList.get(trackPos));
+                    trackInfoDialog.show();
                 } else if (v.getId() == R.id.btn_dialog_ringtone)
                 {
-
+                    trackListingViewModel.setRingtone(trackList.get(trackPos));
                 }
                 alertDialog.dismiss();
             }
@@ -315,6 +317,7 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
         btn_delete.setOnClickListener(onClickListener);
         btn_info.setOnClickListener(onClickListener);
         btn_play.setOnClickListener(onClickListener);
+        btn_ringtone.setOnClickListener(onClickListener);
 
         alertDialog.show();
         alertDialog.getWindow().setLayout(getActivity().getWindow().getDecorView().getWidth(), 500);

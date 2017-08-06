@@ -6,41 +6,38 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
 
+import com.emo.lkplayer.innerlayer.model.entities.Album;
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
 import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.BaseLoaderSpecification;
 
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 7/24/17.
- */
-
-public class TracksProvider {
+public class Provider_Album {
 
     public interface ProviderCallBacks{
-        void onQueryComplete(List<AudioTrack> trackList);
+        void onQueryComplete(List<Album> albumList);
     }
 
-    private static final int TOKEN_DEFAULT = 0;
-    private static final int TOKEN_DEFAULT_DELETE = 1;
+    private static final int TOKEN_DEFAULT = 111;
+    private static final int TOKEN_DEFAULT_DELETE = 1111;
 
     private Context context;
     private BaseLoaderSpecification specification;
     private AsyncQueryHandler asyncQueryHandler;
-    private ProviderCallBacks callBacksListener;
+    private Provider_Album.ProviderCallBacks callBacksListener;
     Handler handler = new Handler();
 
-    public TracksProvider(Context context, final ProviderCallBacks callBacksListener)
+    public Provider_Album(Context context, final Provider_Album.ProviderCallBacks callBacksListener)
     {
         this.context = context;
         this.callBacksListener = callBacksListener;
-        this.asyncQueryHandler = new AsyncQueryHandler(TracksProvider.this.context.getContentResolver()) {
+        this.asyncQueryHandler = new AsyncQueryHandler(Provider_Album.this.context.getContentResolver()) {
             @Override
             protected void onQueryComplete(int token, Object cookie, Cursor cursor)
             {
-                List<AudioTrack> list = specification.returnMappedList(cursor);
+                List<Album> list = specification.returnMappedList(cursor);
                 if (callBacksListener!=null)
-                    TracksProvider.this.callBacksListener.onQueryComplete(list);
+                    Provider_Album.this.callBacksListener.onQueryComplete(list);
             }
 
             @Override

@@ -13,18 +13,11 @@ import java.util.List;
  * Created by shoaibanwar on 6/27/17.
  */
 
-public final class AudioAlbumsSpecification extends BaseLoaderSpecification<Album> {
-
-    private long albumID = -1;
+public class AudioAlbumsSpecification extends BaseLoaderSpecification<Album> {
 
     public AudioAlbumsSpecification()
     {
 
-    }
-
-    public AudioAlbumsSpecification(long id)
-    {
-        this.albumID = id;
     }
 
     @Override
@@ -47,21 +40,12 @@ public final class AudioAlbumsSpecification extends BaseLoaderSpecification<Albu
     @Override
     public String getSelection()
     {
-        if (this.albumID != -1)
-        {
-            String selection = MediaStore.Audio.Albums._ID + " = ?";
-            return selection;
-        }
         return null;
     }
 
     @Override
     public String[] getSelectionArgs()
     {
-        if (this.albumID != -1)
-        {
-            return new String[]{String.valueOf(this.albumID)};
-        }
         return null;
     }
 
@@ -98,6 +82,29 @@ public final class AudioAlbumsSpecification extends BaseLoaderSpecification<Albu
             while (cursor.moveToNext());
         }
         return albumList;
+    }
+
+    public static final class AudioAlbumByIdSpecification extends AudioAlbumsSpecification {
+
+        private long albumID = -1;
+
+        public AudioAlbumByIdSpecification(long albumID)
+        {
+            this.albumID = albumID;
+        }
+
+        @Override
+        public String getSelection()
+        {
+            String selection = MediaStore.Audio.Albums._ID + " = ?";
+            return selection;
+        }
+
+        @Override
+        public String[] getSelectionArgs()
+        {
+            return new String[]{String.valueOf(this.albumID)};
+        }
     }
 
     public static final class VideoAlbumSpecification extends BaseLoaderSpecification<Album> {

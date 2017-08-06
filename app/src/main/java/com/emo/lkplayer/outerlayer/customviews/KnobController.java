@@ -62,14 +62,6 @@ public class KnobController extends RelativeLayout {
         this.rightBottom.setVisibility(VISIBLE);
     }
 
-    public void setMinLevel(int minPercentage){
-        this.rotatingKnobController.setMinPercent(minPercentage);
-    }
-
-    public void setMaxLevel(int maxPercentage){
-        this.rotatingKnobController.setMaxPercent(maxPercentage);
-    }
-
     public void setMinMaxLevel(int minPercentage,int maxPercentage){
         this.rotatingKnobController.setMinPercent(minPercentage);
         this.rotatingKnobController.setMaxPercent(maxPercentage);

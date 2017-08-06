@@ -17,10 +17,6 @@ import com.emo.lkplayer.utilities.Utility;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 8/2/17.
- */
-
 public class PlayListDialog implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     public interface DialogInteractionEventsListener{

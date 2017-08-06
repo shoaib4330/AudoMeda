@@ -2,6 +2,7 @@ package com.emo.lkplayer.innerlayer.repository;
 
 import com.emo.lkplayer.outerlayer.AppMediaManager;
 import com.h6ah4i.android.media.IBasicMediaPlayer;
+import com.h6ah4i.android.media.audiofx.IBassBoost;
 import com.h6ah4i.android.media.audiofx.IEqualizer;
 import com.h6ah4i.android.media.audiofx.IPreAmp;
 
@@ -26,4 +27,8 @@ public class MediaComponentsRepo {
         return AppMediaManager.getInstance().getPreAmp();
     }
 
+    public IBassBoost getBassBoost ()
+    {
+        return AppMediaManager.getInstance().getiBassBoost();
+    }
 }

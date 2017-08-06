@@ -14,7 +14,7 @@
         android:id="@+id/linlay_backwhole"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="#333444"
+        android:background="@color/colorPrimaryDark"
         android:orientation="vertical"
         android:padding="10dp"
         android:weightSum="1">

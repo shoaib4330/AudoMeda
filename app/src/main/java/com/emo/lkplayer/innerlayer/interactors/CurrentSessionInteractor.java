@@ -1,22 +1,15 @@
 package com.emo.lkplayer.innerlayer.interactors;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
-import android.media.MediaPlayer;
-import android.media.audiofx.Equalizer;
-import android.util.Log;
 
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
 import com.emo.lkplayer.innerlayer.model.entities.EQPreset;
 import com.emo.lkplayer.innerlayer.repository.CurrentSessionRepo;
 import com.emo.lkplayer.innerlayer.repository.MediaComponentsRepo;
 import com.emo.lkplayer.innerlayer.repository.PresetRepository;
-import com.emo.lkplayer.outerlayer.storage.SessionStorage;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.AudioTracksSpecification;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.BaseLoaderSpecification;
-import com.emo.lkplayer.outerlayer.storage.content_providers.TracksProvider;
 import com.h6ah4i.android.media.IBasicMediaPlayer;
+import com.h6ah4i.android.media.audiofx.IBassBoost;
 import com.h6ah4i.android.media.audiofx.IEqualizer;
 import com.h6ah4i.android.media.audiofx.IPreAmp;
 
@@ -68,6 +61,11 @@ public class CurrentSessionInteractor {
     public IPreAmp getPreAmp()
     {
         return new MediaComponentsRepo().getPreAmp();
+    }
+
+    public IBassBoost getBassBoost()
+    {
+        return new MediaComponentsRepo().getBassBoost();
     }
 
     public IEqualizer getEqualizer()

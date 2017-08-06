@@ -9,6 +9,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -32,15 +33,23 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.emo.lkplayer.R;
 import com.emo.lkplayer.innerlayer.model.entities.EQPreset;
+import com.emo.lkplayer.innerlayer.model.entities.Lyrics;
+import com.emo.lkplayer.innerlayer.model.entities.Playlist;
 import com.emo.lkplayer.middlelayer.viewmodel.EqualizerViewModel;
+import com.emo.lkplayer.middlelayer.viewmodel.PlaylistViewModel;
 import com.emo.lkplayer.outerlayer.androidservices.MediaControllerInterface;
 import com.emo.lkplayer.outerlayer.androidservices.MediaControllerService;
 import com.emo.lkplayer.outerlayer.customviews.AudoMedaController;
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
 import com.emo.lkplayer.innerlayer.model.entities.iPlayable;
+import com.emo.lkplayer.outerlayer.customviews.LyricsDialog;
+import com.emo.lkplayer.outerlayer.customviews.PlayListDialog;
+import com.emo.lkplayer.outerlayer.customviews.SleepTimerDialog;
+import com.emo.lkplayer.outerlayer.customviews.TrackInfoDialog;
 import com.emo.lkplayer.outerlayer.view.EqualizerActivity;
 import com.emo.lkplayer.outerlayer.view.FragmentInteractionListener;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
@@ -107,6 +116,7 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
     private boolean isServiceConnected = false;
 
     private PlayBackViewModel viewModel;
+    private PlaylistViewModel playlistViewModel;
     private EqualizerViewModel equalizerViewModel;
     private LiveData<List<AudioTrack>> Live_trackList = null;
 
@@ -130,6 +140,15 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
 
         viewModel = ViewModelProviders.of(this).get(PlayBackViewModel.class);
         equalizerViewModel = ViewModelProviders.of(this).get(EqualizerViewModel.class);
+        playlistViewModel = ViewModelProviders.of(this).get(PlaylistViewModel.class);
+        /* this loads all the playlists already, so that when dialog is open, dialog is not empty*/
+        playlistViewModel.getUserDefinedPlaylists().observe(this, new Observer<List<Playlist.UserDefinedPlaylist>>() {
+            @Override
+            public void onChanged(@Nullable List<Playlist.UserDefinedPlaylist> userDefinedPlaylists)
+            {
+
+            }
+        });
         Live_trackList = viewModel.getTracksList();
         Live_trackList.observe(this, new Observer<List<AudioTrack>>() {
             @Override
@@ -184,10 +203,11 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
 
     private void changePlayableForControl(int currentTrackIndex)
     {
+        albumArtSlider.setCurrentItem(currentTrackIndex);
         iPlayable playable = Live_trackList.getValue().get(currentTrackIndex);
         this.playback_control_tool.setPlayable(playable);
-        playback_control_tool.setBackImageBlurred(getTrackArtUri(currentTrackIndex));
-        albumArtSlider.setCurrentItem(currentTrackIndex);
+        //playback_control_tool.setBackImageBlurred(getTrackArtUri(tempIndex));
+
     }
 
     private void updateSeekbarProgressForControl(int progress)
@@ -404,14 +424,50 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
 
         if (item.getItemId() == R.id.menu_playbackFrag_addToPlayList)
         {
+            final List<Playlist.UserDefinedPlaylist> plist = playlistViewModel.getUserDefinedPlaylists().getValue();
+            PlayListDialog dialog = new PlayListDialog(getContext(), playlistViewModel.getUserDefinedPlaylists().getValue());
+            dialog.initPlusBuildDialog(new PlayListDialog.DialogInteractionEventsListener() {
+                @Override
+                public void onItemClickListener(AdapterView<?> parent, View view, int position, long id, AlertDialog playListDialog)
+                {
+                    if (plist == null)
+                    {
+                        Toast.makeText(getContext(), "NULL", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    playListDialog.dismiss();
+                    String playlistName = plist.get(position).getPlaylistName();
+                    AudioTrack audioTrack = viewModel.getTracksList().getValue().get(viewModel.getCurrentTrackIndex().getValue());
+                    playlistViewModel.addAudioTrackToPlaylist(audioTrack, playlistName);
+                }
 
-        } else if (item.getItemId() == R.id.menu_playbackFrag_lyrics)
+                @Override
+                public void onNewPlayListCreated(String playListName)
+                {
+                    if (playListName == null || playListName.isEmpty())
+                        return;
+                    playlistViewModel.addNewPlayList(playListName);
+                }
+            });
+        }
+        else if (item.getItemId() == R.id.menu_playbackFrag_lyrics)
         {
-
-        } else if (item.getItemId() == R.id.menu_playbackFrag_delete)
+            final LyricsDialog dialog = new LyricsDialog(getContext());
+            dialog.show();
+            viewModel.getLyrics(viewModel.getTracksList().getValue().get(viewModel.getCurrentTrackIndex().getValue()))
+                    .observe(this, new Observer<String>() {
+                        @Override
+                        public void onChanged(@Nullable String lyrics)
+                        {
+                            dialog.updateLyrics(lyrics);
+                        }
+                    });
+        }
+        else if (item.getItemId() == R.id.menu_playbackFrag_delete)
         {
             //new TrackListingViewModel(getContext(),getLoaderManager()).deleteTrack(this.);
-        } else if (item.getItemId() == R.id.menu_playbackFrag_preset)
+        }
+        else if (item.getItemId() == R.id.menu_playbackFrag_preset)
         {
             final List<EQPreset> presetArr = equalizerViewModel.getAllEqPresets();
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.itemview_icon_text, R.id.tv_itemView_icon_text);
@@ -443,19 +499,41 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
             });
             return true;
 
-        } else if (item.getItemId() == R.id.menu_playbackFrag_SleepTimer)
+        }
+        else if (item.getItemId() == R.id.menu_playbackFrag_SleepTimer)
+        {
+            final SleepTimerDialog dialog = new SleepTimerDialog(getContext(), new SleepTimerDialog.DialogCallbacks() {
+                @Override
+                public void onTimerSet(int minutes, AlertDialog malertDialog)
+                {
+                    viewModel.setSleepTimer(minutes);
+                    malertDialog.dismiss();
+                }
+
+                @Override
+                public void onTimerdisable(AlertDialog malertDialog)
+                {
+                    viewModel.setSleepTimeOff();
+                    malertDialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+        else if (item.getItemId() == R.id.menu_playbackFrag_search)
         {
 
-        } else if (item.getItemId() == R.id.menu_playbackFrag_search)
+        }
+        else if (item.getItemId() == R.id.menu_playbackFrag_ringtone)
         {
-
-        } else if (item.getItemId() == R.id.menu_playbackFrag_ringtone)
+            viewModel.setRingtone(viewModel.getTracksList().getValue().get(viewModel.getCurrentTrackIndex().getValue()));
+        }
+        else if (item.getItemId() == R.id.menu_playbackFrag_info_or_tags)
         {
-
-        } else if (item.getItemId() == R.id.menu_playbackFrag_info_or_tags)
-        {
-
-        } else if (item.getItemId() == R.id.menu_playbackFrag_settings)
+            AudioTrack audioTrack = viewModel.getTracksList().getValue().get(viewModel.getCurrentTrackIndex().getValue());
+            TrackInfoDialog trackInfoDialog = new TrackInfoDialog(getContext(),audioTrack);
+            trackInfoDialog.show();
+        }
+        else if (item.getItemId() == R.id.menu_playbackFrag_settings)
         {
 
         } else if (item.getItemId() == R.id.menu_playbackFrag_help)
@@ -467,45 +545,9 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
 
     /*---------------------- Required Private Methods --------------------------------------------*/
 
-    private String getTrackArtUri(int trackIndex)
-    {
-        AudioTrack track = viewModel.getTracksList().getValue().get(viewModel.getCurrentTrackIndex().getValue());
-        String uri = viewModel.getTrackArtUriByID(track.getContainingAlbumID(), getContext());
-        return uri;
-    }
 
-    /*---------------------- MediaControllerService Callbacks + Implemented Interfaces ------------------- */
-//    @Override
-//    public void onRegisterReceiveCurrentPlaybackTrack(int currentTrackIndex, boolean isPlaying)
-//    {
-//        //--cond to be removed
-//        if (currentTrackIndex == -1)
-//        {
-//            Log.d("tbr-Service Client", "onRegisterInterface currentTrackIndex is -1");
-//            return;
-//        }
-//        changePlayPauseButtonStateForControl(isPlaying);
-//        changePlayableForControl(currentTrackIndex);
-//    }
-//
-//    @Override
-//    public void onTrackChanged(int newIndex)
-//    {
-//        changePlayableForControl(newIndex);
-//    }
-//
-//    @Override
-//    public void onTrackPlay()
-//    {
-//        changePlayPauseButtonStateForControl(true);
-//    }
-//
-//    @Override
-//    public void onTrackPause()
-//    {
-//        changePlayPauseButtonStateForControl(false);
-//    }
 
+    /*------------------------------------------*/
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
     {
@@ -530,7 +572,6 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
 
     private class SliderPagerAdapter extends FragmentStatePagerAdapter {
 
-
         public SliderPagerAdapter(FragmentManager fragmentManager)
         {
             super(fragmentManager);
@@ -540,9 +581,7 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
         @Override
         public Fragment getItem(int position)
         {
-            String uriForArtFragment = viewModel.getTrackArtUriByID(viewModel.getTracksList().getValue().get(position).getContainingAlbumID(), getContext());
-            //playback_control_tool.setBackImageBlurred(uriForArtFragment);
-            return AlbumArtFragment.newInstance(uriForArtFragment);
+            return AlbumArtFragment.newInstance(viewModel.getTracksList().getValue().get(position).getContainingAlbumID());
         }
 
         @Override
@@ -565,5 +604,4 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
             //super.restoreState(state, loader);
         }
     }
-
 }

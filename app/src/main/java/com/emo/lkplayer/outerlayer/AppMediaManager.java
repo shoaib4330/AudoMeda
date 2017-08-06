@@ -8,6 +8,8 @@ import com.emo.lkplayer.innerlayer.model.entities.EQPreset;
 import com.emo.lkplayer.outerlayer.androidservices.MediaControllerService;
 import com.h6ah4i.android.media.IBasicMediaPlayer;
 import com.h6ah4i.android.media.IMediaPlayerFactory;
+import com.h6ah4i.android.media.audiofx.IAudioEffect;
+import com.h6ah4i.android.media.audiofx.IBassBoost;
 import com.h6ah4i.android.media.audiofx.IEqualizer;
 import com.h6ah4i.android.media.audiofx.IPreAmp;
 import com.h6ah4i.android.media.opensl.OpenSLMediaPlayerFactory;
@@ -69,6 +71,7 @@ public class AppMediaManager {
     private static Context wContext;
     private static IBasicMediaPlayer basicMediaPlayer = null;
     private static IEqualizer iEqualizer = null;
+    private static IBassBoost iBassBoost = null;
     private static IPreAmp iPreAmp = null;
 
     private AppMediaManager()
@@ -79,6 +82,10 @@ public class AppMediaManager {
         basicMediaPlayer = iMediaPlayerFactory.createMediaPlayer();
         /* Create the instance of Equalizer to be used in the app*/
         iEqualizer = iMediaPlayerFactory.createHQEqualizer();
+        /* Create the instance of Bass Boost */
+        iBassBoost = iMediaPlayerFactory.createBassBoost(basicMediaPlayer);
+        /* Set it enabled */
+        iBassBoost.setEnabled(true);
         /* Create the instance of PreAmp to be used in the app*/
         iPreAmp = iMediaPlayerFactory.createPreAmp();
     }
@@ -103,6 +110,13 @@ public class AppMediaManager {
         if (ourInstance == null || !inited)
             throw new IllegalStateException("AppMediaManager: Module not initialized yet");
         return iPreAmp;
+    }
+
+    public IBassBoost getiBassBoost()
+    {
+        if (ourInstance == null || !inited)
+            throw new IllegalStateException("AppMediaManager: Module not initialized yet");
+        return iBassBoost;
     }
 
 }

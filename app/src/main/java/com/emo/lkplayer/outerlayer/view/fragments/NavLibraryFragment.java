@@ -26,25 +26,27 @@ import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
  */
 public class NavLibraryFragment extends Fragment implements View.OnClickListener {
 
-    public interface InteractionListener{
+    public interface InteractionListener {
         BaseNavigationManager getNavigationManager();
     }
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private View libraryLead_allSongs,libraryLead_albums,libraryLead_artists,libraryLead_genres,
-    libraryLead_playlists,libraryLead_queue,libraryLead_topRated,libraryLead_recentlyAdded;
+    private View libraryLead_allSongs, libraryLead_albums, libraryLead_artists, libraryLead_genres,
+            libraryLead_playlists, libraryLead_queue, libraryLead_topRated, libraryLead_recentlyAdded;
 
     private LibraryLeadSelectionEventsListener eventsListener;
     private NavigationManagerContentFlow frag_NavigationManager;
 
-    public NavLibraryFragment() {
+    public NavLibraryFragment()
+    {
         // Required empty public constructor
     }
 
 
-    public static NavLibraryFragment newInstance(String param1, String param2) {
+    public static NavLibraryFragment newInstance(String param1, String param2)
+    {
         NavLibraryFragment fragment = new NavLibraryFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -54,28 +56,33 @@ public class NavLibraryFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(Context context)
+    {
         super.onAttach(context);
         eventsListener = (LibraryLeadSelectionEventsListener) context;
-        frag_NavigationManager = (NavigationManagerContentFlow) ((NavLibraryFragment.InteractionListener)context).getNavigationManager();
+        frag_NavigationManager = (NavigationManagerContentFlow) ((NavLibraryFragment.InteractionListener) context).getNavigationManager();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {}
+        if (getArguments() != null)
+        {
+        }
 
     }
 
-    private void initViews(View gRootView){
-        libraryLead_allSongs        = gRootView.findViewById(R.id.leadItem_allSongs);
-        libraryLead_albums          = gRootView.findViewById(R.id.leadItem_albums);
-        libraryLead_artists         = gRootView.findViewById(R.id.leadItem_artists);
-        libraryLead_genres          = gRootView.findViewById(R.id.leadItem_genres);
-        libraryLead_playlists       = gRootView.findViewById(R.id.leadItem_playlists);
-        libraryLead_queue           = gRootView.findViewById(R.id.leadItem_queue);
-        libraryLead_topRated        = gRootView.findViewById(R.id.leadItem_topRated);
-        libraryLead_recentlyAdded   = gRootView.findViewById(R.id.leadItem_recentlyAdded);
+    private void initViews(View gRootView)
+    {
+        libraryLead_allSongs = gRootView.findViewById(R.id.leadItem_allSongs);
+        libraryLead_albums = gRootView.findViewById(R.id.leadItem_albums);
+        libraryLead_artists = gRootView.findViewById(R.id.leadItem_artists);
+        libraryLead_genres = gRootView.findViewById(R.id.leadItem_genres);
+        libraryLead_playlists = gRootView.findViewById(R.id.leadItem_playlists);
+        libraryLead_queue = gRootView.findViewById(R.id.leadItem_queue);
+        libraryLead_topRated = gRootView.findViewById(R.id.leadItem_topRated);
+        libraryLead_recentlyAdded = gRootView.findViewById(R.id.leadItem_recentlyAdded);
 
         libraryLead_allSongs.setOnClickListener(this);
         libraryLead_albums.setOnClickListener(this);
@@ -86,9 +93,11 @@ public class NavLibraryFragment extends Fragment implements View.OnClickListener
         libraryLead_topRated.setOnClickListener(this);
         libraryLead_recentlyAdded.setOnClickListener(this);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState)
+    {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_library, container, false);
         /* initialize all views and assign them listeners*/
@@ -97,47 +106,39 @@ public class NavLibraryFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         int leadID = v.getId();
-        if (leadID==R.id.leadItem_allSongs)
+        if (leadID == R.id.leadItem_allSongs)
         {
-            //Toast.makeText(getContext(), "All Songs Clicked", Toast.LENGTH_SHORT).show();
             frag_NavigationManager.startListTracksFragment_WithAllTracks();
             return;
-        }
-        else if (leadID==R.id.leadItem_albums){
-            //Toast.makeText(getContext(), "All Albums Clicked", Toast.LENGTH_SHORT).show();
-            iLoaderSpecification specification = new AudioAlbumsSpecification();
-            eventsListener.onSelectionWithSpecificationProvision(specification,false);
+        } else if (leadID == R.id.leadItem_albums)
+        {
+            frag_NavigationManager.startAlbumsFragment();
             return;
-        }
-        else if (leadID==R.id.leadItem_artists){
-            //Toast.makeText(getContext(), "Artists Clicked", Toast.LENGTH_SHORT).show();
-            iLoaderSpecification specification = new ArtistSpecification();
-            eventsListener.onSelectionWithSpecificationProvision(specification,false);
+        } else if (leadID == R.id.leadItem_artists)
+        {
+            frag_NavigationManager.startArtistFragment();
             return;
-        }
-        else if (leadID==R.id.leadItem_genres){
-            //Toast.makeText(getContext(), "Genres Clicked", Toast.LENGTH_SHORT).show();
-            iLoaderSpecification specification = new GenreSpecification();
-            eventsListener.onSelectionWithSpecificationProvision(specification,false);
+        } else if (leadID == R.id.leadItem_genres)
+        {
+            frag_NavigationManager.startGenreFragment();
             return;
-        }
-        else if (leadID==R.id.leadItem_playlists){
-            eventsListener.onSelectionWithSpecificationProvision(null,false);
+        } else if (leadID == R.id.leadItem_playlists)
+        {
+            frag_NavigationManager.Playlists_Fragment_Start();
             return;
-        }
-        else if (leadID==R.id.leadItem_queue){
-            frag_NavigationManager.startListTracksFragment_WithDQ();
-        }
-        else if (leadID==R.id.leadItem_topRated){
+        } else if (leadID == R.id.leadItem_queue)
+        {
+            frag_NavigationManager.ListTracksFragment_WithDQ_Start();
+        } else if (leadID == R.id.leadItem_topRated)
+        {
 
-        }
-        else if (leadID==R.id.leadItem_recentlyAdded){
-            //Toast.makeText(getContext(), "Recently Added Clicked", Toast.LENGTH_SHORT).show();
+        } else if (leadID == R.id.leadItem_recentlyAdded)
+        {
             frag_NavigationManager.startListTracksFragment_WithAllRecentTracks();
             return;
         }
-        //Toast.makeText(getContext(),"Item: "+leadID,Toast.LENGTH_LONG).show();
     }
 }

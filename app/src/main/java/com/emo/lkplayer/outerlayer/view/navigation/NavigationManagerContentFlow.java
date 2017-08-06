@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
+import com.emo.lkplayer.outerlayer.view.fragments.ListAlbumsFragment;
+import com.emo.lkplayer.outerlayer.view.fragments.ListPlaylistFragment;
 import com.emo.lkplayer.outerlayer.view.fragments.ListTrackFragment;
 import com.emo.lkplayer.outerlayer.view.fragments.NavFolderFragment;
 import com.emo.lkplayer.outerlayer.view.fragments.NavLibraryFragment;
@@ -18,47 +20,7 @@ import java.util.List;
 
 public final class NavigationManagerContentFlow extends BaseNavigationManager {
 
-    //private List<Fragment> existingFragmentsList;
-
-    //private NavPlayBackFragment playBackFragment =null;
-    private static final String BACKSTACK_STATE_PLAYBACK_FRAGMENT_ONTOP = "only_navplaybackfrag_added_yet";
-    private static final String BACKSTACK_STATE_FOLDER_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT = "folder_fragment_on_top_of_navplaybackfrag";
-    private static final String BACKSTACK_STATE_LIBRARY_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT = "library_fragment_on_top_of_navplaybackfrag";
-
-    private NavFolderFragment folderFragment = null;
-    private NavLibraryFragment libraryFragment = null;
-
-    /* -----------------Shoaib: Constructors here----------------------- */
-    public NavigationManagerContentFlow()
-    {
-    }
-
-    /* -----------------Shoaib: Methods here -----------------------------*/
-    private void addToFragmentInstancesList(Fragment fragment)
-    {
-    }
-
-    private void addTransactionToBackStack(FragmentTransaction transaction, Fragment fragment)
-    {
-        transaction.addToBackStack(fragment.toString());
-    }
-
-    public void open(Fragment fragment, boolean beAddedToFragmentReferenceList,
-                     boolean beAddedToBackStack)
-    {
-
-        if (mFragmentManager == null)
-            return;
-
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.replace(this.Fragment_Container_ID, fragment);
-        if (beAddedToBackStack)
-            addTransactionToBackStack(transaction, fragment);
-        transaction.commit();
-        if (beAddedToFragmentReferenceList)
-            addToFragmentInstancesList(fragment);
-    }
-
+    /*--------------------- Methods here to open App's Fragments --------------------------------*/
     public void startPlayBackFragment(int position, List<AudioTrack> list)
     {
         Fragment fragment = NavPlayBackFragment.newInstance();
@@ -118,15 +80,59 @@ public final class NavigationManagerContentFlow extends BaseNavigationManager {
         }
     }
 
+    public void startAlbumsFragment()
+    {
+        Fragment ListAlbumsFragment = com.emo.lkplayer.outerlayer.view.fragments.ListAlbumsFragment.newInstance();
+        open(ListAlbumsFragment, false, true);
+    }
+
+    public void startArtistFragment()
+    {
+        Fragment ArtistFrag = com.emo.lkplayer.outerlayer.view.fragments.ListArtistFragment.newInstance();
+        open(ArtistFrag, false, true);
+    }
+
+    public void startGenreFragment()
+    {
+        Fragment GenreFrag = com.emo.lkplayer.outerlayer.view.fragments.ListGenreFragment.newInstance();
+        open(GenreFrag, false, true);
+    }
+    /* ListTrackFragment----*/
     public void startListTracksFragment(String viaFolderQuery, String viaAlbumQuery, String viaArtistQuery, String playlistName)
     {
-        Fragment listTrackFragment = ListTrackFragment.newInstance(viaFolderQuery, viaAlbumQuery, viaArtistQuery, playlistName, -1);
-        open(listTrackFragment, false, true);
+        startListTracksFragment(viaFolderQuery,viaAlbumQuery,viaArtistQuery,playlistName,-1);
     }
 
     public void startListTracksFragment(String viaFolderQuery, String viaAlbumQuery, String viaArtistQuery, String playlistName, long genreID)
     {
-        Fragment listTrackFragment = ListTrackFragment.newInstance(viaFolderQuery, viaAlbumQuery, viaArtistQuery, playlistName, genreID);
+        ListTrackFragment.ListingMode mode = ListTrackFragment.ListingMode.MODE_ALL;
+        String val = "";
+        if (viaFolderQuery!=null)
+        {
+            mode = ListTrackFragment.ListingMode.MODE_FOLDER;
+            val = viaFolderQuery;
+        }
+        else if (viaAlbumQuery!=null)
+        {
+            mode = ListTrackFragment.ListingMode.MODE_ALBUMS;
+            val = viaAlbumQuery;
+        }
+        else if (viaArtistQuery!=null)
+        {
+            mode = ListTrackFragment.ListingMode.MODE_ARTISTS;
+            val = viaArtistQuery;
+        }
+        else if (playlistName!=null)
+        {
+            mode = ListTrackFragment.ListingMode.MODE_PLAYLIST;
+            val = playlistName;
+        }
+        else if (genreID!=-1)
+        {
+            mode = ListTrackFragment.ListingMode.MODE_GENRE;
+            val = String.valueOf(genreID);
+        }
+        Fragment listTrackFragment = ListTrackFragment.newInstance(mode,val);
         open(listTrackFragment, false, true);
     }
 
@@ -142,10 +148,55 @@ public final class NavigationManagerContentFlow extends BaseNavigationManager {
         open(listTrackFragment, false, true);
     }
 
-    public void startListTracksFragment_WithDQ()
+    public void ListTracksFragment_WithDQ_Start()
     {
         Fragment listTrackFragment = ListTrackFragment.newInstance(ListTrackFragment.ListingMode.MODE_DQ,null);
         open(listTrackFragment, false, true);
+    }
+
+    /* PlaylistFragment methods------*/
+    public void Playlists_Fragment_Start()
+    {
+        ListPlaylistFragment fragment = ListPlaylistFragment.newInstance();
+        open(fragment, false, true);
+    }
+    /*-------------------------------------------------------------------------------------------*/
+
+    private static final String BACKSTACK_STATE_PLAYBACK_FRAGMENT_ONTOP = "only_navplaybackfrag_added_yet";
+    private static final String BACKSTACK_STATE_FOLDER_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT = "folder_fragment_on_top_of_navplaybackfrag";
+    private static final String BACKSTACK_STATE_LIBRARY_FRAGMENT_ONTOP_ABOVE_PLAYBACK_FRAGMENT = "library_fragment_on_top_of_navplaybackfrag";
+
+    private NavFolderFragment folderFragment = null;
+    private NavLibraryFragment libraryFragment = null;
+
+    /* -----------------Shoaib: Constructors here----------------------- */
+    public NavigationManagerContentFlow()
+    {
+    }
+
+    /* -----------------Shoaib: Methods here -----------------------------*/
+    private void addToFragmentInstancesList(Fragment fragment)
+    {
+    }
+
+    private void addTransactionToBackStack(FragmentTransaction transaction, Fragment fragment)
+    {
+        transaction.addToBackStack(fragment.toString());
+    }
+
+    public void open(Fragment fragment, boolean beAddedToFragmentReferenceList, boolean beAddedToBackStack)
+    {
+
+        if (mFragmentManager == null)
+            return;
+
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        transaction.replace(this.Fragment_Container_ID, fragment);
+        if (beAddedToBackStack)
+            addTransactionToBackStack(transaction, fragment);
+        transaction.commit();
+        if (beAddedToFragmentReferenceList)
+            addToFragmentInstancesList(fragment);
     }
 
     @Override

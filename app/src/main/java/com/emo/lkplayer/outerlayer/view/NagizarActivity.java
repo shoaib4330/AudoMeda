@@ -29,10 +29,10 @@ import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
 
 public class NagizarActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener,
         NavigationManagerContentFlow.NavigationListener, LibraryLeadSelectionEventsListener, NavPlayBackFragment.NavPlayBackFragmentInteractionListener,
-        NavFolderFragment.InteractionListener, NavLibraryFragment.InteractionListener,ListAlbumsFragment.InteractionListener,
-        ListGenreFragment.InteractionListener,ListArtistFragment.InteractionListener,ListPlaylistFragment.InteractionListener{
+        NavFolderFragment.InteractionListener, NavLibraryFragment.InteractionListener, ListAlbumsFragment.InteractionListener,
+        ListGenreFragment.InteractionListener, ListArtistFragment.InteractionListener, ListPlaylistFragment.InteractionListener {
 
-    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE=1011398;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1011398;
     private NavigationManagerContentFlow mNavigationManager;
 
     private BottomNavigationView bottomNavBar;
@@ -46,14 +46,16 @@ public class NagizarActivity extends AppCompatActivity implements BottomNavigati
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            {
 
                 // Should we show an explanation?
-                if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE))
+                {
                     // Explain to the user why we need to read the contacts
                 }
 
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
 
                 // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
                 // app-defined int constant that should be quite unique
@@ -71,24 +73,22 @@ public class NagizarActivity extends AppCompatActivity implements BottomNavigati
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
+    {
+        switch (requestCode)
+        {
             case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
             {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 {
-
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                     mNavigationManager = new NavigationManagerContentFlow();
                     mNavigationManager.init(getSupportFragmentManager(), R.id.fragmentHolder_NagizarActivity);
                     mNavigationManager.startPlayBackFragment(-1, null);
-
-                }
-                else
+                } else
                 {
-
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
@@ -112,22 +112,12 @@ public class NagizarActivity extends AppCompatActivity implements BottomNavigati
         switch (item.getItemId())
         {
             case R.id.navigation_GoToPlayback:
-                //finish();
-//                if (!mNavigationManager.bringExistingFragment(NavPlayBackFragment.class.toString(), false)) {
-//                    mNavigationManager.open(NavPlayBackFragment.newInstance(), true, true);
-//                }
                 mNavigationManager.startPlayBackFragment(-1, null);
                 return true;
             case R.id.navMenu_Nagizar_Library:
-//                if (!mNavigationManager.bringExistingFragment(NavLibraryFragment.class.toString(), false)) {
-//                    mNavigationManager.open(NavLibraryFragment.newInstance(null, null), true, true);
-//                }
                 mNavigationManager.startLibraryFragment();
                 return true;
             case R.id.navMenu_Nagizar_Folders:
-//                if (!mNavigationManager.bringExistingFragment(NavFolderFragment.class.toString(), false)) {
-//                    mNavigationManager.open(NavFolderFragment.newInstance(null, null), true, true);
-//                }
                 mNavigationManager.startFolderFragment(false);
                 return true;
         }
@@ -163,8 +153,6 @@ public class NagizarActivity extends AppCompatActivity implements BottomNavigati
             mNavigationManager.open(ListPlaylistFragment.newInstance(), false, true);
             return;
         }
-        //mNavigationManager.open(ListTrackFragment.newInstance(specification), false, true);
-
     }
 
     @Override

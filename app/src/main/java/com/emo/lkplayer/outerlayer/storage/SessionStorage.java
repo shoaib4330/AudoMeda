@@ -20,13 +20,17 @@ import java.io.ObjectOutputStream;
 public class SessionStorage {
 
     /* ------------------------- Constants --------------------------- */
-    private static final String IS_TONE_USED_STORED             = "emo.audomeda.istoneused";
-    private static final String IS_LIMIT_USED_STORED            = "emo.audomeda.islimitused";
-    private static final String TRACK_INDEX_PREF_NAME           = "com.emo.audomeda.trackindexpref";
-    private static final String IS_EQUALIZER_USED_STORED        = "emo.audomeda.iseqused";
-    private static final String SINGLE_SPEC_FILE_STORED_NAME    = "singlespecfilebylkplayer";
-    private static final String CURRENT_USED_PRESET_NAME_STORED = "emo.audomeda.currentpresetused";
-    private static final String CURRENTTRACK_INDEX_INTEGER_NAME = "emo.audomeda.ctrackinteger";
+    private static final String IS_TONE_USED_STORED = "emo.lkplayer.istoneused";
+    private static final String IS_LIMIT_USED_STORED = "emo.lkplayer.islimitused";
+    private static final String TRACK_INDEX_PREF_NAME = "emo.lkplayer.trackindexpref";
+    private static final String IS_EQUALIZER_USED_STORED = "emo.lkplayer.iseqused";
+    private static final String SINGLE_SPEC_FILE_STORED_NAME = "singlespecfilebylkplayer";
+    private static final String CURRENT_USED_PRESET_NAME_STORED = "emo.lkplayer.currentpresetused";
+    private static final String CURRENTTRACK_INDEX_INTEGER_NAME = "emo.lkplayer.ctrackinteger";
+    //private static final String LAST_SET__LEFT_FLOAT = "emo.lkplayer.lastvolleft";
+    //private static final String LAST_SET_VOLUME_Right_FLOAT = "emo.lkplayer.lastvolRight";
+    //private static final String LAST_SET_VOLUME_OVERALL = "emo.lkplayer.lastvolOverAll";
+    private static final String LAST_SET_STEREO_STATE = "emo.lkplayer.stereoState";
 
     private Context context;
     private FileOutputStream fos;
@@ -39,20 +43,22 @@ public class SessionStorage {
     public SessionStorage(Context context)
     {
         this.context = context.getApplicationContext();
-        sharedPreferences = this.context.getSharedPreferences(TRACK_INDEX_PREF_NAME,Context.MODE_PRIVATE);
+        sharedPreferences = this.context.getSharedPreferences(TRACK_INDEX_PREF_NAME, Context.MODE_PRIVATE);
     }
 
-    /*----------- Storage methods used for Storage-Reading of audio data -----------*/
+    //@formatter:off
+                    /*-- Storage methods used for Storage-Reading of audio data --*/
+    //@formatter:on
     public void storeCurrentTrackIndex(int newIndex)
     {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(CURRENTTRACK_INDEX_INTEGER_NAME,newIndex);
+        editor.putInt(CURRENTTRACK_INDEX_INTEGER_NAME, newIndex);
         editor.commit();
     }
 
     public int getCurrentTrackIndex()
     {
-        int index = sharedPreferences.getInt(CURRENTTRACK_INDEX_INTEGER_NAME,0);
+        int index = sharedPreferences.getInt(CURRENTTRACK_INDEX_INTEGER_NAME, 0);
         return index;
     }
 
@@ -63,61 +69,117 @@ public class SessionStorage {
 
     public void writeSpecification(BaseLoaderSpecification specification)
     {
-        if (specification!=null)
-            writeObject(SINGLE_SPEC_FILE_STORED_NAME,specification);
+        if (specification != null)
+            writeObject(SINGLE_SPEC_FILE_STORED_NAME, specification);
     }
 
-    /*----------- Storage methods used for Storage-Reading of Equalizer data ------*/
-    public void saveCurrentUsedPreset(String presetName)
-    {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(CURRENT_USED_PRESET_NAME_STORED,presetName);
-        editor.commit();
-    }
-
-    public String getCurrentUsedPresetName()
-    {
-        return sharedPreferences.getString(CURRENT_USED_PRESET_NAME_STORED,null);
-    }
-
+    //@formatter:off
+                    /*------ Methods for Storage & Reading of Equalizer data ----*/
+    //@formatter:on
     public void saveEqaulizerUseState(boolean isBeingUsed)
     {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(IS_EQUALIZER_USED_STORED,isBeingUsed);
+        editor.putBoolean(IS_EQUALIZER_USED_STORED, isBeingUsed);
         editor.commit();
     }
 
     public boolean getEqaulizerUseState()
     {
-        return sharedPreferences.getBoolean(IS_EQUALIZER_USED_STORED,true);
+        return sharedPreferences.getBoolean(IS_EQUALIZER_USED_STORED, true);
     }
 
-    public void saveToneUseState(boolean isBeingUsed)
+    //@formatter:off
+                    /*---------------- Preset methods here --------------------*/
+    //@formatter:on
+    public void saveCurrentUsedPreset(String presetName)
     {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(IS_TONE_USED_STORED,isBeingUsed);
+        editor.putString(CURRENT_USED_PRESET_NAME_STORED, presetName);
         editor.commit();
     }
 
-    public boolean getToneUseState()
+    public String getCurrentUsedPresetName()
     {
-        return sharedPreferences.getBoolean(IS_TONE_USED_STORED,true);
+        return sharedPreferences.getString(CURRENT_USED_PRESET_NAME_STORED, null);
     }
 
+    //@formatter:off
+                    /*---------------- Limit methods here --------------------*/
+    //@formatter:on
     public void saveLimitUseState(boolean isBeingUsed)
     {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(IS_LIMIT_USED_STORED,isBeingUsed);
+        editor.putBoolean(IS_LIMIT_USED_STORED, isBeingUsed);
         editor.commit();
     }
 
     public boolean getLimitUseState()
     {
-        return sharedPreferences.getBoolean(IS_LIMIT_USED_STORED,true);
+        return sharedPreferences.getBoolean(IS_LIMIT_USED_STORED, true);
     }
 
+    //@formatter:off
+                    /*----------------- Tone and Vol methods ----------------------*/
+    //@formatter:on
+    public void saveLeftRightBalance(float left, float right)
+    {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        //editor.putFloat(LAST_SET_VOLUME_LEFT_FLOAT, left);
+        //editor.putFloat(LAST_SET_VOLUME_Right_FLOAT, right);
+        editor.commit();
+    }
 
-    /*----------- Private method of class -----------------------------------------*/
+//    public void saveVolumeOverAll(float volume)
+//    {
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putFloat(LAST_SET_VOLUME_OVERALL,volume);
+//        editor.commit();
+//    }
+
+    public float getBalanceLeft()
+    {
+        //return sharedPreferences.getFloat(LAST_SET_VOLUME_LEFT_FLOAT, 50.0f);
+        return 0.0f;
+    }
+
+    public float getBalanceRight()
+    {
+        //return sharedPreferences.getFloat(LAST_SET_VOLUME_Right_FLOAT, 50.0f);
+        return 0.0f;
+    }
+
+//    public float getVolumeOverAll()
+//    {
+//        return sharedPreferences.getFloat(LAST_SET_VOLUME_OVERALL, 50.0f);
+//    }
+
+    public void saveToneUseState(boolean isBeingUsed)
+    {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(IS_TONE_USED_STORED, isBeingUsed);
+        editor.commit();
+    }
+
+    public boolean getToneUseState()
+    {
+        return sharedPreferences.getBoolean(IS_TONE_USED_STORED, true);
+    }
+
+    public void saveStereoUseState(boolean stereo)
+    {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(LAST_SET_STEREO_STATE, stereo);
+        editor.commit();
+    }
+
+    public boolean getSetereoUseState()
+    {
+        return sharedPreferences.getBoolean(LAST_SET_STEREO_STATE,false);
+    }
+
+    //formatter:off
+                    /*----------- Private method of class -----------------------*/
+    //formatter:on
     private synchronized Object readObject(String theFileName)
     {
         Object object = null;

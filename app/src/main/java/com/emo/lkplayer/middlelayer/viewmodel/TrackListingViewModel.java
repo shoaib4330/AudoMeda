@@ -8,6 +8,7 @@ import com.emo.lkplayer.innerlayer.interactors.CurrentSessionInteractor;
 import com.emo.lkplayer.innerlayer.interactors.Interactor_DeleteTrackFromDevice;
 import com.emo.lkplayer.innerlayer.interactors.Interactor_ProviderTracks;
 import com.emo.lkplayer.innerlayer.interactors.Interactor_ModifyDQ;
+import com.emo.lkplayer.innerlayer.interactors.Interactor_SetAudioRingtone;
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
 
 import java.util.List;
@@ -100,7 +101,7 @@ public final class TrackListingViewModel extends AndroidViewModel {
     public void deleteTrackFromDevice(AudioTrack audioTrack)
     {
         isReloadDue = true;
-        new Interactor_DeleteTrackFromDevice(this.getApplication()).deleteTrack(audioTrack.getTrackID());
+        new Interactor_DeleteTrackFromDevice(this.getApplication()).deleteTrack(audioTrack);
     }
 
     public void enqueueTrack(AudioTrack audioTrack)
@@ -111,6 +112,11 @@ public final class TrackListingViewModel extends AndroidViewModel {
     public void dequeueTrack(AudioTrack audioTrack)
     {
         interactorModifyDQ.deleteTrackFromDQ(audioTrack);
+    }
+
+    public void setRingtone(AudioTrack audioTrack)
+    {
+        new Interactor_SetAudioRingtone(this.getApplication()).setAsRingTone(audioTrack);
     }
 
     @Override

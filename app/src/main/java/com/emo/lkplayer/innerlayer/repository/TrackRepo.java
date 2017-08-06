@@ -6,21 +6,21 @@ import android.content.Context;
 
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
 import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.BaseLoaderSpecification;
-import com.emo.lkplayer.outerlayer.storage.content_providers.TracksProvider;
+import com.emo.lkplayer.outerlayer.storage.content_providers.Provider_Tracks;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrackRepository{
+public class TrackRepo {
 
     private Context context;
-    private TracksProvider tracksProvider;
+    private Provider_Tracks providerTracks;
     private MutableLiveData <List<AudioTrack>> liveAudioTracksList = new MutableLiveData<>();
 
-    public TrackRepository(Context context)
+    public TrackRepo(Context context)
     {
         this.context = context.getApplicationContext();
-        this.tracksProvider = new TracksProvider(context, new TracksProvider.ProviderCallBacks() {
+        this.providerTracks = new Provider_Tracks(context, new Provider_Tracks.ProviderCallBacks() {
             @Override
             public void onQueryComplete(List<AudioTrack> trackList)
             {
@@ -33,13 +33,13 @@ public class TrackRepository{
 
     public LiveData<List<AudioTrack>> QueryTracks(BaseLoaderSpecification specification)
     {
-        tracksProvider.Query(specification);
+        providerTracks.Query(specification);
         return liveAudioTracksList;
     }
 
     public void deleteTrack (BaseLoaderSpecification specification)
     {
-        tracksProvider.remove(specification);
+        providerTracks.remove(specification);
     }
 //    public String getTrackArtUriByID(long albumID,Context context)
 //    {

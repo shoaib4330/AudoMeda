@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,7 +19,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.emo.lkplayer.R;
+import com.emo.lkplayer.innerlayer.interactors.CurrentSessionInteractor;
 import com.emo.lkplayer.innerlayer.model.entities.EQPreset;
+import com.emo.lkplayer.middlelayer.actioners.ToneVolStereoActions;
 import com.emo.lkplayer.middlelayer.viewmodel.EqualizerViewModel;
 import com.emo.lkplayer.outerlayer.customviews.KnobController;
 import com.emo.lkplayer.outerlayer.view.fragments.NavEqualizerFragment;
@@ -26,6 +29,7 @@ import com.emo.lkplayer.outerlayer.view.fragments.NavToneAndVolFragment;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerSettingsFlow;
 import com.emo.lkplayer.utilities.Utility;
+import com.h6ah4i.android.media.audiofx.IBassBoost;
 import com.h6ah4i.android.media.audiofx.IEqualizer;
 
 import java.util.List;
@@ -44,6 +48,49 @@ public class EqualizerActivity extends AppCompatActivity implements BottomNaviga
 
     private NavigationManagerSettingsFlow mNavigationManager;
 
+    private ToneVolStereoActions actionHandler = new ToneVolStereoActions() {
+        @Override
+        public void setLeftRightBalance(float left, float right)
+        {
+
+        }
+
+        @Override
+        public void setVolumeOverAll(float volume)
+        {
+
+        }
+
+        @Override
+        public void switchMonoStereo(boolean ifStereo)
+        {
+
+        }
+
+        @Override
+        public void setStereoX(float value)
+        {
+
+        }
+
+        @Override
+        public boolean getStereoState()
+        {
+            return false;
+        }
+
+        @Override
+        public float getVolume()
+        {
+            return 0;
+        }
+
+        @Override
+        public IBassBoost getBassBoost()
+        {
+            return new CurrentSessionInteractor(EqualizerActivity.this).getBassBoost();
+        }
+    };
     /* View fields references */
     private KnobController knob_bass;
     private KnobController knob_treble;
@@ -58,6 +105,8 @@ public class EqualizerActivity extends AppCompatActivity implements BottomNaviga
     /* ViewModel reference here */
     private EqualizerViewModel equalizerViewModel;
 
+    private IBassBoost bassBoost;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -67,6 +116,9 @@ public class EqualizerActivity extends AppCompatActivity implements BottomNaviga
         /* Get reference to viewModel at the start, viewSetup might use it */
         equalizerViewModel = ViewModelProviders.of(this).get(SHARED_EQVIEWMODEL_KEY,EqualizerViewModel.class);
 
+        /* Get reference ot the Bass-boost object */
+        bassBoost = actionHandler.getBassBoost();
+        bassBoost.setEnabled(true);
         /* Gets references to all the view fields and does the view related initial work */
         setupActivityView();
 
@@ -102,6 +154,17 @@ public class EqualizerActivity extends AppCompatActivity implements BottomNaviga
 
         knob_bass.setBottomLeftText("Bass");
         knob_treble.setBottomLeftText("Treble");
+
+        knob_bass.setMinMaxLevel(0,1000);
+
+        knob_bass.setKnobControllerEventsListener(new KnobController.KnobControllerEventsListener() {
+            @Override
+            public void onRotate(int percentage)
+            {
+                Log.d("knob","bassboost: "+percentage);
+                bassBoost.setStrength((short)(percentage*10));
+            }
+        });
 
         btn_equ.setActivated(equalizerViewModel.getEQUseState());
     }

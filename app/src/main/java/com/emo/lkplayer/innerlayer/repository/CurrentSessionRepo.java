@@ -10,7 +10,7 @@ import com.emo.lkplayer.innerlayer.model.entities.Playlist;
 import com.emo.lkplayer.outerlayer.storage.SessionStorage;
 import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.AudioTracksSpecification;
 import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.BaseLoaderSpecification;
-import com.emo.lkplayer.outerlayer.storage.content_providers.TracksProvider;
+import com.emo.lkplayer.outerlayer.storage.content_providers.Provider_Tracks;
 
 import java.util.List;
 
@@ -20,12 +20,12 @@ import java.util.List;
 
 public class CurrentSessionRepo {
 
-    private static MutableLiveData<List<AudioTrack>> currentLiveListAudioTracks;
-    private static MutableLiveData<Integer> currentLiveTrackIndex;
+    private static MutableLiveData<List<AudioTrack>> currentLiveListAudioTracks=null;
+    private static MutableLiveData<Integer> currentLiveTrackIndex=null;
 
     private static SessionStorage sessionStorage;
 
-    private TracksProvider tracksProvider;
+    private Provider_Tracks providerTracks;
     private Context mContext;
 
     private boolean toSetIndex = false;
@@ -35,7 +35,7 @@ public class CurrentSessionRepo {
     {
         this.mContext = context.getApplicationContext();
         sessionStorage = new SessionStorage(mContext);
-        tracksProvider = new TracksProvider(mContext, new TracksProvider.ProviderCallBacks() {
+        providerTracks = new Provider_Tracks(mContext, new Provider_Tracks.ProviderCallBacks() {
             @Override
             public void onQueryComplete(List<AudioTrack> trackList)
             {
@@ -61,7 +61,7 @@ public class CurrentSessionRepo {
                 specification = new AudioTracksSpecification();
                 sessionStorage.writeSpecification(specification);
             }
-            tracksProvider.Query(specification);
+            providerTracks.Query(specification);
         }
         return currentLiveListAudioTracks;
 
@@ -103,7 +103,7 @@ public class CurrentSessionRepo {
         toSetIndex = true;
         indexToUpdate = newIndex;
         /* when following query completes, trackIndex is updated aswell */
-        tracksProvider.Query(specification);
+        providerTracks.Query(specification);
         sessionStorage.writeSpecification(specification);
 
     }
@@ -115,7 +115,7 @@ public class CurrentSessionRepo {
         toSetIndex = true;
         indexToUpdate = newIndex;
         /* when following query completes, trackIndex is updated aswell */
-        tracksProvider.Query(specification);
+        providerTracks.Query(specification);
         sessionStorage.writeSpecification(specification);
     }
 
@@ -126,8 +126,25 @@ public class CurrentSessionRepo {
         toSetIndex = true;
         indexToUpdate = newIndex;
         /* when following query completes, trackIndex is updated aswell */
-        tracksProvider.Query(specification);
+        providerTracks.Query(specification);
         sessionStorage.writeSpecification(specification);
+    }
+
+    public void removeTrackFromList(AudioTrack audioTrack)
+    {
+        if (currentLiveListAudioTracks!=null)
+        {
+            if (currentLiveListAudioTracks.getValue()!=null)
+            {
+                if (currentLiveListAudioTracks.getValue().contains(audioTrack))
+                {
+                    List<AudioTrack> list = currentLiveListAudioTracks.getValue();
+                    list.remove(audioTrack);
+                    currentLiveTrackIndex.setValue(list.size()-1);
+                    currentLiveListAudioTracks.setValue(list);
+                }
+            }
+        }
     }
 
     private void updateCurrentIndex(int mIndex)
@@ -176,6 +193,26 @@ public class CurrentSessionRepo {
     public boolean getLimitUseState()
     {
         return sessionStorage.getToneUseState();
+    }
+
+//    public float getVolumeOverAll()
+//    {
+//        return sessionStorage.getVolumeOverAll();
+//    }
+
+//    public void saveVolumeOverAll(float volume)
+//    {
+//        sessionStorage.saveVolumeOverAll(volume);
+//    }
+
+    public void setStereo(boolean stereo)
+    {
+        sessionStorage.saveStereoUseState(stereo);
+    }
+
+    public boolean getStereo()
+    {
+        return sessionStorage.getSetereoUseState();
     }
 
 }
