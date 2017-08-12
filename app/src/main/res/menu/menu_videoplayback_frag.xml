@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_back"
+        android:icon="@drawable/icon_arrow_up"
+        android:orderInCategory="0"
+        android:title="Back"
+        app:showAsAction="always"
+        >
+    </item>
+
+    <item
+        android:id="@+id/menu_AudPlayback"
+        android:icon="@drawable/mediacontroller_icon_play"
+        android:orderInCategory="1"
+        android:title="Goto Audio Playback"
+        app:showAsAction="always"
+        >
+    </item>
+
+    <item
+        android:id="@+id/menu_play"
+        android:orderInCategory="1"
+        android:title="Play/Pause"
+        app:showAsAction="never">
+    </item>
+
+    <item
+        android:id="@+id/menu_next"
+        android:orderInCategory="2"
+        android:title="Next"
+        app:showAsAction="never">
+    </item>
+
+    <item
+        android:id="@+id/menu_previous"
+        android:orderInCategory="3"
+        android:title="Previous"
+        app:showAsAction="never">
+    </item>
+</menu>

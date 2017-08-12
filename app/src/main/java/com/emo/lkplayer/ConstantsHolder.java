@@ -1,8 +1,6 @@
 package com.emo.lkplayer;
 
-/**
- * Created by shoaibanwar on 7/18/17.
- */
+
 
 public interface ConstantsHolder {
 

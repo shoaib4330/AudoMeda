@@ -1,8 +1,5 @@
 package com.emo.lkplayer.innerlayer.model.entities;
 
-/**
- * Created by shoaibanwar on 6/29/17.
- */
 
 public class Artist {
     private long artistID;

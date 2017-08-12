@@ -16,9 +16,6 @@ import com.emo.lkplayer.innerlayer.model.entities.Lyrics;
 
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 7/14/17.
- */
 
 public final class PlayBackViewModel extends AndroidViewModel {
 

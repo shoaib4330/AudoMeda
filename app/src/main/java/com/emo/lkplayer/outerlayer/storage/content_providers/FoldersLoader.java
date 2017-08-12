@@ -15,9 +15,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 6/22/17.
- */
 
 public final class FoldersLoader implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -39,41 +36,58 @@ public final class FoldersLoader implements LoaderManager.LoaderCallbacks<Cursor
     /* shoaib: Old cursor, only kept to be given back to loader when we receive new cursor */
     private Cursor cursor;
 
-    public FoldersLoader(Context context, LoaderManager loaderManager) {
+    public FoldersLoader(Context context, LoaderManager loaderManager)
+    {
         this.context = context;
         this.loaderManager = loaderManager;
     }
 
-    public void requestFoldersData() {
+    public void requestFoldersData()
+    {
         dataRequestMade = true;
         init();
     }
 
-    private void init() {
+    private void init()
+    {
         loaderManager.initLoader(ID_LOADER_Folder, null, this);
     }
 
-    public void register(MediaProviderEventsListener mediaProviderEventsListener) {
+    public void register(MediaProviderEventsListener mediaProviderEventsListener)
+    {
         this.mediaProviderEventsListener = mediaProviderEventsListener;
         if (dataRequestMade)
             this.mediaProviderEventsListener.onListCreated(this.foldersList);
     }
 
-    public void unRegister() {
+    public void unRegister()
+    {
         this.mediaProviderEventsListener = null;
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    public Loader<Cursor> onCreateLoader(int id, Bundle args)
+    {
         String[] projection = new String[]{"COUNT(" + MediaStore.Files.FileColumns.DATA + ") AS totalFiles",
+                MediaStore.Files.FileColumns._ID,
                 MediaStore.Files.FileColumns.MEDIA_TYPE,
                 MediaStore.Files.FileColumns.PARENT,
                 MediaStore.Files.FileColumns.DATA,
                 MediaStore.Files.FileColumns.DISPLAY_NAME
-                };
+        };
+
+        String[] projection1 = new String[]{"COUNT(" + MediaStore.Files.FileColumns.DATA + ") AS totalFiles",
+                MediaStore.Files.FileColumns.MEDIA_TYPE,
+                MediaStore.Files.FileColumns.PARENT,
+                MediaStore.Files.FileColumns.DATA,
+                MediaStore.Files.FileColumns.DISPLAY_NAME,
+                MediaStore.Files.FileColumns._ID};
+
+//        String selection = MediaStore.Files.FileColumns.MEDIA_TYPE + " = " + MediaStore.Files.FileColumns.MEDIA_TYPE_AUDIO +
+//                " OR " + MediaStore.Files.FileColumns.MEDIA_TYPE + "=" + MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO +
+//                ") GROUP BY (" + MediaStore.Files.FileColumns.PARENT;
 
         String selection = MediaStore.Files.FileColumns.MEDIA_TYPE + " = " + MediaStore.Files.FileColumns.MEDIA_TYPE_AUDIO +
-                " OR "+ MediaStore.Files.FileColumns.MEDIA_TYPE + "=" + MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO +
                 ") GROUP BY (" + MediaStore.Files.FileColumns.PARENT;
 
         String sortOrder = MediaStore.Files.FileColumns.DISPLAY_NAME + " ASC";
@@ -83,11 +97,15 @@ public final class FoldersLoader implements LoaderManager.LoaderCallbacks<Cursor
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data)
+    {
         foldersList = new ArrayList<>();
-        if (data.moveToFirst()) {
+        if (data.moveToFirst())
+        {
             Folder newFolder;
-            do {
+            do
+            {
+                long id = data.getLong(data.getColumnIndex(MediaStore.Files.FileColumns._ID));
                 String absFolderPath = data.getString(data.getColumnIndex(MediaStore.Files.FileColumns.DATA));
                 String fileDisplayName = data.getString(data.getColumnIndex(MediaStore.Files.FileColumns.DISPLAY_NAME));
 
@@ -105,13 +123,15 @@ public final class FoldersLoader implements LoaderManager.LoaderCallbacks<Cursor
         this.swapCursor(data, data = cursor);
     }
 
-    private String extractFolderTitle(String absolutePathToFile) {
+    private String extractFolderTitle(String absolutePathToFile)
+    {
         File file = new File(new File(absolutePathToFile).getParent());
         String name = file.getName();
         return name;
     }
 
-    private String extractFolderPath(String absolutePathToFile, String fileName) {
+    private String extractFolderPath(String absolutePathToFile, String fileName)
+    {
         int absPathLength = absolutePathToFile.length();
         int fileNameLength = fileName.length();
         String folderPathWithoutFileName = absolutePathToFile.substring(0, absPathLength - fileNameLength);
@@ -119,11 +139,13 @@ public final class FoldersLoader implements LoaderManager.LoaderCallbacks<Cursor
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(Loader<Cursor> loader)
+    {
         swapCursor(null, null);
     }
 
-    private void swapCursor(Cursor cursorNew, Cursor dummy) {
+    private void swapCursor(Cursor cursorNew, Cursor dummy)
+    {
         /* shoaib: we keep reference of the old cursor, it will be swapped with new one */
         this.cursor = cursorNew;
     }

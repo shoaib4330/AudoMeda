@@ -2,9 +2,6 @@ package com.emo.lkplayer.innerlayer.interactors;
 
 import com.emo.lkplayer.outerlayer.Application;
 
-/**
- * Created by shoaibanwar on 8/5/17.
- */
 
 public class Interactor_SetSleepTimer {
 

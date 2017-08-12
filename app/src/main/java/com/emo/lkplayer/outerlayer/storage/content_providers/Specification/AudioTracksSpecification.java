@@ -11,10 +11,6 @@ import com.emo.lkplayer.utilities.Utility;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 7/12/17.
- */
-
 public class AudioTracksSpecification extends BaseLoaderSpecification<AudioTrack> {
 
     public static final Uri AUDIO_CONTENT_URI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
@@ -74,6 +70,8 @@ public class AudioTracksSpecification extends BaseLoaderSpecification<AudioTrack
             AudioTrack newAudioTrack;
             do
             {
+//                String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+//                String disname = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
                 long trackID = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
                 String trackTitle = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                 String trackArtist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
@@ -177,15 +175,15 @@ public class AudioTracksSpecification extends BaseLoaderSpecification<AudioTrack
         @Override
         public String getSelection()
         {
-            String selection = MediaStore.Audio.Media.DATA + " LIKE ? ";
+            String selection = MediaStore.Audio.Media.DATA + " GLOB '"+folderToQueryTracksFor+"[^/]*'";
             return selection;
         }
 
         @Override
         public String[] getSelectionArgs()
         {
-            String[] selectionArgs = new String[]{"%" + folderToQueryTracksFor + "%"};
-            return selectionArgs;
+            String[] selectionArgs = new String[]{folderToQueryTracksFor +"[a-z]*"};
+            return null;
         }
     }
 

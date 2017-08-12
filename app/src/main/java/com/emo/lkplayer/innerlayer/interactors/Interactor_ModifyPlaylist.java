@@ -8,10 +8,6 @@ import com.emo.lkplayer.innerlayer.model.entities.Playlist;
 import com.emo.lkplayer.innerlayer.repository.PlaylistRepo;
 import com.emo.lkplayer.outerlayer.storage.AppDatabase;
 
-/**
- * Created by shoaibanwar on 8/4/17.
- */
-
 public class Interactor_ModifyPlaylist {
 
     private Context context;

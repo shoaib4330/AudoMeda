@@ -12,10 +12,6 @@ import com.emo.lkplayer.outerlayer.storage.AppDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 8/2/17.
- */
-
 public final class DQueueViewModel extends AndroidViewModel {
 
     private LiveData<List<DynamicQueue>> live_DynamicQueue = null;

@@ -5,29 +5,46 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
+import com.emo.lkplayer.innerlayer.model.entities.Folder;
 import com.emo.lkplayer.outerlayer.view.fragments.ListAlbumsFragment;
 import com.emo.lkplayer.outerlayer.view.fragments.ListPlaylistFragment;
 import com.emo.lkplayer.outerlayer.view.fragments.ListTrackFragment;
 import com.emo.lkplayer.outerlayer.view.fragments.NavFolderFragment;
 import com.emo.lkplayer.outerlayer.view.fragments.NavLibraryFragment;
 import com.emo.lkplayer.outerlayer.view.fragments.NavPlayBackFragment;
+import com.emo.lkplayer.outerlayer.view.fragments.VideoPlaybackFragment;
+import com.emo.lkplayer.outerlayer.view.fragments.VideoTracksListFragment;
 
+import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by shoaibanwar on 6/9/17.
- */
 
 public final class NavigationManagerContentFlow extends BaseNavigationManager {
 
     /*--------------------- Methods here to open App's Fragments --------------------------------*/
-    public void startPlayBackFragment(int position, List<AudioTrack> list)
+    public void startPlayBackFragment()
     {
         Fragment fragment = NavPlayBackFragment.newInstance();
         openAsRoot(fragment, BACKSTACK_STATE_PLAYBACK_FRAGMENT_ONTOP); /* Opened as root and added to backstack */
     }
 
-    public void startFolderFragment(boolean addToBackStack)
+    public void VideoPlaybackFragment_Start(List<AudioTrack> trackList,int selectedTrackPos)
+    {
+        Fragment fragment = VideoPlaybackFragment.newInstance((ArrayList) trackList,selectedTrackPos);
+        open(fragment,false,true);
+    }
+
+    public void PopVideoPlaybackFragment()
+    {
+        mFragmentManager.popBackStackImmediate();
+    }
+
+    public void VideoTrackListFragment_Start()
+    {
+        Fragment fragment = VideoTracksListFragment.newInstance();
+        open(fragment,false,true);
+    }
+
+    public void startFolderFragment()
     {
         if (folderFragment == null)
             folderFragment = NavFolderFragment.newInstance(null, null);
@@ -97,6 +114,7 @@ public final class NavigationManagerContentFlow extends BaseNavigationManager {
         Fragment GenreFrag = com.emo.lkplayer.outerlayer.view.fragments.ListGenreFragment.newInstance();
         open(GenreFrag, false, true);
     }
+
     /* ListTrackFragment----*/
     public void startListTracksFragment(String viaFolderQuery, String viaAlbumQuery, String viaArtistQuery, String playlistName)
     {

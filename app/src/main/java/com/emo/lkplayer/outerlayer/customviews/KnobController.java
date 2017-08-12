@@ -17,9 +17,6 @@ import android.widget.TextView;
 
 import com.emo.lkplayer.R;
 
-/**
- * Created by shoaibanwar on 6/12/17.
- */
 
 public class KnobController extends RelativeLayout {
 

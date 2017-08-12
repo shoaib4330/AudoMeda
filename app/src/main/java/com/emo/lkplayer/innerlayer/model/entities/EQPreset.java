@@ -8,10 +8,6 @@ import com.emo.lkplayer.outerlayer.storage.daos.DBConstants;
 import com.emo.lkplayer.outerlayer.storage.daos.TypeConverter_IntegerArray;
 import com.h6ah4i.android.media.audiofx.IEqualizer;
 
-/**
- * Created by shoaibanwar on 7/26/17.
- */
-
 public abstract class EQPreset {
 
     public static final int PRESET_ARR_SIZE = 10;

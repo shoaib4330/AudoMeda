@@ -13,9 +13,7 @@ import com.emo.lkplayer.innerlayer.model.entities.Album;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 6/29/17.
- */
+
 
 public final class AlbumsLoader implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -26,7 +24,7 @@ public final class AlbumsLoader implements LoaderManager.LoaderCallbacks<Cursor>
     private AlbumsLoader.MediaProviderEventsListener mediaProviderEventsListener;
 
     private static final int ID_LOADER_ALBUMS_AUDIO = 4419;
-    private static final int ID_LOADER_ALBUMS_VIDEO = 9879;
+    //private static final int ID_LOADER_ALBUMS_VIDEO = 9879;
 
     private boolean dataRequestMade = false;
 
@@ -61,7 +59,7 @@ public final class AlbumsLoader implements LoaderManager.LoaderCallbacks<Cursor>
     private void init()
     {
         loaderManager.initLoader(ID_LOADER_ALBUMS_AUDIO, null, this);
-        loaderManager.initLoader(ID_LOADER_ALBUMS_VIDEO, null, this);
+        //loaderManager.initLoader(ID_LOADER_ALBUMS_VIDEO, null, this);
     }
 
     public void register(AlbumsLoader.MediaProviderEventsListener mediaProviderEventsListener)
@@ -94,17 +92,18 @@ public final class AlbumsLoader implements LoaderManager.LoaderCallbacks<Cursor>
         {
             this.audioAlbumsLoaderDone = true;
             this.audioAlbumsList = audioAlbumsSpecification.returnMappedList(data);
-        } else if (loader.getId() == ID_LOADER_ALBUMS_VIDEO)
-        {
-            this.videoAlbumsLoaderDone = true;
-            this.videoAlbumsList = videoAlbumsSpecification.returnMappedList(data);
         }
+//        else if (loader.getId() == ID_LOADER_ALBUMS_VIDEO)
+//        {
+//            this.videoAlbumsLoaderDone = true;
+//            this.videoAlbumsList = videoAlbumsSpecification.returnMappedList(data);
+//        }
 
-        if (this.audioAlbumsLoaderDone && this.videoAlbumsLoaderDone)
+        //if (this.audioAlbumsLoaderDone && this.videoAlbumsLoaderDone)
         {
             albumList = new ArrayList<>();
             albumList.addAll(this.audioAlbumsList);
-            albumList.addAll(this.videoAlbumsList);
+        //    albumList.addAll(this.videoAlbumsList);
             if (this.mediaProviderEventsListener != null)
                 this.mediaProviderEventsListener.onListCreated(albumList);
         }
@@ -117,8 +116,8 @@ public final class AlbumsLoader implements LoaderManager.LoaderCallbacks<Cursor>
     {
         if (loader.getId() == ID_LOADER_ALBUMS_AUDIO)
             this.audioAlbumsLoaderDone = false;
-        if (loader.getId() == ID_LOADER_ALBUMS_VIDEO)
-            this.videoAlbumsLoaderDone = false;
+//        if (loader.getId() == ID_LOADER_ALBUMS_VIDEO)
+//            this.videoAlbumsLoaderDone = false;
 
         swapCursor(null, null);
     }

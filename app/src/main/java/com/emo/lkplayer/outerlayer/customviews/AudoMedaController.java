@@ -15,9 +15,6 @@ import com.emo.lkplayer.R;
 import com.emo.lkplayer.utilities.Utility;
 import com.emo.lkplayer.innerlayer.model.entities.iPlayable;
 
-/**
- * Created by shoaibanwar on 6/7/17.
- */
 
 public class AudoMedaController extends LinearLayoutCompat implements View.OnClickListener {
 

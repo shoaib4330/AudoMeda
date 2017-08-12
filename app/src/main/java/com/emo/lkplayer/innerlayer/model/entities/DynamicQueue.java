@@ -12,9 +12,6 @@ import com.emo.lkplayer.outerlayer.storage.daos.TypeConverter_IntegerArray;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 8/2/17.
- */
 @Entity(tableName = DBConstants.TABLE_DYNAMICQUEUE_NAME)
 public class DynamicQueue {
     @Ignore

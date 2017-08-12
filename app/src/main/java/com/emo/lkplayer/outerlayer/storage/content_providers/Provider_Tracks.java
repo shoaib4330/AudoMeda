@@ -11,10 +11,6 @@ import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.BaseL
 
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 7/24/17.
- */
-
 public class Provider_Tracks {
 
     public interface ProviderCallBacks{
@@ -28,7 +24,6 @@ public class Provider_Tracks {
     private BaseLoaderSpecification specification;
     private AsyncQueryHandler asyncQueryHandler;
     private ProviderCallBacks callBacksListener;
-    Handler handler = new Handler();
 
     public Provider_Tracks(Context context, final ProviderCallBacks callBacksListener)
     {

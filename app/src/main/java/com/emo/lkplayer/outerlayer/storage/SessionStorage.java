@@ -13,9 +13,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-/**
- * Created by shoaibanwar on 7/24/17.
- */
 
 public class SessionStorage {
 

@@ -20,9 +20,6 @@ import android.widget.TextView;
 
 import com.emo.lkplayer.R;
 
-/**
- * Created by shoaibanwar on 6/13/17.
- */
 
 public class VerticalSliderWrapped extends LinearLayout {
 

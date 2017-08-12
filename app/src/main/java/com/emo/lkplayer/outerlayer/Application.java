@@ -43,4 +43,10 @@ public class Application extends android.app.Application
             sleepTimer.stopWaiter();
     }
 
+    @Override
+    public void onTerminate()
+    {
+        AppMediaManager.getInstance().End();
+        super.onTerminate();
+    }
 }

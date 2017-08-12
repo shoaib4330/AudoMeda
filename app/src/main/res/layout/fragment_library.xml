@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.75"
-                android:text="All Songs"
+                android:text="All Tracks"
                 android:textAppearance="?android:textAppearanceLarge" />
 
         </LinearLayout>
@@ -221,6 +221,33 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.75"
                 android:text="Recently Added"
+                android:textAppearance="?android:textAppearanceLarge" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/leadItem_videoTracks"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:background="@drawable/list_item_background_selector">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.25"
+                android:minHeight="35dp"
+                app:srcCompat="@drawable/icond_videotrack" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.75"
+                android:text="Video Tracks"
                 android:textAppearance="?android:textAppearanceLarge" />
 
         </LinearLayout>

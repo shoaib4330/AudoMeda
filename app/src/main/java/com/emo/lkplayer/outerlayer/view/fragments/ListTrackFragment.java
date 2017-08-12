@@ -25,16 +25,19 @@ import android.widget.Toast;
 import com.emo.lkplayer.ConstantsHolder;
 import com.emo.lkplayer.R;
 import com.emo.lkplayer.innerlayer.interactors.Interactor_ModifyDQ;
+import com.emo.lkplayer.innerlayer.model.entities.Folder;
 import com.emo.lkplayer.innerlayer.model.entities.Playlist;
 import com.emo.lkplayer.middlelayer.viewmodel.PlaylistViewModel;
 import com.emo.lkplayer.outerlayer.customviews.PlayListDialog;
 import com.emo.lkplayer.outerlayer.customviews.TrackInfoDialog;
+import com.emo.lkplayer.outerlayer.view.reusables.TrackRecyclerAdapter;
 import com.emo.lkplayer.utilities.Utility;
 import com.emo.lkplayer.middlelayer.viewmodel.TrackListingViewModel;
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
 import com.emo.lkplayer.outerlayer.view.FragmentInteractionListener;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +70,8 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
     private static final String ARG_AllRECENTS = "all_recents";
     private static final String ARG_DQTRACKS = "dq_tracks";
 
+    private static final String ARG_AS_OBJECT = "arg_as_object";
+
     private static final String ARG_FRAG_OPEN_MODE = "mode_enum";
     private static final String ARG_FRAG_PARAM_VAL = "val_according_to_mode";
 
@@ -79,7 +84,7 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
 
     private View rootView;
     private RecyclerView recyclerView;
-    private TrackRecylerAdapter trackRecylerAdapter;
+    private TrackRecyclerAdapter trackRecylerAdapter;
 
     private List<AudioTrack> trackList;
     private TrackListingViewModel trackListingViewModel;
@@ -124,6 +129,21 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
         return fragment;
     }
 
+//    public static ListTrackFragment newInstanceViaObject(Object param)
+//    {
+//        Bundle args = new Bundle();
+//        if (param!=null)
+//        {
+//            if (param instanceof Folder)
+//            {
+//                args.putSerializable(ARG_AS_OBJECT,(Serializable) param);
+//            }
+//        }
+//        ListTrackFragment fragment = new ListTrackFragment();
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
+
     public static ListTrackFragment newInstanceWithAllTracks()
     {
         ListTrackFragment fragment = new ListTrackFragment();
@@ -162,12 +182,12 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
         /* Get the args passed to this frag and request made for trackslist */
         makeTrackListCall();
         /* Setting up recycler-view's adapter */
-        trackRecylerAdapter = new TrackRecylerAdapter(new View.OnClickListener() {
+        trackRecylerAdapter = new TrackRecyclerAdapter(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
                 trackListingViewModel.updateCurrentSpecification(folderName, albumName, artistName, playlistName, genreID, (int) v.getTag());
-                navigationManager.startPlayBackFragment((int) v.getTag(), trackList);
+                navigationManager.startPlayBackFragment();
             }
         }, new View.OnLongClickListener() {
             @Override
@@ -184,6 +204,11 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
 
         if (getArguments() != null)
         {
+//            if (getArguments().getSerializable(ARG_AS_OBJECT)!=null)
+//            {
+//                folderName = ((Folder)getArguments().getSerializable(ARG_AS_OBJECT)).getDiplayName();
+//                trackListingViewModel.getAudioTracks(getArguments().getSerializable(ARG_AS_OBJECT)).observe(this,observer);
+//            }
             if (getArguments().getSerializable(ARG_FRAG_OPEN_MODE) != null)
             {
                 ListingMode mode = (ListingMode) getArguments().getSerializable(ARG_FRAG_OPEN_MODE);
@@ -323,74 +348,4 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
         alertDialog.getWindow().setLayout(getActivity().getWindow().getDecorView().getWidth(), 500);
     }
 
-    private static class TrackRecylerAdapter extends RecyclerView.Adapter<ListTrackFragment.TrackRecylerAdapter.TrackViewHolder> {
-
-        public static class TrackViewHolder extends RecyclerView.ViewHolder {
-            private TextView tv_trackTitle, tv_Duration, tv_ArtistName;
-
-            private static View.OnClickListener mOnClickListener;
-            private static View.OnLongClickListener mLongClickListener;
-
-            public TrackViewHolder(View itemView)
-            {
-                super(itemView);
-                tv_trackTitle = (TextView) itemView.findViewById(R.id.tv_trackTitle);
-                tv_Duration = (TextView) itemView.findViewById(R.id.tv_trackDuration);
-                tv_ArtistName = (TextView) itemView.findViewById(R.id.tv_trackArtist);
-            }
-
-            public void bind(AudioTrack track, int position)
-            {
-                this.itemView.setTag(position); /* shoaib: to get clicked item position */
-                tv_trackTitle.setText(track.getTrackTitle());
-                tv_ArtistName.setText(track.getArtistName());
-                tv_Duration.setText(Utility.millisToTrackTimeFormat(track.getTrackDuration()));
-                /* shoaib: this onCickListener will be initialized and assigned by setItemViewOnClickListener */
-                this.itemView.setOnClickListener(this.mOnClickListener);
-                this.itemView.setOnLongClickListener(mLongClickListener);
-            }
-
-            public static void setItemViewOnClickListener(View.OnClickListener listener, View.OnLongClickListener longClickListener)
-            {
-                mOnClickListener = listener;
-                mLongClickListener = longClickListener;
-            }
-        }
-
-        private List<AudioTrack> adapterTrackList;
-
-        public TrackRecylerAdapter(View.OnClickListener listener, View.OnLongClickListener longClickListener)
-        {
-            TrackRecylerAdapter.TrackViewHolder.setItemViewOnClickListener(listener, longClickListener);
-        }
-
-        public void updateFoldersList(List<AudioTrack> tracksList)
-        {
-            this.adapterTrackList = tracksList;
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public TrackRecylerAdapter.TrackViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-        {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View itemView = inflater.inflate(R.layout.m_track_view, parent, false);
-            TrackRecylerAdapter.TrackViewHolder fvh = new TrackRecylerAdapter.TrackViewHolder(itemView);
-            return fvh;
-        }
-
-        @Override
-        public void onBindViewHolder(TrackRecylerAdapter.TrackViewHolder holder, int position)
-        {
-            holder.bind(this.adapterTrackList.get(position), position);
-        }
-
-        @Override
-        public int getItemCount()
-        {
-            if (this.adapterTrackList != null)
-                return this.adapterTrackList.size();
-            return 0;
-        }
-    }
 }

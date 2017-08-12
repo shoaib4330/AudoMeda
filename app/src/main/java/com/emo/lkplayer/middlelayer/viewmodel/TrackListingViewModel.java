@@ -10,6 +10,7 @@ import com.emo.lkplayer.innerlayer.interactors.Interactor_ProviderTracks;
 import com.emo.lkplayer.innerlayer.interactors.Interactor_ModifyDQ;
 import com.emo.lkplayer.innerlayer.interactors.Interactor_SetAudioRingtone;
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
+import com.emo.lkplayer.innerlayer.model.entities.Folder;
 
 import java.util.List;
 
@@ -25,7 +26,6 @@ public final class TrackListingViewModel extends AndroidViewModel {
     boolean isAllTracksRequestMade = false;
     boolean isRecentTracksRequestMade = false;
 
-    boolean isReloadDue = false;
     private Interactor_ModifyDQ interactorModifyDQ;
 
     public TrackListingViewModel(Application application)
@@ -55,7 +55,7 @@ public final class TrackListingViewModel extends AndroidViewModel {
         so if it has requested such list once, no need requesting it from interactor again
         just return the list we already have...
          */
-        if (Live_TracksList != null && !isReloadDue)
+        if (Live_TracksList != null)
             return Live_TracksList;
 
         if (genreID != -1)
@@ -79,7 +79,6 @@ public final class TrackListingViewModel extends AndroidViewModel {
         {
             Live_TracksList = interactor_Provider_tracks.getAudioTracksAll();
         }
-        isReloadDue = false;
         return Live_TracksList;
     }
 
@@ -100,7 +99,6 @@ public final class TrackListingViewModel extends AndroidViewModel {
 
     public void deleteTrackFromDevice(AudioTrack audioTrack)
     {
-        isReloadDue = true;
         new Interactor_DeleteTrackFromDevice(this.getApplication()).deleteTrack(audioTrack);
     }
 

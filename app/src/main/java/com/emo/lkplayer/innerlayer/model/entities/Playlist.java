@@ -13,9 +13,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 6/20/17.
- */
 
 public final class Playlist {
     private long id;

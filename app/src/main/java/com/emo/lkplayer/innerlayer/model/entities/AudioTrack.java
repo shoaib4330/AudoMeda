@@ -3,11 +3,10 @@ package com.emo.lkplayer.innerlayer.model.entities;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-/**
- * Created by shoaibanwar on 6/20/17.
- */
+import java.io.Serializable;
 
-public final class AudioTrack implements iPlayable {
+
+public final class AudioTrack implements iPlayable, Serializable {
 
     public static final Uri URI_AUDIO_TRACKS = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
     public static final Uri URI_VIDEO_TRACKS = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;

@@ -4,9 +4,6 @@ import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
 
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 7/3/17.
- */
 
 public interface MediaControllerInterface {
     interface MediaControllerCallbacks{

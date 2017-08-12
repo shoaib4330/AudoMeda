@@ -7,10 +7,6 @@ import android.media.RingtoneManager;
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
 import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.AudioTracksSpecification;
 
-/**
- * Created by shoaibanwar on 8/4/17.
- */
-
 public class Interactor_SetAudioRingtone {
 
     private Context context;

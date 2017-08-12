@@ -34,7 +34,8 @@ public class NavLibraryFragment extends Fragment implements View.OnClickListener
     private static final String ARG_PARAM2 = "param2";
 
     private View libraryLead_allSongs, libraryLead_albums, libraryLead_artists, libraryLead_genres,
-            libraryLead_playlists, libraryLead_queue, libraryLead_topRated, libraryLead_recentlyAdded;
+            libraryLead_playlists, libraryLead_queue, libraryLead_topRated, libraryLead_recentlyAdded,
+            libraryLead_videoTracksList;
 
     private LibraryLeadSelectionEventsListener eventsListener;
     private NavigationManagerContentFlow frag_NavigationManager;
@@ -83,6 +84,7 @@ public class NavLibraryFragment extends Fragment implements View.OnClickListener
         libraryLead_queue = gRootView.findViewById(R.id.leadItem_queue);
         libraryLead_topRated = gRootView.findViewById(R.id.leadItem_topRated);
         libraryLead_recentlyAdded = gRootView.findViewById(R.id.leadItem_recentlyAdded);
+        libraryLead_videoTracksList = gRootView.findViewById(R.id.leadItem_videoTracks);
 
         libraryLead_allSongs.setOnClickListener(this);
         libraryLead_albums.setOnClickListener(this);
@@ -92,6 +94,7 @@ public class NavLibraryFragment extends Fragment implements View.OnClickListener
         libraryLead_queue.setOnClickListener(this);
         libraryLead_topRated.setOnClickListener(this);
         libraryLead_recentlyAdded.setOnClickListener(this);
+        libraryLead_videoTracksList.setOnClickListener(this);
     }
 
     @Override
@@ -139,6 +142,10 @@ public class NavLibraryFragment extends Fragment implements View.OnClickListener
         {
             frag_NavigationManager.startListTracksFragment_WithAllRecentTracks();
             return;
+        }
+        else if (leadID == R.id.leadItem_videoTracks)
+        {
+            frag_NavigationManager.VideoTrackListFragment_Start();
         }
     }
 }

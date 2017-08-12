@@ -1,10 +1,8 @@
 package com.emo.lkplayer.innerlayer.model.entities;
 
-/**
- * Created by shoaibanwar on 6/20/17.
- */
+import java.io.Serializable;
 
-public final class Folder {
+public final class Folder implements Serializable{
 
     private String path;
     private int countFiles;
@@ -33,5 +31,6 @@ public final class Folder {
     public void setDiplayName(String diplayName) {
         this.diplayName = diplayName;
     }
+
 
 }

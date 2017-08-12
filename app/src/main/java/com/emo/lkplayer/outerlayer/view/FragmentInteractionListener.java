@@ -8,4 +8,15 @@ import com.emo.lkplayer.outerlayer.view.navigation.BaseNavigationManager;
 
 public interface FragmentInteractionListener {
     BaseNavigationManager getNavigationManager();
+
+    interface FragmentAndToolbarInteractionListener extends FragmentInteractionListener
+    {
+        void showToolbar();
+
+        void hideToolbar();
+
+        void showBottomNavBar();
+
+        void hideBottomNavBar();
+    }
 }

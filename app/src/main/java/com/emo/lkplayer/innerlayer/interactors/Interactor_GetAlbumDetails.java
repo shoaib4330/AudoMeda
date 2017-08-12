@@ -10,9 +10,7 @@ import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.BaseL
 
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 8/4/17.
- */
+
 
 public class Interactor_GetAlbumDetails {
 

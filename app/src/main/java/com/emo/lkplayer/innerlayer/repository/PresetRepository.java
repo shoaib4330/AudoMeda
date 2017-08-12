@@ -14,10 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 7/28/17.
- */
-
 public class PresetRepository {
     /* This repo will use PresetDao to get presets in db plust default presets of Equalizer
     using EQ instance.

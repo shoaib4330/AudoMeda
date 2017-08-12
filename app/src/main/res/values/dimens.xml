@@ -26,4 +26,10 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+
+    <!-- Custom used Icons dimensions -->
+    <dimen name="cus_listview_left_side_icon_width">80dp</dimen>
+    <dimen name="cus_listview_left_side_icon_height">80dp</dimen>
+
 </resources>

@@ -1,0 +1,23 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1"
+    tools:context="com.emo.lkplayer.outerlayer.view.fragments.VideoPlaybackFragment">
+
+    <SurfaceView
+        android:id="@+id/surfView_ForVideo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/audomedaController_videoPlaybackFrag"/>
+
+    <com.emo.lkplayer.outerlayer.customviews.AudoMedaController
+        android:id="@+id/audomedaController_videoPlaybackFrag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+    </com.emo.lkplayer.outerlayer.customviews.AudoMedaController>
+
+</RelativeLayout>

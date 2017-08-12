@@ -7,8 +7,11 @@ import android.app.Service;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
+import android.content.BroadcastReceiver;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
@@ -36,13 +39,39 @@ import java.util.List;
 import static com.emo.lkplayer.outerlayer.androidservices.MediaControllerService.Constants.ServiceSentActionConstants.ACTION_SEEKBAR_UPDATE;
 import static com.emo.lkplayer.outerlayer.androidservices.MediaControllerService.Constants.ServiceSentActionConstants.TAG_INTENT_PROGRESS_INTEGER;
 
-/**
- * Created by shoaibanwar on 7/3/17.
- */
+
 
 public class MediaControllerService extends Service implements MediaControllerInterface, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener,
         MediaPlayer.OnPreparedListener,IBasicMediaPlayer.OnCompletionListener,IBasicMediaPlayer.OnPreparedListener,
         IBasicMediaPlayer.OnErrorListener{
+
+    public interface Constants {
+        String MAIN_ACTION = "com.emo.audomeda.action.main";
+        String PREV_ACTION = "com.emo.audomeda.action.prev";
+        String PLAY_ACTION = "com.emo.audomeda.action.play";
+        String PAUSE_ACTION = "com.emo.audomeda.action.pause"; //Notification does not use this one
+        String NEXT_ACTION = "com.emo.audomeda.action.next";
+        String STOP_ACTION = "com.emo.audomeda.action.stop";
+
+        String TEXT_NOTIFICATION_PLAY= "Play";
+        String TEXT_NOTIFICATION_PAUSE= "Pause";
+
+        int NOTIFICATION_ID = 1131;
+
+        interface ServiceSentActionConstants{
+            String ACTION_SERVICE_CHANGES_TRACK = "com.emo.audomeda.action.connectionclient.trackchanged";
+            String ACTION_SERVICE_PLAYS_TRACK = "com.emo.audomeda.action.connectionclient.trackplayed";
+            String ACTION_SERVICE_STOPS_TRACK = "com.emo.audomeda.action.connectionclient.trackstopped";
+            String ACTION_SEEKBAR_UPDATE = "com.emo.audomeda_local_CURRENTSEEKPOSITION_update";
+
+            String INTENT_EXTRA_TRACKINDEX_INT = "com.emo.audomeda.action.connectionclient.trackIndex";
+            String TAG_INTENT_PROGRESS_INTEGER = "currentProgress";
+        }
+
+        interface ServiceClientIntentExtras{
+            String INTENT_EXTRA_SERVICE_STARTING_CLIENT_NAME="client_starting_service_name";
+        }
+    }
 
     @Override
     public void onCompletion(IBasicMediaPlayer mp)
@@ -66,33 +95,6 @@ public class MediaControllerService extends Service implements MediaControllerIn
         mp.start();
         this.isMediaPlayerPrepared = true;
         sendServiceActionBroadCaset(Constants.ServiceSentActionConstants.ACTION_SERVICE_PLAYS_TRACK);
-    }
-
-    public interface Constants {
-        String MAIN_ACTION = "com.emo.audomeda.action.main";
-        String PREV_ACTION = "com.emo.audomeda.action.prev";
-        String PLAY_ACTION = "com.emo.audomeda.action.play";
-        String NEXT_ACTION = "com.emo.audomeda.action.next";
-        String STOP_ACTION = "com.emo.audomeda.action.stop";
-
-        String TEXT_NOTIFICATION_PLAY= "Play";
-        String TEXT_NOTIFICATION_PAUSE= "Pause";
-
-        int NOTIFICATION_ID = 1131;
-
-        interface ServiceSentActionConstants{
-            String ACTION_SERVICE_CHANGES_TRACK = "com.emo.audomeda.action.connectionclient.trackchanged";
-            String ACTION_SERVICE_PLAYS_TRACK = "com.emo.audomeda.action.connectionclient.trackplayed";
-            String ACTION_SERVICE_STOPS_TRACK = "com.emo.audomeda.action.connectionclient.trackstopped";
-            String ACTION_SEEKBAR_UPDATE = "com.emo.audomeda_local_CURRENTSEEKPOSITION_update";
-
-            String INTENT_EXTRA_TRACKINDEX_INT = "com.emo.audomeda.action.connectionclient.trackIndex";
-            String TAG_INTENT_PROGRESS_INTEGER = "currentProgress";
-        }
-
-        interface ServiceClientIntentExtras{
-            String INTENT_EXTRA_SERVICE_STARTING_CLIENT_NAME="client_starting_service_name";
-        }
     }
 
     private static final int HANDLER_DELAY_REPEATING_SEEKBAR = 1000;
@@ -161,11 +163,35 @@ public class MediaControllerService extends Service implements MediaControllerIn
     private boolean isMediaPlayerPaused   = false;
     private boolean isMediaPlayerPlaying  = false;
 
+    private BroadcastReceiver audioActionCallsReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            if (intent.getAction().equals(Constants.PLAY_ACTION))
+            {
+                if (!isAudioPlaying())
+                    play();
+            }
+            else if (intent.getAction().equals(Constants.PAUSE_ACTION))
+            {
+                if (isAudioPlaying())
+                    pause();
+            }
+        }
+    };
+
+    private IntentFilter audioActionCallsReceiverIntentFilter = new IntentFilter();
+
     @Override
     public void onCreate()
     {
         super.onCreate();
-
+        /* Add actions that service will listen to via broadcast-receiver */
+        audioActionCallsReceiverIntentFilter.addAction(Constants.PLAY_ACTION);
+        audioActionCallsReceiverIntentFilter.addAction(Constants.PAUSE_ACTION);
+        /* Register to receive calls via broadcast-receiver */
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(audioActionCallsReceiver,
+                audioActionCallsReceiverIntentFilter);
         /* Get the interactor object at the very start, it will be used to interact with the model*/
         currentSessionInteractor = new CurrentSessionInteractor(getApplicationContext());
         /* Setup Media player, receive media player instace that is used by whole application globally*/
@@ -189,14 +215,7 @@ public class MediaControllerService extends Service implements MediaControllerIn
                 public void onChanged(@Nullable List<AudioTrack> audioTrackList)
                 {
                     /* when list is changed, we call playOnly(int newPos), since its implied
-                    that index would have changed...
-                     */
-                    /*--fix---*/
-//                    if (live_currentTrackIndex.getValue() >= audioTrackList.size())
-//                    {
-//                        ((MutableLiveData)live_currentTrackIndex).setValue(audioTrackList.size()-1);
-//                        return;
-//                    }
+                    that index would have changed...*/
                     playOnly(live_currentTrackIndex.getValue());
                 }
             });

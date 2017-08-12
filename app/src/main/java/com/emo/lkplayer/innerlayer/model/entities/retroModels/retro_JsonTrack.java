@@ -5,10 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 8/5/17.
- */
-
 public class retro_JsonTrack {
     @SerializedName("track_id")
     @Expose

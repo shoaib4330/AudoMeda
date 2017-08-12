@@ -3,10 +3,6 @@ package com.emo.lkplayer.innerlayer.model.entities.retroModels;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by shoaibanwar on 8/5/17.
- */
-
 public class retro_LyricsResponse {
 
     public Message message;

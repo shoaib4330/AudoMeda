@@ -14,9 +14,6 @@ import com.emo.lkplayer.outerlayer.storage.content_providers.Provider_Tracks;
 
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 7/24/17.
- */
 
 public class CurrentSessionRepo {
 

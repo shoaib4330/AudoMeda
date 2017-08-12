@@ -15,10 +15,7 @@ import com.emo.lkplayer.outerlayer.storage.daos.PlaylistModelDao;
 import com.emo.lkplayer.outerlayer.storage.daos.PresetModelDao;
 import com.emo.lkplayer.outerlayer.storage.daos.TypeConverter_IntegerArray;
 
-/**
- * Created by shoaibanwar on 7/30/17.
- */
-@Database(entities = {EQPreset.UserDefPreset.class, Playlist.UserDefinedPlaylist.class, DynamicQueue.class}, version = 1)
+@Database(entities = {EQPreset.UserDefPreset.class, Playlist.UserDefinedPlaylist.class, DynamicQueue.class}, version = 1,exportSchema = false)
 @TypeConverters({TypeConverter_IntegerArray.class})
 public abstract class AppDatabase extends RoomDatabase {
 

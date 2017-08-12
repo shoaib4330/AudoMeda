@@ -12,10 +12,6 @@ import com.h6ah4i.android.media.audiofx.IEqualizer;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 8/3/17.
- */
-
 public class PlaylistRepo {
 
     private Context context;

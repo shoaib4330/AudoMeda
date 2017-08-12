@@ -28,7 +28,7 @@ import com.emo.lkplayer.outerlayer.view.navigation.BaseNavigationManager;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
 
 public class NagizarActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener,
-        NavigationManagerContentFlow.NavigationListener, LibraryLeadSelectionEventsListener, NavPlayBackFragment.NavPlayBackFragmentInteractionListener,
+        NavigationManagerContentFlow.NavigationListener, LibraryLeadSelectionEventsListener, FragmentInteractionListener.FragmentAndToolbarInteractionListener,
         NavFolderFragment.InteractionListener, NavLibraryFragment.InteractionListener, ListAlbumsFragment.InteractionListener,
         ListGenreFragment.InteractionListener, ListArtistFragment.InteractionListener, ListPlaylistFragment.InteractionListener {
 
@@ -68,7 +68,7 @@ public class NagizarActivity extends AppCompatActivity implements BottomNavigati
 
         mNavigationManager = new NavigationManagerContentFlow();
         mNavigationManager.init(getSupportFragmentManager(), R.id.fragmentHolder_NagizarActivity);
-        mNavigationManager.startPlayBackFragment(-1, null);
+        mNavigationManager.startPlayBackFragment();
 
     }
 
@@ -86,7 +86,7 @@ public class NagizarActivity extends AppCompatActivity implements BottomNavigati
                     // contacts-related task you need to do.
                     mNavigationManager = new NavigationManagerContentFlow();
                     mNavigationManager.init(getSupportFragmentManager(), R.id.fragmentHolder_NagizarActivity);
-                    mNavigationManager.startPlayBackFragment(-1, null);
+                    mNavigationManager.startPlayBackFragment();
                 } else
                 {
                     // permission denied, boo! Disable the
@@ -112,13 +112,13 @@ public class NagizarActivity extends AppCompatActivity implements BottomNavigati
         switch (item.getItemId())
         {
             case R.id.navigation_GoToPlayback:
-                mNavigationManager.startPlayBackFragment(-1, null);
+                mNavigationManager.startPlayBackFragment();
                 return true;
             case R.id.navMenu_Nagizar_Library:
                 mNavigationManager.startLibraryFragment();
                 return true;
             case R.id.navMenu_Nagizar_Folders:
-                mNavigationManager.startFolderFragment(false);
+                mNavigationManager.startFolderFragment();
                 return true;
         }
         return false;

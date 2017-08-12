@@ -1,8 +1,5 @@
 package com.emo.lkplayer.innerlayer.model.entities;
 
-/**
- * Created by shoaibanwar on 6/30/17.
- */
 
 public final class Genre {
 

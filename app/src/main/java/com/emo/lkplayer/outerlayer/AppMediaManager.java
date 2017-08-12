@@ -97,7 +97,6 @@ public class AppMediaManager {
         return basicMediaPlayer;
     }
 
-
     public IEqualizer getBasicEqualizer()
     {
         if (ourInstance == null || !inited)
@@ -117,6 +116,24 @@ public class AppMediaManager {
         if (ourInstance == null || !inited)
             throw new IllegalStateException("AppMediaManager: Module not initialized yet");
         return iBassBoost;
+    }
+
+    public void End()
+    {
+        if (basicMediaPlayer!=null)
+            basicMediaPlayer.release();
+        basicMediaPlayer = null;
+        if (iEqualizer!=null)
+            iEqualizer.release();
+        if (iBassBoost!=null)
+            iBassBoost.release();
+        if (iPreAmp!=null)
+            iPreAmp.release();
+        iMediaPlayerFactory=null;
+        wContext =null;
+        iEqualizer=null;
+        iBassBoost=null;
+        iPreAmp = null;
     }
 
 }

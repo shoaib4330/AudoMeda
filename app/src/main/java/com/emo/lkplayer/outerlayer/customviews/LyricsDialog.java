@@ -7,8 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.emo.lkplayer.R;
-import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
-import com.emo.lkplayer.utilities.Utility;
+
 
 public class LyricsDialog {
 

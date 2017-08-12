@@ -2,10 +2,6 @@ package com.emo.lkplayer;
 
 import android.util.Log;
 
-/**
- * Created by shoaibanwar on 8/5/17.
- */
-
 public class Waiter extends Thread {
 
     private static final String TAG = Waiter.class.getName();

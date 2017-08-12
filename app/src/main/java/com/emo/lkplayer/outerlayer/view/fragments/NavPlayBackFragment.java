@@ -71,16 +71,6 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
         return registry;
     }
 
-    public interface NavPlayBackFragmentInteractionListener extends FragmentInteractionListener {
-        void showToolbar();
-
-        void hideToolbar();
-
-        void showBottomNavBar();
-
-        void hideBottomNavBar();
-    }
-
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent)
@@ -106,7 +96,7 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
     private AudoMedaController playback_control_tool;
     private ViewPager albumArtSlider;
 
-    private NavPlayBackFragmentInteractionListener interactionListener;
+    private FragmentInteractionListener.FragmentAndToolbarInteractionListener interactionListener;
     private NavigationManagerContentFlow navigationManager;
 
     private NavPlayBackFragment.SliderPagerAdapter fragmentStatePagerAdapter;
@@ -294,9 +284,9 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
     public void onAttach(Context context)
     {
         super.onAttach(context);
-        if (context instanceof NavPlayBackFragmentInteractionListener)
+        if (context instanceof FragmentInteractionListener.FragmentAndToolbarInteractionListener)
         {
-            interactionListener = (NavPlayBackFragmentInteractionListener) context;
+            interactionListener = (FragmentInteractionListener.FragmentAndToolbarInteractionListener) context;
         } else
         {
             throw new RuntimeException(context.toString()
@@ -400,8 +390,6 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
     {
         if (interactionListener != null)
         {
-            //interactionListener.showToolbar();
-            //interactionListener.hideBottomNavBar();
             inflater.inflate(R.menu.menu_activity_playback, menu);
         }
     }
@@ -419,7 +407,7 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
             startActivity(intent);
         } else if (item.getItemId() == R.id.menuBtn_Library)
         {
-            navigationManager.startFolderFragment(true);
+            navigationManager.startFolderFragment();
         }
 
         if (item.getItemId() == R.id.menu_playbackFrag_addToPlayList)

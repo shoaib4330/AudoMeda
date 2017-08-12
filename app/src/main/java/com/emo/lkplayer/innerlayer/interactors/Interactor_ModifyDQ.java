@@ -11,10 +11,6 @@ import com.emo.lkplayer.outerlayer.storage.AppDatabase;
 
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 8/3/17.
- */
-
 public class Interactor_ModifyDQ {
 
     /* DQ is also implemented as a playlist */

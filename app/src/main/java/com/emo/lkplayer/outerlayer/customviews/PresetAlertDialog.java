@@ -12,9 +12,6 @@ import com.emo.lkplayer.utilities.Utility;
 
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 8/1/17.
- */
 
 public final class PresetAlertDialog {
 

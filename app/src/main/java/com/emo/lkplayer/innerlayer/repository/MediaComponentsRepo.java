@@ -6,9 +6,6 @@ import com.h6ah4i.android.media.audiofx.IBassBoost;
 import com.h6ah4i.android.media.audiofx.IEqualizer;
 import com.h6ah4i.android.media.audiofx.IPreAmp;
 
-/**
- * Created by shoaibanwar on 7/26/17.
- */
 
 public class MediaComponentsRepo {
 

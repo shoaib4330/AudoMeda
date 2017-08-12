@@ -4,23 +4,21 @@ import android.arch.lifecycle.LiveData;
 import android.content.Context;
 
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
-import com.emo.lkplayer.innerlayer.model.entities.Folder;
 import com.emo.lkplayer.innerlayer.model.entities.Playlist;
 import com.emo.lkplayer.innerlayer.repository.PlaylistRepo;
 import com.emo.lkplayer.innerlayer.repository.TrackRepo;
 import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.AudioTracksSpecification;
 import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.BaseLoaderSpecification;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.VideoTracksSpecification;
 
 import java.util.List;
 
-public class Interactor_ProviderTracks {
+public class Interactor_ProviderTracksFromVideo {
 
     private Context context;
     private TrackRepo trackRepo;
     private PlaylistRepo playlistRepo;
 
-    public Interactor_ProviderTracks(Context context)
+    public Interactor_ProviderTracksFromVideo(Context context)
     {
         this.context = context.getApplicationContext();
         this.trackRepo = new TrackRepo(this.context);

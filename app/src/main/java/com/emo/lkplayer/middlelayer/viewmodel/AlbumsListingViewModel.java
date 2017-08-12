@@ -10,10 +10,6 @@ import com.emo.lkplayer.innerlayer.model.entities.Album;
 
 import java.util.List;
 
-/**
- * Created by shoaibanwar on 7/13/17.
- */
-
 public final class AlbumsListingViewModel implements AlbumsLoader.MediaProviderEventsListener {
 
     public interface AlbumsControllerEventsListener {

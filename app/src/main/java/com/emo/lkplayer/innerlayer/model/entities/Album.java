@@ -1,9 +1,5 @@
 package com.emo.lkplayer.innerlayer.model.entities;
 
-/**
- * Created by shoaibanwar on 6/20/17.
- */
-
 public final class Album {
     private long albumID;
     private String albumTitle;

@@ -11,10 +11,6 @@ import com.emo.lkplayer.R;
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
 import com.emo.lkplayer.utilities.Utility;
 
-/**
- * Created by shoaibanwar on 8/4/17.
- */
-
 public class TrackInfoDialog {
 
     private Context context;
