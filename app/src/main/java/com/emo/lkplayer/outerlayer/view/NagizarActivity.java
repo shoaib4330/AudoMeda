@@ -27,7 +27,7 @@ import com.emo.lkplayer.outerlayer.view.fragments.NavPlayBackFragment;
 import com.emo.lkplayer.outerlayer.view.navigation.BaseNavigationManager;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
 
-public class NagizarActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener,
+public class NagizarActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener,
         NavigationManagerContentFlow.NavigationListener, LibraryLeadSelectionEventsListener, FragmentInteractionListener.FragmentAndToolbarInteractionListener,
         NavFolderFragment.InteractionListener, NavLibraryFragment.InteractionListener, ListAlbumsFragment.InteractionListener,
         ListGenreFragment.InteractionListener, ListArtistFragment.InteractionListener, ListPlaylistFragment.InteractionListener {
@@ -41,9 +41,8 @@ public class NagizarActivity extends AppCompatActivity implements BottomNavigati
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nagizar);
-        getSupportActionBar().hide();
 
+        getSupportActionBar().hide();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
@@ -70,6 +69,12 @@ public class NagizarActivity extends AppCompatActivity implements BottomNavigati
         mNavigationManager.init(getSupportFragmentManager(), R.id.fragmentHolder_NagizarActivity);
         mNavigationManager.startPlayBackFragment();
 
+    }
+
+    @Override
+    protected int getLayoutResourceId()
+    {
+        return R.layout.activity_nagizar;
     }
 
     @Override

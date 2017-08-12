@@ -9,7 +9,7 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/notlargeicon"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppThemeLight">
 
         <service android:name=".outerlayer.androidservices.MediaControllerService"
             android:exported="false"

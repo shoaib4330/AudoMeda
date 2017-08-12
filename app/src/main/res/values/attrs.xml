@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="stateButton" format="reference"></attr>
+    <attr name="audomedaControllerSkin" format="reference"></attr>
+    <attr name="listItemBackground" format="reference"></attr>
+    <attr name="defFolderIconTint" format="reference"></attr>
+    <attr name="iconTint" format="reference"></attr>
+</resources>

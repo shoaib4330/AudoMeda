@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:padding="@dimen/basic_allSides_padding"
-    android:background="@drawable/list_item_background_selector">
+    android:background="?listItemBackground">
 
     <ImageView
         android:layout_width="@dimen/basic_SideIcon_artist_LxW_dimen"
@@ -23,7 +23,7 @@
             android:id="@+id/tv_playlistName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/ListTextAppearnceMedium"
+            android:textAppearance="?android:textAppearanceMedium"
             android:text="I am an Artist"
             android:textStyle="bold" />
 
@@ -31,7 +31,7 @@
             android:id="@+id/tv_playlistTotalTracks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/ListTextAppearnceSmall"
+            android:textAppearance="?android:textAppearanceSmall"
             android:text="xx Track(s)"
             android:visibility="visible"/>
     </LinearLayout>

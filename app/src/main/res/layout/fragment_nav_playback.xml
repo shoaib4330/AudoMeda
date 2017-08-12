@@ -9,6 +9,7 @@
 
     <com.emo.lkplayer.outerlayer.customviews.AudoMedaController
         android:id="@+id/view_mediaConroller"
+        style="?audomedaControllerSkin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"></com.emo.lkplayer.outerlayer.customviews.AudoMedaController>

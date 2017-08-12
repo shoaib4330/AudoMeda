@@ -16,7 +16,7 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:background="@drawable/list_item_background_selector">
+            android:background="?listItemBackground">
 
             <ImageView
                 android:layout_width="0dp"
@@ -24,6 +24,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
+                android:tint="?iconTint"
                 app:srcCompat="@drawable/icon_audiotrack" />
 
             <TextView
@@ -43,7 +44,7 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:background="@drawable/list_item_background_selector">
+            android:background="?listItemBackground">
 
             <ImageView
                 android:layout_width="0dp"
@@ -51,6 +52,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
+                android:tint="?iconTint"
                 app:srcCompat="@drawable/icon_albumcircle" />
 
             <TextView
@@ -70,7 +72,7 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:background="@drawable/list_item_background_selector">
+            android:background="?listItemBackground">
 
             <ImageView
                 android:layout_width="0dp"
@@ -78,6 +80,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
+                android:tint="?iconTint"
                 app:srcCompat="@drawable/icon_mic" />
 
             <TextView
@@ -97,7 +100,7 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:background="@drawable/list_item_background_selector">
+            android:background="?listItemBackground">
 
             <ImageView
                 android:layout_width="0dp"
@@ -105,6 +108,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
+                android:tint="?iconTint"
                 app:srcCompat="@drawable/icon_genre" />
 
             <TextView
@@ -124,7 +128,7 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:background="@drawable/list_item_background_selector">
+            android:background="?listItemBackground">
 
             <ImageView
                 android:layout_width="0dp"
@@ -132,6 +136,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
+                android:tint="?iconTint"
                 app:srcCompat="@drawable/icon_playlist" />
 
             <TextView
@@ -151,7 +156,7 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:background="@drawable/list_item_background_selector">
+            android:background="?listItemBackground">
 
             <ImageView
                 android:layout_width="0dp"
@@ -159,6 +164,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
+                android:tint="?iconTint"
                 app:srcCompat="@drawable/icon_queue" />
 
             <TextView
@@ -178,7 +184,7 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:background="@drawable/list_item_background_selector">
+            android:background="?listItemBackground">
 
             <ImageView
                 android:layout_width="0dp"
@@ -186,6 +192,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
+                android:tint="?iconTint"
                 app:srcCompat="@drawable/icon_toprated" />
 
             <TextView
@@ -205,7 +212,7 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:background="@drawable/list_item_background_selector">
+            android:background="?listItemBackground">
 
             <ImageView
                 android:layout_width="0dp"
@@ -213,6 +220,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
+                android:tint="?iconTint"
                 app:srcCompat="@drawable/icon_recentlyadded" />
 
             <TextView
@@ -232,7 +240,7 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:background="@drawable/list_item_background_selector">
+            android:background="?listItemBackground">
 
             <ImageView
                 android:layout_width="0dp"
@@ -240,6 +248,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
+                android:tint="?iconTint"
                 app:srcCompat="@drawable/icond_videotrack" />
 
             <TextView

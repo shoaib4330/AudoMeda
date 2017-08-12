@@ -451,10 +451,6 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
                         }
                     });
         }
-        else if (item.getItemId() == R.id.menu_playbackFrag_delete)
-        {
-            //new TrackListingViewModel(getContext(),getLoaderManager()).deleteTrack(this.);
-        }
         else if (item.getItemId() == R.id.menu_playbackFrag_preset)
         {
             final List<EQPreset> presetArr = equalizerViewModel.getAllEqPresets();
@@ -507,10 +503,6 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
             });
             dialog.show();
         }
-        else if (item.getItemId() == R.id.menu_playbackFrag_search)
-        {
-
-        }
         else if (item.getItemId() == R.id.menu_playbackFrag_ringtone)
         {
             viewModel.setRingtone(viewModel.getTracksList().getValue().get(viewModel.getCurrentTrackIndex().getValue()));
@@ -521,9 +513,28 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
             TrackInfoDialog trackInfoDialog = new TrackInfoDialog(getContext(),audioTrack);
             trackInfoDialog.show();
         }
-        else if (item.getItemId() == R.id.menu_playbackFrag_settings)
+        else if (item.getItemId() == R.id.menu_playbackFrag_themes)
         {
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, Utility.themeArr);
 
+            ListView listView = new ListView(getContext());
+            listView.setAdapter(arrayAdapter);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setView(listView);
+            final AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    Utility.setThemeHistory(getContext(),position);
+                    Utility.changeToTheme(getActivity(),position);
+                    alertDialog.dismiss();
+                }
+            });
+            return true;
         } else if (item.getItemId() == R.id.menu_playbackFrag_help)
         {
 

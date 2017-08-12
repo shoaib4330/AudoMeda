@@ -34,17 +34,9 @@ import com.h6ah4i.android.media.audiofx.IEqualizer;
 
 import java.util.List;
 
-public class EqualizerActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationManagerContentFlow.NavigationListener, View.OnClickListener, LifecycleRegistryOwner {
+public class EqualizerActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     public static final String SHARED_EQVIEWMODEL_KEY = "shared_eq_viewmodel";
-
-    @Override
-    public LifecycleRegistry getLifecycle()
-    {
-        return registry;
-    }
-
-    private LifecycleRegistry registry = new LifecycleRegistry(this);
 
     private NavigationManagerSettingsFlow mNavigationManager;
 
@@ -91,6 +83,7 @@ public class EqualizerActivity extends AppCompatActivity implements BottomNaviga
             return new CurrentSessionInteractor(EqualizerActivity.this).getBassBoost();
         }
     };
+
     /* View fields references */
     private KnobController knob_bass;
     private KnobController knob_treble;
@@ -111,7 +104,6 @@ public class EqualizerActivity extends AppCompatActivity implements BottomNaviga
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_equalizer);
 
         /* Get reference to viewModel at the start, viewSetup might use it */
         equalizerViewModel = ViewModelProviders.of(this).get(SHARED_EQVIEWMODEL_KEY,EqualizerViewModel.class);
@@ -125,6 +117,12 @@ public class EqualizerActivity extends AppCompatActivity implements BottomNaviga
         mNavigationManager = new NavigationManagerSettingsFlow();
         mNavigationManager.init(getSupportFragmentManager(), R.id.fragmentHolder_SettingsActivity);
         mNavigationManager.startUpInitialFragment_Equalizer();
+    }
+
+    @Override
+    protected int getLayoutResourceId()
+    {
+        return R.layout.activity_equalizer;
     }
 
     private void setupActivityView()
@@ -197,12 +195,6 @@ public class EqualizerActivity extends AppCompatActivity implements BottomNaviga
                 return true;
         }
         return false;
-    }
-
-    @Override
-    public void onBackstackChanged()
-    {
-
     }
 
     @Override

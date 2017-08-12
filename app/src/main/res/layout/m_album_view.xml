@@ -10,7 +10,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?listItemBackground">
 
         <ImageView
             android:id="@+id/iv_albumImage"
@@ -28,7 +29,7 @@
             android:gravity="center_horizontal"
             android:lines="1"
             android:text="My Album"
-            android:textAppearance="@style/ListTextAppearnceSmall"
+            android:textAppearance="?android:textAppearanceSmall"
             android:textStyle="bold" />
 
         <TextView
@@ -39,7 +40,7 @@
             android:gravity="center_horizontal"
             android:lines="1"
             android:text="A Singer"
-            android:textAppearance="@style/ListTextAppearnceSmall" />
+            android:textAppearance="?android:textAppearanceSmall" />
 
     </RelativeLayout>
 

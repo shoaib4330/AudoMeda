@@ -37,11 +37,11 @@
         android:title="Lyrics">
     </item>
 
-    <item
-        android:id="@+id/menu_playbackFrag_delete"
-        android:orderInCategory="3"
-        android:title="Delete">
-    </item>
+    <!--<item-->
+        <!--android:id="@+id/menu_playbackFrag_delete"-->
+        <!--android:orderInCategory="3"-->
+        <!--android:title="Delete">-->
+    <!--</item>-->
 
     <item
         android:id="@+id/menu_playbackFrag_preset"
@@ -53,12 +53,6 @@
         android:id="@+id/menu_playbackFrag_SleepTimer"
         android:orderInCategory="5"
         android:title="Sleep Timer">
-    </item>
-
-    <item
-        android:id="@+id/menu_playbackFrag_search"
-        android:orderInCategory="6"
-        android:title="Search">
     </item>
 
     <item
@@ -74,9 +68,9 @@
     </item>
 
     <item
-        android:id="@+id/menu_playbackFrag_settings"
+        android:id="@+id/menu_playbackFrag_themes"
         android:orderInCategory="9"
-        android:title="Settings">
+        android:title="Themes">
     </item>
 
     <item
