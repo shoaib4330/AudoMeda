@@ -62,8 +62,7 @@ public final class TrackListingViewModel extends AndroidViewModel {
         {
             Live_TracksList = interactor_Provider_tracks.getAudioTracksListByGenre(genreID);
         }
-
-        if (folderName != null)
+        else if (folderName != null)
         {
             Live_TracksList = interactor_Provider_tracks.getAudioTracksListFolder(folderName);
         } else if (albumName != null)
@@ -71,7 +70,7 @@ public final class TrackListingViewModel extends AndroidViewModel {
             Live_TracksList = interactor_Provider_tracks.getAudioTracksListByAlbum(albumName);
         } else if (artistName != null)
         {
-            Live_TracksList = interactor_Provider_tracks.getAudioTracksListByAlbum(albumName);
+            Live_TracksList = interactor_Provider_tracks.getAudioTracksListByArtist(artistName);
         } else if (playlistName != null)
         {
             Live_TracksList = interactor_Provider_tracks.getAudioTracks_playlist(playlistName);

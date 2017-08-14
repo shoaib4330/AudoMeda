@@ -12,33 +12,25 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.emo.lkplayer.ConstantsHolder;
 import com.emo.lkplayer.R;
 import com.emo.lkplayer.innerlayer.interactors.Interactor_ModifyDQ;
-import com.emo.lkplayer.innerlayer.model.entities.Folder;
 import com.emo.lkplayer.innerlayer.model.entities.Playlist;
 import com.emo.lkplayer.middlelayer.viewmodel.PlaylistViewModel;
 import com.emo.lkplayer.outerlayer.customviews.PlayListDialog;
 import com.emo.lkplayer.outerlayer.customviews.TrackInfoDialog;
 import com.emo.lkplayer.outerlayer.view.reusables.TrackRecyclerAdapter;
-import com.emo.lkplayer.utilities.Utility;
 import com.emo.lkplayer.middlelayer.viewmodel.TrackListingViewModel;
 import com.emo.lkplayer.innerlayer.model.entities.AudioTrack;
 import com.emo.lkplayer.outerlayer.view.FragmentInteractionListener;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -75,7 +67,7 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
     private static final String ARG_FRAG_OPEN_MODE = "mode_enum";
     private static final String ARG_FRAG_PARAM_VAL = "val_according_to_mode";
 
-    long genreID;
+    long genreID=-1;
     String folderName, albumName, artistName, playlistName;
 
     private FragmentInteractionListener interactionListener;

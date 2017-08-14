@@ -15,15 +15,21 @@ import java.util.List;
  * Created by shoaibanwar on 6/30/17.
  */
 
+/* This class has Ease methods, e.g change array to list, list to array, and format String.
+However, this class at the moment is handling storing, reading user theme choice and its application
+on whole app. This should be done in a separate ThemeUtility class.
+ */
 public final class Utility {
 
+    /*------------------- Constants ---------------*/
     private static final String SHARED_PREFS_THEME = "com.emo.lkplayer.shthemeprefs";
-
-    private static int sTheme = 0;
+    //Theme constants...
     public final static int THEME_DEFAULT_DARK = 0;
     public final static int THEME_2ND_LIGHT = 1;
-
     public static final String[] themeArr = new String[]{"Dark Theme","Light Scana Theme"};
+
+    /*----------------- Fields ------------------- */
+    private static int sTheme = 0; //Represents current selected theme by a number
 
     public static void readThemeHistory(Context context)
     {
@@ -39,8 +45,7 @@ public final class Utility {
         editor.commit();
     }
 
-    /**
-     * Set the theme of the Activity, and restart it by creating a new Activity of the same type.
+    /* Set the theme of the Activity, and restart it by creating a new Activity of the same type.
      */
     public static void changeToTheme(Activity activity, int theme)
     {
@@ -70,6 +75,9 @@ public final class Utility {
         return sTheme;
     }
 
+    //formatter:off
+                /*-------------------- Utility Methods here ---------------------*/
+    //formatter:on
     public static String millisToTrackTimeFormat(long timeMillis){
         String minutesString = "00";
         String secondsString = "00";

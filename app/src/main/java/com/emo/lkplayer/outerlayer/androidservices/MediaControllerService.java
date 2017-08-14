@@ -41,10 +41,10 @@ import static com.emo.lkplayer.outerlayer.androidservices.MediaControllerService
 
 
 
-public class MediaControllerService extends Service implements MediaControllerInterface, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener,
-        MediaPlayer.OnPreparedListener,IBasicMediaPlayer.OnCompletionListener,IBasicMediaPlayer.OnPreparedListener,
-        IBasicMediaPlayer.OnErrorListener{
+public class MediaControllerService extends Service implements MediaControllerInterface, IBasicMediaPlayer.OnCompletionListener,
+        IBasicMediaPlayer.OnPreparedListener, IBasicMediaPlayer.OnErrorListener{
 
+    /* Interface that contains all constants (notification action constants) */
     public interface Constants {
         String MAIN_ACTION = "com.emo.audomeda.action.main";
         String PREV_ACTION = "com.emo.audomeda.action.prev";
@@ -58,6 +58,7 @@ public class MediaControllerService extends Service implements MediaControllerIn
 
         int NOTIFICATION_ID = 1131;
 
+        /* Interface that contains all constants (that service sends to its clients/receivers) */
         interface ServiceSentActionConstants{
             String ACTION_SERVICE_CHANGES_TRACK = "com.emo.audomeda.action.connectionclient.trackchanged";
             String ACTION_SERVICE_PLAYS_TRACK = "com.emo.audomeda.action.connectionclient.trackplayed";
@@ -67,12 +68,20 @@ public class MediaControllerService extends Service implements MediaControllerIn
             String INTENT_EXTRA_TRACKINDEX_INT = "com.emo.audomeda.action.connectionclient.trackIndex";
             String TAG_INTENT_PROGRESS_INTEGER = "currentProgress";
         }
+    }
 
-        interface ServiceClientIntentExtras{
-            String INTENT_EXTRA_SERVICE_STARTING_CLIENT_NAME="client_starting_service_name";
+    /* Inner class, has to be inside service, when clients connect using service connection,
+    * this class provides and interface for interaction*/
+    public class MusicBinder extends Binder {
+        public MediaControllerInterface getServiceInstance()
+        {
+            return MediaControllerService.this;
         }
     }
 
+    //formatter:off
+        /*-------------- MediaPlayer Callback Interfaces implemented------------------*/
+    //formatter:on
     @Override
     public void onCompletion(IBasicMediaPlayer mp)
     {
@@ -97,8 +106,13 @@ public class MediaControllerService extends Service implements MediaControllerIn
         sendServiceActionBroadCaset(Constants.ServiceSentActionConstants.ACTION_SERVICE_PLAYS_TRACK);
     }
 
+    //formatter:off
+        /*-------------- Service Class's fields start here------------------*/
+    //formatter:on
+    /* -------------------  Constants -------------------*/
     private static final int HANDLER_DELAY_REPEATING_SEEKBAR = 1000;
 
+    /* -------------------  Fields ---------------------*/
     private LocalBroadcastManager broadcaster;
     private Handler handler;
     private Runnable handlerRunnable = new Runnable() {
@@ -113,6 +127,48 @@ public class MediaControllerService extends Service implements MediaControllerIn
         }
     };
 
+    /* Interactor --> A use-case object that handles logic for current app's session maintainance */
+    private CurrentSessionInteractor currentSessionInteractor;
+
+    /* Data fields */
+    private LiveData<List<AudioTrack>> live_serviceTracksList=null;
+    private LiveData<Integer> live_currentTrackIndex=null;
+    private int currentTrackIndex = -1;
+
+    /* Media player instance used for all playback */
+    private IBasicMediaPlayer mediaPlayer;
+
+    /*-- Flags to maintain current state of this class --*/
+    private boolean isClientConnected = false;
+    private boolean isMediaPlayerPrepared = false;
+    private boolean isMediaPlayerPaused   = false;
+    private boolean isMediaPlayerPlaying  = false;
+    private boolean serviceInstanceStarted = false;
+
+    private IntentFilter audioActionCallsReceiverIntentFilter = new IntentFilter();
+    private BroadcastReceiver audioActionCallsReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            if (intent.getAction().equals(Constants.PLAY_ACTION))
+            {
+                if (!isAudioPlaying())
+                    play();
+            }
+            else if (intent.getAction().equals(Constants.PAUSE_ACTION))
+            {
+                if (isAudioPlaying())
+                    pause();
+            }
+        }
+    };
+
+
+    //formatter:off
+        /*---------------------------- Methods start here----------------------------*/
+    //formatter:on
+
+    /* -------  Private Methods -------------*/
     private void startPlaybackProgressUpdate()
     {
         handlerRunnable.run();
@@ -138,128 +194,6 @@ public class MediaControllerService extends Service implements MediaControllerIn
             intent.putExtra(Constants.ServiceSentActionConstants.INTENT_EXTRA_TRACKINDEX_INT,currentTrackIndex);
         }
         broadcaster.sendBroadcast(intent);
-    }
-
-    public class MusicBinder extends Binder {
-        public MediaControllerInterface getServiceInstance()
-        {
-            return MediaControllerService.this;
-        }
-    }
-
-
-    private boolean serviceInstanceStarted = false;
-    //private MediaControllerInterface.MediaControllerCallbacks serviceCallbackReceiver;
-
-    private CurrentSessionInteractor currentSessionInteractor;
-
-    private IBasicMediaPlayer mediaPlayer;
-    private LiveData<List<AudioTrack>> live_serviceTracksList=null;
-    private LiveData<Integer> live_currentTrackIndex=null;
-    private int currentTrackIndex = -1;
-
-    private boolean isClientConnected = false;
-    private boolean isMediaPlayerPrepared = false;
-    private boolean isMediaPlayerPaused   = false;
-    private boolean isMediaPlayerPlaying  = false;
-
-    private BroadcastReceiver audioActionCallsReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent)
-        {
-            if (intent.getAction().equals(Constants.PLAY_ACTION))
-            {
-                if (!isAudioPlaying())
-                    play();
-            }
-            else if (intent.getAction().equals(Constants.PAUSE_ACTION))
-            {
-                if (isAudioPlaying())
-                    pause();
-            }
-        }
-    };
-
-    private IntentFilter audioActionCallsReceiverIntentFilter = new IntentFilter();
-
-    @Override
-    public void onCreate()
-    {
-        super.onCreate();
-        /* Add actions that service will listen to via broadcast-receiver */
-        audioActionCallsReceiverIntentFilter.addAction(Constants.PLAY_ACTION);
-        audioActionCallsReceiverIntentFilter.addAction(Constants.PAUSE_ACTION);
-        /* Register to receive calls via broadcast-receiver */
-        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(audioActionCallsReceiver,
-                audioActionCallsReceiverIntentFilter);
-        /* Get the interactor object at the very start, it will be used to interact with the model*/
-        currentSessionInteractor = new CurrentSessionInteractor(getApplicationContext());
-        /* Setup Media player, receive media player instace that is used by whole application globally*/
-        initMediaPlayer(currentSessionInteractor.getMediaPlayer());
-        /* Creating a new Handler to schedule runnables on this same service thread*/
-        handler = new Handler();
-        /* Broadcaster makes certain broadcasts using the handler created above.*/
-        broadcaster = LocalBroadcastManager.getInstance(this);
-        startPlaybackProgressUpdate();
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId)
-    {
-        if (!serviceInstanceStarted)
-        {
-            serviceInstanceStarted = true;
-            this.live_serviceTracksList = this.currentSessionInteractor.getCurrentAudioTracksList();
-            this.live_serviceTracksList.observeForever(new Observer<List<AudioTrack>>() {
-                @Override
-                public void onChanged(@Nullable List<AudioTrack> audioTrackList)
-                {
-                    /* when list is changed, we call playOnly(int newPos), since its implied
-                    that index would have changed...*/
-                    playOnly(live_currentTrackIndex.getValue());
-                }
-            });
-            this.live_currentTrackIndex = this.currentSessionInteractor.getCurrentTrackIndex();
-            this.currentTrackIndex = live_currentTrackIndex.getValue();
-        }
-
-        if (intent.getAction() == null)
-        {
-
-        }
-        else if (intent.getAction().equals(Constants.PREV_ACTION))
-        {
-            Log.i("Media Service--", "Clicked Previous");
-            previous();
-            buildAndNotify();
-        }
-        else if (intent.getAction().equals(Constants.PLAY_ACTION))
-        {
-            if (isAudioPlaying()){
-                pause();
-                if (!this.isClientConnected)
-                    buildAndNotify();
-            }
-            else{
-                play();
-                buildAndNotify();
-            }
-        }
-        else if (intent.getAction().equals(Constants.NEXT_ACTION))
-        {
-            Log.i("Media Service--", "Clicked Next");
-            next();
-            buildAndNotify();
-        }
-        else if (intent.getAction().equals(Constants.STOP_ACTION))
-        {
-            Log.i("Media Service--", "Received Stop Foreground Intent");
-            stopForeground(true);
-            stopSelf();
-            android.os.Process.killProcess(android.os.Process.myPid());
-        }
-        return START_NOT_STICKY;
-        //return super.onStartCommand(intent,flags,startId);
     }
 
     private Notification buildNotification()
@@ -327,6 +261,107 @@ public class MediaControllerService extends Service implements MediaControllerIn
         notificationManager.notify(Constants.NOTIFICATION_ID, buildNotification());
     }
 
+    private void changeCurrentTrackPlayedIndex(int currentTrackIndex, boolean tellModel)
+    {
+        this.currentTrackIndex = currentTrackIndex;
+        sendServiceActionBroadCaset(Constants.ServiceSentActionConstants.ACTION_SERVICE_CHANGES_TRACK);
+        if (tellModel)
+            this.currentSessionInteractor.updateCurrentProviderQueryPlusIndex(null,null,null,null,-1,currentTrackIndex);
+    }
+
+    private void initMediaPlayer(IBasicMediaPlayer mMediaPlayer)
+    {
+        this.mediaPlayer = mMediaPlayer;
+        mMediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.setOnPreparedListener(this);
+        mMediaPlayer.setOnPreparedListener(this);
+        mMediaPlayer.setOnCompletionListener(this);
+        mMediaPlayer.setOnErrorListener(this);
+    }
+
+    /* -------  Service's Framework overridden Methods ------*/
+    @Override
+    public void onCreate()
+    {
+        super.onCreate();
+        /* Add actions that service will listen to via broadcast-receiver */
+        audioActionCallsReceiverIntentFilter.addAction(Constants.PLAY_ACTION);
+        audioActionCallsReceiverIntentFilter.addAction(Constants.PAUSE_ACTION);
+        /* Register to receive calls via broadcast-receiver */
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(audioActionCallsReceiver,
+                audioActionCallsReceiverIntentFilter);
+        /* Get the interactor object at the very start, it will be used to interact with the model*/
+        currentSessionInteractor = new CurrentSessionInteractor(getApplicationContext());
+        /* Setup Media player, receive media player instace that is used by whole application globally*/
+        initMediaPlayer(currentSessionInteractor.getMediaPlayer());
+        /* Creating a new Handler to schedule runnables on this same service thread*/
+        handler = new Handler();
+        /* Broadcaster makes certain broadcasts using the handler created above.*/
+        broadcaster = LocalBroadcastManager.getInstance(this);
+        /* Start broadcasting playback progress*/
+        startPlaybackProgressUpdate();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId)
+    {
+        if (!serviceInstanceStarted)
+        {
+            serviceInstanceStarted = true;
+            this.live_serviceTracksList = this.currentSessionInteractor.getCurrentAudioTracksList();
+            this.live_serviceTracksList.observeForever(new Observer<List<AudioTrack>>() {
+                @Override
+                public void onChanged(@Nullable List<AudioTrack> audioTrackList)
+                {
+                    /* when list is changed, we call playOnly(int newPos), since its implied
+                    that index would have changed...*/
+                    playOnly(live_currentTrackIndex.getValue());
+                }
+            });
+            this.live_currentTrackIndex = this.currentSessionInteractor.getCurrentTrackIndex();
+            this.currentTrackIndex = live_currentTrackIndex.getValue();
+        }
+
+        if (intent.getAction() == null)
+        {
+
+        }
+        else if (intent.getAction().equals(Constants.PREV_ACTION))
+        {
+            Log.i("Media Service--", "Clicked Previous");
+            previous();
+            buildAndNotify();
+        }
+        else if (intent.getAction().equals(Constants.PLAY_ACTION))
+        {
+            if (isAudioPlaying()){
+                pause();
+                if (!this.isClientConnected)
+                    buildAndNotify();
+            }
+            else{
+                play();
+                buildAndNotify();
+            }
+        }
+        else if (intent.getAction().equals(Constants.NEXT_ACTION))
+        {
+            Log.i("Media Service--", "Clicked Next");
+            next();
+            buildAndNotify();
+        }
+        else if (intent.getAction().equals(Constants.STOP_ACTION))
+        {
+            Log.i("Media Service--", "Received Stop Foreground Intent");
+            stopForeground(true);
+            stopSelf();
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
+        return START_NOT_STICKY;
+        //return super.onStartCommand(intent,flags,startId);
+    }
+
     @Override
     public void onDestroy()
     {
@@ -339,63 +374,18 @@ public class MediaControllerService extends Service implements MediaControllerIn
     @Override
     public IBinder onBind(Intent intent)
     {
-        //this.isClientConnected = true;
         return new MusicBinder();
     }
 
     @Override
     public boolean onUnbind(Intent intent)
     {
-        //this.isClientConnected = false;
         this.unregisterMediaUpdateEvents();
         return super.onUnbind(intent);
     }
 
-    public void initMediaPlayer(IBasicMediaPlayer mMediaPlayer)
-    {
-        this.mediaPlayer = mMediaPlayer;
-        mediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mMediaPlayer.setOnPreparedListener(this);
-        mediaPlayer.setOnPreparedListener(this);
-        mediaPlayer.setOnCompletionListener(this);
-        mediaPlayer.setOnErrorListener(this);
-    }
 
-    @Override
-    public void onCompletion(MediaPlayer mp)
-    {
-        this.isMediaPlayerPrepared = false;
-        this.isMediaPlayerPlaying = false;
-        next();
-    }
-
-    @Override
-    public boolean onError(MediaPlayer mp, int what, int extra)
-    {
-        isMediaPlayerPlaying = false;
-        this.isMediaPlayerPrepared = false;
-        return true;
-    }
-
-    @Override
-    public void onPrepared(MediaPlayer mp)
-    {
-        mp.start();
-        this.isMediaPlayerPrepared = true;
-        sendServiceActionBroadCaset(Constants.ServiceSentActionConstants.ACTION_SERVICE_PLAYS_TRACK);
-    }
-
-    /*---------------------------------- Private used methods are here----------------------------*/
-    private void changeCurrentTrackPlayedIndex(int currentTrackIndex, boolean tellModel)
-    {
-        this.currentTrackIndex = currentTrackIndex;
-        sendServiceActionBroadCaset(Constants.ServiceSentActionConstants.ACTION_SERVICE_CHANGES_TRACK);
-        if (tellModel)
-            this.currentSessionInteractor.updateCurrentProviderQueryPlusIndex(null,null,null,null,-1,currentTrackIndex);
-    }
-
-    /*-------------- Client interaction interface ------------------ */
+    /*--------- Client interaction plus playback handling interface Methods ----- */
     @Override
     public void play()
     {
@@ -593,6 +583,5 @@ public class MediaControllerService extends Service implements MediaControllerIn
     @Override
     public void unregisterMediaUpdateEvents()
     {
-        //this.serviceCallbackReceiver = null;
     }
 }

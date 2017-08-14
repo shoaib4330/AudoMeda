@@ -8,7 +8,6 @@ import com.emo.lkplayer.innerlayer.model.entities.EQPreset;
 import com.emo.lkplayer.outerlayer.androidservices.MediaControllerService;
 import com.h6ah4i.android.media.IBasicMediaPlayer;
 import com.h6ah4i.android.media.IMediaPlayerFactory;
-import com.h6ah4i.android.media.audiofx.IAudioEffect;
 import com.h6ah4i.android.media.audiofx.IBassBoost;
 import com.h6ah4i.android.media.audiofx.IEqualizer;
 import com.h6ah4i.android.media.audiofx.IPreAmp;
@@ -18,6 +17,8 @@ import com.h6ah4i.android.media.opensl.OpenSLMediaPlayerFactory;
  * Created by shoaibanwar on 7/26/17.
  */
 
+/* A Singleton that handles initialization and holds instances of objects required
+for Audio/Media playback */
 public class AppMediaManager {
 
     private static AppMediaManager ourInstance = null;
@@ -64,15 +65,15 @@ public class AppMediaManager {
     }
 
     /* ------------------------ Constants -------------------------*/
-    public static final int PRIORITY_2SETSABOVE_NORMAL = 2;
+
 
     /* ------------------------ Fields ------------------------- */
-    private static IMediaPlayerFactory iMediaPlayerFactory = null;
     private static Context wContext;
-    private static IBasicMediaPlayer basicMediaPlayer = null;
+    private static IPreAmp iPreAmp = null;
     private static IEqualizer iEqualizer = null;
     private static IBassBoost iBassBoost = null;
-    private static IPreAmp iPreAmp = null;
+    private static IBasicMediaPlayer basicMediaPlayer = null;
+    private static IMediaPlayerFactory iMediaPlayerFactory = null;
 
     private AppMediaManager()
     {

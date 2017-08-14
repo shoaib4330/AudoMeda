@@ -1,12 +1,8 @@
 package com.emo.lkplayer.middlelayer.actioners;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
-
 import com.emo.lkplayer.outerlayer.androidservices.MediaControllerService;
 
 public interface AudioActioner {

@@ -3,28 +3,35 @@ package com.emo.lkplayer.outerlayer;
 import android.content.Intent;
 
 import com.emo.lkplayer.Waiter;
-import com.emo.lkplayer.outerlayer.androidservices.MediaControllerService;
-import com.emo.lkplayer.outerlayer.androidservices.MediaControllerService.Constants.ServiceClientIntentExtras;
 import com.emo.lkplayer.utilities.Utility;
 
-/**
- * Created by shoaibanwar on 7/23/17.
- */
 
+/* Application class, It starts before anything else in the application
+use this class to make all necessary calls and do work required at very
+ start of the app
+ */
 public class Application extends android.app.Application
 {
     @Override
     public void onCreate()
     {
         super.onCreate();
-        /* Init all the neccessary components for the app via using following class*/
+        /* Init all the necessary components (MediaPlayback) for the app via using following class*/
         AppMediaManager.init(getApplicationContext());
-
-        /*--current, improfomable
-         */
+        /* Theme storage and reading should be done via a Repo class ideally
+        * and there should be a seperate ThemeUtility class to handle theme change events
+        * and tasks*/
         Utility.readThemeHistory(getApplicationContext());
     }
 
+    @Override
+    public void onTerminate()
+    {
+        AppMediaManager.getInstance().End();
+        super.onTerminate();
+    }
+
+    /* A Thread that is used to implement Sleep Timer in this application */
     private static Waiter sleepTimer = null;
 
     public static void setSleepTimer(int minutes)
@@ -49,10 +56,5 @@ public class Application extends android.app.Application
             sleepTimer.stopWaiter();
     }
 
-    @Override
-    public void onTerminate()
-    {
-        AppMediaManager.getInstance().End();
-        super.onTerminate();
-    }
+
 }

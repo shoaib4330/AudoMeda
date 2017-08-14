@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.emo.lkplayer">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.emo.lkplayer">
 
     <application
         android:name=".outerlayer.Application"
@@ -31,6 +32,7 @@
             android:label="@string/title_activity_equalizer"
             android:screenOrientation="portrait"></activity>
     </application>
+
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"></uses-permission>
