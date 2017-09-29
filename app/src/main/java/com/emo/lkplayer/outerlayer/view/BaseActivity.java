@@ -4,6 +4,8 @@ import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.LifecycleRegistryOwner;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.emo.lkplayer.outerlayer.view.navigation.BaseNavigationManager;
 import com.emo.lkplayer.utilities.Utility;
 
 public abstract class BaseActivity extends AppCompatActivity implements LifecycleRegistryOwner {
@@ -35,6 +37,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Lifecycl
             Utility.changeToTheme(this,Utility.appThemeCurrent());
     }
 
+    /* Custom Added methods */
     protected abstract int getLayoutResourceId();
+
+    public abstract BaseNavigationManager getNavigationManager();
 
 }

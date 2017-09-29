@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.emo.lkplayer.R;
 import com.emo.lkplayer.outerlayer.storage.content_providers.FoldersLoader;
 import com.emo.lkplayer.innerlayer.model.entities.Folder;
+import com.emo.lkplayer.outerlayer.view.BaseActivity;
 import com.emo.lkplayer.outerlayer.view.navigation.BaseNavigationManager;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
 
@@ -23,10 +24,6 @@ import java.util.List;
 
 
 public class NavFolderFragment extends Fragment implements FoldersLoader.MediaProviderEventsListener {
-
-    public interface InteractionListener {
-        BaseNavigationManager getNavigationManager();
-    }
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -62,7 +59,14 @@ public class NavFolderFragment extends Fragment implements FoldersLoader.MediaPr
     public void onAttach(Context activity)
     {
         super.onAttach(activity);
-        this.frag_NavigationManager = (NavigationManagerContentFlow) ((InteractionListener) activity).getNavigationManager();
+        if (activity instanceof BaseActivity)
+        {
+            frag_NavigationManager = (NavigationManagerContentFlow) ((BaseActivity) activity).getNavigationManager();
+        } else
+        {
+            throw new RuntimeException(activity.toString()
+                    + " problem retrieving Navigation Manager");
+        }
     }
 
     @Override

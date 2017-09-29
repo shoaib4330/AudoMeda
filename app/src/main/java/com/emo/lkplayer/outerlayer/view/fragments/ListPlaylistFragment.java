@@ -19,10 +19,8 @@ import android.widget.Toast;
 
 import com.emo.lkplayer.R;
 import com.emo.lkplayer.middlelayer.viewmodel.PlaylistViewModel;
-import com.emo.lkplayer.outerlayer.storage.content_providers.PlaylistLoader;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.LibraryLeadSelectionEventsListener;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.PlaylistSpecification;
 import com.emo.lkplayer.innerlayer.model.entities.Playlist;
+import com.emo.lkplayer.outerlayer.view.BaseActivity;
 import com.emo.lkplayer.outerlayer.view.navigation.BaseNavigationManager;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
 
@@ -37,10 +35,6 @@ public class ListPlaylistFragment extends Fragment implements LifecycleRegistryO
     public LifecycleRegistry getLifecycle()
     {
         return registry;
-    }
-
-    public interface InteractionListener{
-        BaseNavigationManager getNavigationManager();
     }
 
     private NavigationManagerContentFlow frag_NavigationManager;
@@ -105,7 +99,12 @@ public class ListPlaylistFragment extends Fragment implements LifecycleRegistryO
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        frag_NavigationManager = (NavigationManagerContentFlow) ((ListPlaylistFragment.InteractionListener)context).getNavigationManager();
+        if (context instanceof BaseActivity) {
+            frag_NavigationManager = (NavigationManagerContentFlow) ((BaseActivity)context).getNavigationManager();
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " problem retrieving Navigation Manager");
+        }
     }
 
     @Override

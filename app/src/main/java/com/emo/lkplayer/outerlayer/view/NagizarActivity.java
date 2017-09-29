@@ -6,33 +6,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-
 import com.emo.lkplayer.R;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.AudioAlbumsSpecification;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.ArtistSpecification;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.GenreSpecification;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.LibraryLeadSelectionEventsListener;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.PlaylistSpecification;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.iLoaderSpecification;
-import com.emo.lkplayer.outerlayer.view.fragments.ListAlbumsFragment;
-import com.emo.lkplayer.outerlayer.view.fragments.ListArtistFragment;
-import com.emo.lkplayer.outerlayer.view.fragments.ListGenreFragment;
-import com.emo.lkplayer.outerlayer.view.fragments.ListPlaylistFragment;
-import com.emo.lkplayer.outerlayer.view.fragments.NavFolderFragment;
-import com.emo.lkplayer.outerlayer.view.fragments.NavLibraryFragment;
-import com.emo.lkplayer.outerlayer.view.fragments.NavPlayBackFragment;
 import com.emo.lkplayer.outerlayer.view.navigation.BaseNavigationManager;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
 
 public class NagizarActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener,
-        NavigationManagerContentFlow.NavigationListener, LibraryLeadSelectionEventsListener, FragmentInteractionListener.FragmentAndToolbarInteractionListener,
-        NavFolderFragment.InteractionListener, NavLibraryFragment.InteractionListener, ListAlbumsFragment.InteractionListener,
-        ListGenreFragment.InteractionListener, ListArtistFragment.InteractionListener, ListPlaylistFragment.InteractionListener {
+        NavigationManagerContentFlow.NavigationListener,
+        FragmentInteractionListener.FragmentAndToolbarInteractionListener {
 
-    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1011398;
+    private static final int MY_PERMISSIONS_REQUEST_CONST = 1011398;
     private NavigationManagerContentFlow mNavigationManager;
 
     private BottomNavigationView bottomNavBar;
@@ -41,21 +25,20 @@ public class NagizarActivity extends BaseActivity implements BottomNavigationVie
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
         getSupportActionBar().hide();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
             {
-
                 // Should we show an explanation?
                 if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE))
                 {
                     // Explain to the user why we need to read the contacts
                 }
-
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.CALL_PHONE, Manifest.permission.SEND_SMS,
+                        Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS}, MY_PERMISSIONS_REQUEST_CONST);
                 // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
                 // app-defined int constant that should be quite unique
             }
@@ -82,7 +65,7 @@ public class NagizarActivity extends BaseActivity implements BottomNavigationVie
     {
         switch (requestCode)
         {
-            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+            case MY_PERMISSIONS_REQUEST_CONST:
             {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
@@ -129,35 +112,11 @@ public class NagizarActivity extends BaseActivity implements BottomNavigationVie
         return false;
     }
 
+    /* -----------Custom added methods here---------------------- */
     @Override
     public void onBackstackChanged()
     {
 
-    }
-
-    @Override
-    public void onSelectionWithSpecificationProvision(iLoaderSpecification specification, boolean specNeed)
-    {
-        if (specification instanceof AudioAlbumsSpecification)
-        {
-            mNavigationManager.open(ListAlbumsFragment.newInstance(), false, true);
-            return;
-        }
-        if (specification instanceof ArtistSpecification)
-        {
-            mNavigationManager.open(ListArtistFragment.newInstance(), false, true);
-            return;
-        }
-        if (specification instanceof GenreSpecification)
-        {
-            mNavigationManager.open(ListGenreFragment.newInstance(), false, true);
-            return;
-        }
-        if (specification instanceof PlaylistSpecification)
-        {
-            mNavigationManager.open(ListPlaylistFragment.newInstance(), false, true);
-            return;
-        }
     }
 
     @Override

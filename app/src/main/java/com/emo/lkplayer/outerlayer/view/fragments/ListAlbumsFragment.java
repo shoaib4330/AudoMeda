@@ -13,22 +13,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.emo.lkplayer.R;
 import com.emo.lkplayer.middlelayer.viewmodel.AlbumsListingViewModel;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.LibraryLeadSelectionEventsListener;
 import com.emo.lkplayer.innerlayer.model.entities.Album;
-import com.emo.lkplayer.outerlayer.view.navigation.BaseNavigationManager;
+import com.emo.lkplayer.outerlayer.view.BaseActivity;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
 
 import java.util.List;
 
 
 public class ListAlbumsFragment extends Fragment implements AlbumsListingViewModel.AlbumsControllerEventsListener {
-
-    public interface InteractionListener {
-        BaseNavigationManager getNavigationManager();
-    }
 
     private View rootView;
     private RecyclerView recyclerView;
@@ -85,13 +79,13 @@ public class ListAlbumsFragment extends Fragment implements AlbumsListingViewMod
     public void onAttach(Context context)
     {
         super.onAttach(context);
-        if (context instanceof LibraryLeadSelectionEventsListener)
+        if (context instanceof BaseActivity)
         {
-            frag_NavigationManager = (NavigationManagerContentFlow) ((ListAlbumsFragment.InteractionListener) context).getNavigationManager();
+            frag_NavigationManager = (NavigationManagerContentFlow) ((BaseActivity)context).getNavigationManager();
         } else
         {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " problem retrieving Navigation Manager");
         }
     }
 

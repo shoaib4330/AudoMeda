@@ -341,9 +341,7 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
 
         if (mediaControllerInterface != null)
             mediaControllerInterface.setClientConnected(false);
-
     }
-
 
     @Override
     public void onDestroyView()
@@ -482,7 +480,6 @@ public class NavPlayBackFragment extends Fragment implements ViewPager.OnPageCha
                 }
             });
             return true;
-
         }
         else if (item.getItemId() == R.id.menu_playbackFrag_SleepTimer)
         {

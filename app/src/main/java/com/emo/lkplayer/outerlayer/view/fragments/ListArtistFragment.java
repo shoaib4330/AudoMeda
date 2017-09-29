@@ -15,8 +15,8 @@ import android.widget.Toast;
 import com.emo.lkplayer.R;
 import com.emo.lkplayer.outerlayer.storage.content_providers.ArtistsLoader;
 import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.ArtistSpecification;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.LibraryLeadSelectionEventsListener;
 import com.emo.lkplayer.innerlayer.model.entities.Artist;
+import com.emo.lkplayer.outerlayer.view.BaseActivity;
 import com.emo.lkplayer.outerlayer.view.navigation.BaseNavigationManager;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
 
@@ -25,11 +25,6 @@ import java.util.List;
 
 public class ListArtistFragment extends Fragment implements ArtistsLoader.MediaProviderEventsListener {
 
-    public interface InteractionListener{
-        BaseNavigationManager getNavigationManager();
-    }
-
-    private LibraryLeadSelectionEventsListener eventsListener;
     private NavigationManagerContentFlow frag_NavigationManager;
 
     private ArtistsLoader artistsProviderDAO;
@@ -77,23 +72,20 @@ public class ListArtistFragment extends Fragment implements ArtistsLoader.MediaP
         return rootView;
     }
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof LibraryLeadSelectionEventsListener) {
-            eventsListener = (LibraryLeadSelectionEventsListener) context;
-            frag_NavigationManager = (NavigationManagerContentFlow) ((ListArtistFragment.InteractionListener)context).getNavigationManager();
+        if (context instanceof BaseActivity) {
+            frag_NavigationManager = (NavigationManagerContentFlow) ((BaseActivity)context).getNavigationManager();
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " problem retrieving Navigation Manager");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        eventsListener = null;
     }
 
     @Override

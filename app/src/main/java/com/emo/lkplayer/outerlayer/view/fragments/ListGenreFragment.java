@@ -10,13 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.emo.lkplayer.R;
 import com.emo.lkplayer.outerlayer.storage.content_providers.GenreLoader;
 import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.GenreSpecification;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.LibraryLeadSelectionEventsListener;
 import com.emo.lkplayer.innerlayer.model.entities.Genre;
+import com.emo.lkplayer.outerlayer.view.BaseActivity;
 import com.emo.lkplayer.outerlayer.view.navigation.BaseNavigationManager;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
 
@@ -25,11 +24,6 @@ import java.util.List;
 
 public class ListGenreFragment extends Fragment implements GenreLoader.MediaProviderEventsListener {
 
-    public interface InteractionListener{
-        BaseNavigationManager getNavigationManager();
-    }
-
-    private LibraryLeadSelectionEventsListener eventsListener;
     private NavigationManagerContentFlow frag_NavigationManager;
 
     private GenreLoader genreProviderDAO;
@@ -53,13 +47,11 @@ public class ListGenreFragment extends Fragment implements GenreLoader.MediaProv
     public void onAttach(Context context)
     {
         super.onAttach(context);
-        if (context instanceof LibraryLeadSelectionEventsListener) {
-            eventsListener = (LibraryLeadSelectionEventsListener) context;
-            frag_NavigationManager = (NavigationManagerContentFlow) ((ListGenreFragment.InteractionListener)context).getNavigationManager();
-
+        if (context instanceof BaseActivity) {
+            frag_NavigationManager = (NavigationManagerContentFlow) ((BaseActivity)context).getNavigationManager();
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " Problem retrieving Navigation Manager");
         }
     }
 

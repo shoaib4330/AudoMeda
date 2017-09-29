@@ -193,14 +193,8 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
 
     private void makeTrackListCall()
     {
-
         if (getArguments() != null)
         {
-//            if (getArguments().getSerializable(ARG_AS_OBJECT)!=null)
-//            {
-//                folderName = ((Folder)getArguments().getSerializable(ARG_AS_OBJECT)).getDiplayName();
-//                trackListingViewModel.getAudioTracks(getArguments().getSerializable(ARG_AS_OBJECT)).observe(this,observer);
-//            }
             if (getArguments().getSerializable(ARG_FRAG_OPEN_MODE) != null)
             {
                 ListingMode mode = (ListingMode) getArguments().getSerializable(ARG_FRAG_OPEN_MODE);
@@ -208,9 +202,15 @@ public class ListTrackFragment extends Fragment implements LifecycleRegistryOwne
                 /* Set the fragment mode, in which it is open */
                 FRAG_MODE = mode;
                 if (mode == ListingMode.MODE_ALL)
+                {
                     trackListingViewModel.getAudioTracks(TrackListingViewModel.AllTracksSpecification).observe(this, observer);
+                    return;
+                }
                 else if (mode == ListingMode.MODE_ALLRECENT)
+                {
                     trackListingViewModel.getAudioTracks(TrackListingViewModel.RecentTracksSpecification).observe(this, observer);
+                    return;
+                }
                 else if (mode == ListingMode.MODE_DQ)
                     playlistName = Interactor_ModifyDQ.DQ_AS_PLAYLIST;
                 else if (mode == ListingMode.MODE_PLAYLIST)

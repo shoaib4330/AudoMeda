@@ -1,6 +1,8 @@
 package com.emo.lkplayer.outerlayer;
 
+import android.content.Context;
 import android.content.Intent;
+import android.support.multidex.MultiDex;
 
 import com.emo.lkplayer.Waiter;
 import com.emo.lkplayer.utilities.Utility;
@@ -31,6 +33,13 @@ public class Application extends android.app.Application
         super.onTerminate();
     }
 
+    @Override
+    protected void attachBaseContext(Context base)
+    {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
     /* A Thread that is used to implement Sleep Timer in this application */
     private static Waiter sleepTimer = null;
 
@@ -55,6 +64,4 @@ public class Application extends android.app.Application
         if (sleepTimer!=null)
             sleepTimer.stopWaiter();
     }
-
-
 }

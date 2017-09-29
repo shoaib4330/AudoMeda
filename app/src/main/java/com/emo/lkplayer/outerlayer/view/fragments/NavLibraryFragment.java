@@ -7,15 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.emo.lkplayer.R;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.AudioAlbumsSpecification;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.ArtistSpecification;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.GenreSpecification;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.LibraryLeadSelectionEventsListener;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.PlaylistSpecification;
-import com.emo.lkplayer.outerlayer.storage.content_providers.Specification.iLoaderSpecification;
+import com.emo.lkplayer.outerlayer.view.BaseActivity;
 import com.emo.lkplayer.outerlayer.view.navigation.BaseNavigationManager;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
 
@@ -26,10 +20,6 @@ import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
  */
 public class NavLibraryFragment extends Fragment implements View.OnClickListener {
 
-    public interface InteractionListener {
-        BaseNavigationManager getNavigationManager();
-    }
-
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -37,7 +27,6 @@ public class NavLibraryFragment extends Fragment implements View.OnClickListener
             libraryLead_playlists, libraryLead_queue, libraryLead_topRated, libraryLead_recentlyAdded,
             libraryLead_videoTracksList;
 
-    private LibraryLeadSelectionEventsListener eventsListener;
     private NavigationManagerContentFlow frag_NavigationManager;
 
     public NavLibraryFragment()
@@ -60,18 +49,20 @@ public class NavLibraryFragment extends Fragment implements View.OnClickListener
     public void onAttach(Context context)
     {
         super.onAttach(context);
-        eventsListener = (LibraryLeadSelectionEventsListener) context;
-        frag_NavigationManager = (NavigationManagerContentFlow) ((NavLibraryFragment.InteractionListener) context).getNavigationManager();
+        if (context instanceof BaseActivity)
+        {
+            frag_NavigationManager = (NavigationManagerContentFlow) ((BaseActivity) context).getNavigationManager();
+        } else
+        {
+            throw new RuntimeException(context.toString()
+                    + " problem retrieving Navigation Manager");
+        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null)
-        {
-        }
-
     }
 
     private void initViews(View gRootView)
@@ -142,8 +133,7 @@ public class NavLibraryFragment extends Fragment implements View.OnClickListener
         {
             frag_NavigationManager.startListTracksFragment_WithAllRecentTracks();
             return;
-        }
-        else if (leadID == R.id.leadItem_videoTracks)
+        } else if (leadID == R.id.leadItem_videoTracks)
         {
             frag_NavigationManager.VideoTrackListFragment_Start();
         }

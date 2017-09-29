@@ -26,6 +26,7 @@ import com.emo.lkplayer.middlelayer.viewmodel.EqualizerViewModel;
 import com.emo.lkplayer.outerlayer.customviews.KnobController;
 import com.emo.lkplayer.outerlayer.view.fragments.NavEqualizerFragment;
 import com.emo.lkplayer.outerlayer.view.fragments.NavToneAndVolFragment;
+import com.emo.lkplayer.outerlayer.view.navigation.BaseNavigationManager;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerContentFlow;
 import com.emo.lkplayer.outerlayer.view.navigation.NavigationManagerSettingsFlow;
 import com.emo.lkplayer.utilities.Utility;
@@ -294,5 +295,12 @@ public class EqualizerActivity extends BaseActivity implements BottomNavigationV
                 v.setActivated(true);
         }
 
+    }
+
+    /* custom methods to be placed here */
+    @Override
+    public BaseNavigationManager getNavigationManager()
+    {
+        return mNavigationManager;
     }
 }
