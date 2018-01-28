@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/basic_inbetween_components_margin"
-        android:text="artist"
+        android:text="naatKhawan"
         android:textAppearance="?android:textAppearanceMedium"
         />
 
@@ -70,13 +70,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/basic_inbetween_components_margin"
-        android:text="album"
+        android:text="collection"
         android:textAppearance="?android:textAppearanceMedium"
         />
 
     <Button
         android:id="@+id/btn_dialog_trackinfo_ok"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:text="ok"/>

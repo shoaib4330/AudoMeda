@@ -6,7 +6,7 @@
 
     <view
         android:id="@+id/owned_verticalSlider"
-        class="com.emo.lkplayer.outerlayer.customviews.VerticalSliderWrapped$VerticalSlider"
+        class="com.emo.emomediaplayerpro.view_ui.customviews.VerticalSliderWrapped$VerticalSlider"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"

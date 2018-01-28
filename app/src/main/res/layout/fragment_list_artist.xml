@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".outerlayer.view.fragments.ListArtistFragment">
+    tools:context=".view_ui.view.fragments.ListArtistFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView_artists"

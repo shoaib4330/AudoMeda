@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".outerlayer.view.fragments.NavToneAndVolFragment">
+    tools:context=".view_ui.view.fragments.NavToneAndVolFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,31 +17,31 @@
             android:layout_margin="@dimen/basic_inbetween_components_margin"
             android:background="@drawable/custom_activedisable_button"
             android:text="Mono"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"/>
 
-        <com.emo.lkplayer.outerlayer.customviews.KnobController
+        <com.emo.emomediaplayerpro.view_ui.customviews.KnobController
             android:id="@+id/knob_mono"
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_centerHorizontal="true">
 
-        </com.emo.lkplayer.outerlayer.customviews.KnobController>
+        </com.emo.emomediaplayerpro.view_ui.customviews.KnobController>
     </LinearLayout>
 
 
-    <com.emo.lkplayer.outerlayer.customviews.KnobController
+    <com.emo.emomediaplayerpro.view_ui.customviews.KnobController
         android:id="@+id/knob_volume"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true" />
 
-    <com.emo.lkplayer.outerlayer.customviews.KnobController
+    <com.emo.emomediaplayerpro.view_ui.customviews.KnobController
         android:id="@+id/knob_stereoX"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"/>
 
 
 </RelativeLayout>

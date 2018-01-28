@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1"
-    tools:context="com.emo.lkplayer.outerlayer.view.fragments.VideoPlaybackFragment">
+    tools:context="com.emo.emomediaplayerpro.view_ui.view.fragments.VideoPlaybackFragment">
 
     <SurfaceView
         android:id="@+id/surfView_ForVideo"
@@ -13,12 +13,12 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/audomedaController_videoPlaybackFrag"/>
 
-    <com.emo.lkplayer.outerlayer.customviews.AudoMedaController
+    <com.emo.emomediaplayerpro.view_ui.customviews.AudoMedaController
         android:id="@+id/audomedaController_videoPlaybackFrag"
         style="?audomedaControllerSkin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
-    </com.emo.lkplayer.outerlayer.customviews.AudoMedaController>
+    </com.emo.emomediaplayerpro.view_ui.customviews.AudoMedaController>
 
 </RelativeLayout>

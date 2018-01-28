@@ -17,7 +17,7 @@
             android:id="@+id/iv_albumImage"
             android:layout_width="@dimen/basic_albumview_imageview_size"
             android:layout_height="@dimen/basic_albumview_imageview_size"
-            app:srcCompat="@drawable/album_default_ico"
+            app:srcCompat="@drawable/icon_default_playble"
             android:scaleType="fitXY"
             android:layout_centerHorizontal="true" />
 

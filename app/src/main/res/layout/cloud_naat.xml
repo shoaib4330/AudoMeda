@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/ivNaatImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        app:srcCompat="@drawable/icon_audio"/>
+
+    <TextView
+        android:id="@+id/tvNaatTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/ivNaatImage"
+        android:layout_toRightOf="@+id/ivNaatImage"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:text="Sample Naat Text"/>
+
+    <TextView
+        android:id="@+id/tvNaatPublsihedBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/ivNaatImage"
+        android:layout_toRightOf="@+id/ivNaatImage"
+        android:layout_below="@+id/tvNaatTitle"
+        android:layout_marginLeft="10dp"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:text="EMO published content"/>
+
+    <TextView
+        android:id="@+id/tvNaatCreatedOn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/ivNaatImage"
+        android:layout_toRightOf="@+id/ivNaatImage"
+        android:layout_below="@+id/tvNaatPublsihedBy"
+        android:layout_marginLeft="10dp"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:text="2017-11-27 20:38:50"/>
+
+</RelativeLayout>

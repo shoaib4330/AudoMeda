@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.emo.lkplayer">
+          package="com.emo.emomediaplayerpro">
 
     <application
-        android:name=".outerlayer.Application"
+        android:name="com.emo.emomediaplayerpro.Application"
         android:allowBackup="true"
-        android:icon="@drawable/notlargeicon"
+        android:icon="@drawable/icon_app"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/notlargeicon"
+        android:roundIcon="@drawable/icon_app"
         android:supportsRtl="true"
-        android:theme="@style/AppThemeLight">
+        android:theme="@style/AppThemeTwo">
 
-        <service android:name=".outerlayer.androidservices.MediaControllerService"
+        <service android:name="com.emo.emomediaplayerpro.model.domain.androidservices.MediaControllerService"
             android:exported="false"
             android:description="@string/mediaServiceDescription">
         </service>
 
         <activity
-            android:name=".outerlayer.view.NagizarActivity"
+            android:name="com.emo.emomediaplayerpro.view_ui.view.NagizarActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -28,7 +28,7 @@
         </activity>
 
         <activity
-            android:name=".outerlayer.view.EqualizerActivity"
+            android:name="com.emo.emomediaplayerpro.view_ui.view.EqualizerActivity"
             android:label="@string/title_activity_equalizer"
             android:screenOrientation="portrait"></activity>
     </application>

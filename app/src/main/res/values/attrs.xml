@@ -4,5 +4,5 @@
     <attr name="audomedaControllerSkin" format="reference"></attr>
     <attr name="listItemBackground" format="reference"></attr>
     <attr name="defFolderIconTint" format="reference"></attr>
-    <attr name="iconTint" format="reference"></attr>
+    <attr name="customAttr_iconTint" format="reference"></attr>
 </resources>

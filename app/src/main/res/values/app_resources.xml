@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable  name="icon_default_playble">@drawable/icon_default_track_image_square</drawable>
+</resources>

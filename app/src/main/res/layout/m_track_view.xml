@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.8"
             android:textAppearance="?android:textAppearanceMedium"
-            android:text="Challa India tu aya"/>
+            android:text="This is a sample track"/>
 
         <TextView
             android:id="@+id/tv_trackDuration"
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:textAppearanceSmall"
-            android:text="Arif Lohar Mota"/>
+            android:text="This is sample Artist/NaatKhawan"/>
 
     </LinearLayout>
 

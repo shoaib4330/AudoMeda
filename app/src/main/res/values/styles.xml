@@ -6,11 +6,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorWindowbackground</item>
         <item name="stateButton">@style/StateButtonStyleAppTheme</item>
         <item name="audomedaControllerSkin">@style/AudoMedaControllerStyle</item>
         <item name="listItemBackground">@drawable/list_item_background_selector</item>
         <item name="defFolderIconTint">@color/color_default_folder_tint</item>
-        <item name="iconTint">@color/color_icons_tint</item>
+        <item name="customAttr_iconTint">@color/color_icons_tint</item>
     </style>
 
     <style name="StateButtonStyleAppTheme" parent="Widget.AppCompat.Button">
@@ -21,32 +22,33 @@
 
     <style name="AudoMedaControllerStyle" parent="Theme.AppCompat">
         <!-- This already inherits the properties of dark theme -->
+        <item name="android:background">@color/colorPrimary</item>
     </style>
 
     <!-- ..................2nd theme for app................................................... -->
-    <style name="AppThemeLight" parent="Theme.AppCompat.Light">
+    <style name="AppThemeTwo" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimaryLightTheme</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDarkLightTheme</item>
-        <item name="colorAccent">@color/colorAccentLightTheme</item>
-        <item name="android:windowBackground">@color/colorWindowbackgroundLightTheme</item>
-        <item name="stateButton">@style/StateButtonStyleAppThemeLight</item>
-        <item name="audomedaControllerSkin">@style/AudoMedaControllerStyleLight</item>
-        <item name="listItemBackground">@drawable/list_item_background_selector_light</item>
-        <item name="defFolderIconTint">@color/color_default_folder_tint_Light</item>
-        <item name="iconTint">@color/color_icons_tint_Light</item>
+        <item name="colorPrimary">@color/colorPrimaryDarkTheme2</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkTheme2</item>
+        <item name="colorAccent">@color/colorAccentTheme2</item>
+        <item name="android:windowBackground">@color/colorWindowbackgroundTheme2</item>
+        <item name="stateButton">@style/StateButtonStyleAppTheme2</item>
+        <item name="audomedaControllerSkin">@style/AudoMedaControllerStyleTheme2</item>
+        <item name="listItemBackground">@drawable/list_item_background_selector_theme2</item>
+        <item name="defFolderIconTint">@color/color_default_folder_tint_Theme2</item>
+        <item name="customAttr_iconTint">@color/color_icons_tint_Theme2</item>
     </style>
 
 
-    <style name="StateButtonStyleAppThemeLight" parent="Widget.AppCompat.Button">
+    <style name="StateButtonStyleAppTheme2" parent="Widget.AppCompat.Button">
         <item name="android:layout_margin">5dp</item>
         <item name="android:background">@drawable/custom_activedisable_button</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/colorPrimaryDarkTheme2</item>
     </style>
 
-    <style name="AudoMedaControllerStyleLight" parent="Theme.AppCompat.Light">
+    <style name="AudoMedaControllerStyleTheme2" parent="Theme.AppCompat.Light">
         <!-- This already inherits the properties of light theme -->
-        <item name="android:background">@color/colorPrimaryLightTheme</item>
+        <item name="android:background">@color/colorPrimaryTheme2</item>
     </style>
 
 </resources>

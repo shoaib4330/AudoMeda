@@ -6,31 +6,32 @@
     <color name="customStateButton_active_layer2">#353e40</color>
     <color name="customStateButton_active_state_activated">#4DD0E1</color>
 
-    <color name="customSlider_back_color">#202020</color>
-    <color name="customSlider_PreAmp_back_color">#303030</color>
-
     <color name="bottomNavigationBar_icon_highlight_color">#F5F5F5</color>
     <color name="bottomNavigationBar_text_highlight_color">#F5F5F5</color>
 
+    <color name="color_lightBlueLowAlpha">#da95d7f1</color>
+    <color name="color_whiteApprox">#f2f9f9f9</color>
+    <color name="color_grayApprox">#f2a9a7a7</color>
 
     <!--- 1st theme values -->
-    <color name="colorPrimary">@android:color/transparent</color>
-    <color name="colorPrimaryDark">#212121</color>
-    <color name="colorAccent">#72d4dc</color>
-    <color name="color_default_folder_tint">#95c2e1</color>
+    <color name="colorPrimary">#0277BD</color>
+    <color name="colorPrimaryDark">#0277BD</color>
+    <color name="colorAccent">#fafafa</color>
+    <color name="colorWindowbackground">#7c7b7b</color>
+    <color name="color_default_folder_tint">#9e0277bd</color>
     <color name="color_icons_tint">#f5f6f7</color>
     <color name="list_items_background_selector_Selected">#7eb9d9e7</color>
-    <color name="list_items_background_selector_NotSelected">#303030</color>
+    <color name="list_items_background_selector_NotSelected">#b8807e7e</color>
 
 
     <!--- 2nd theme values -->
-    <color name="colorPrimaryLightTheme">#607D8B</color>
-    <color name="colorPrimaryDarkLightTheme">#455A64</color>
-    <color name="colorAccentLightTheme">#0288D1</color>
-    <color name="colorWindowbackgroundLightTheme">#BDBDBD</color>
-    <color name="color_default_folder_tint_Light">#676969</color>
-    <color name="color_icons_tint_Light">#444546</color>
-    <color name="list_items_background_selector_SelectedLight">#da67a3bf</color>
-    <color name="list_items_background_selector_NotSelectedLight">#bcbcbc</color>
+    <color name="colorPrimaryTheme2">#e53935</color>
+    <color name="colorPrimaryDarkTheme2">#e53935</color>
+    <color name="colorAccentTheme2">#fafafa</color>
+    <color name="colorWindowbackgroundTheme2">#7c7b7b</color>
+    <color name="color_default_folder_tint_Theme2">#c2d43c39</color>
+    <color name="color_icons_tint_Theme2">#f5f6f7</color>
+    <color name="list_items_background_selector_SelectedTheme2">#afd43c39</color>
+    <color name="list_items_background_selector_NotSelectedTheme2">#b8807e7e</color>
 
 </resources>

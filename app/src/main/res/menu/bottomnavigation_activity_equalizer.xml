@@ -12,6 +12,6 @@
 
     <item
         android:id="@+id/navMenu_toToneAndVolFrag_EqualizerActivity"
-        android:icon="@drawable/toolbar_icon_toneandcol"
+        android:icon="@drawable/icon_toolbar_navto_tonevol"
         android:title="Tone/Vol" />
 </menu>

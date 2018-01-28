@@ -18,6 +18,25 @@
         </layer-list>
     </item>
 
+    <!--ToDo: color ki hard-coded values hen, inko configuration men dalo -->
+    <item  android:state_enabled="false">
+        <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="#b3b1b1"></solid>
+                </shape>
+            </item>
+
+            <item android:bottom="0dp">
+                <shape android:shape="rectangle">
+                    <solid android:color="#b3b1b1"></solid>
+                </shape>
+            </item>
+
+        </layer-list>
+    </item>
+
     <item  android:state_activated="false">
         <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 

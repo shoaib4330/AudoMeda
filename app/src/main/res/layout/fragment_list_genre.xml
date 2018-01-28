@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".outerlayer.view.fragments.ListGenreFragment">
+    tools:context=".view_ui.view.fragments.ListGenreFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView_genre"

@@ -1,22 +1,24 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".outerlayer.view.fragments.NavLibraryFragment">
+        tools:context=".view_ui.view.fragments.NavLibraryFragment">
 
         <LinearLayout
             android:id="@+id/leadItem_allSongs"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
+            android:background="?listItemBackground"
             android:orientation="horizontal"
-            android:weightSum="1"
-            android:background="?listItemBackground">
+            android:weightSum="1">
 
             <ImageView
                 android:layout_width="0dp"
@@ -24,8 +26,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
-                android:tint="?iconTint"
-                app:srcCompat="@drawable/icon_audiotrack" />
+                android:tint="?customAttr_iconTint"
+                app:srcCompat="@drawable/icon_audio"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -33,7 +35,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.75"
                 android:text="All Tracks"
-                android:textAppearance="?android:textAppearanceLarge" />
+                android:textAppearance="?android:textAppearanceLarge"/>
 
         </LinearLayout>
 
@@ -42,9 +44,9 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
+            android:background="?listItemBackground"
             android:orientation="horizontal"
-            android:weightSum="1"
-            android:background="?listItemBackground">
+            android:weightSum="1">
 
             <ImageView
                 android:layout_width="0dp"
@@ -52,8 +54,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
-                android:tint="?iconTint"
-                app:srcCompat="@drawable/icon_albumcircle" />
+                android:tint="?customAttr_iconTint"
+                app:srcCompat="@drawable/icon_albumcircle"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -61,7 +63,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.75"
                 android:text="Albums"
-                android:textAppearance="?android:textAppearanceLarge" />
+                android:textAppearance="?android:textAppearanceLarge"/>
 
         </LinearLayout>
 
@@ -70,9 +72,9 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
+            android:background="?listItemBackground"
             android:orientation="horizontal"
-            android:weightSum="1"
-            android:background="?listItemBackground">
+            android:weightSum="1">
 
             <ImageView
                 android:layout_width="0dp"
@@ -80,8 +82,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
-                android:tint="?iconTint"
-                app:srcCompat="@drawable/icon_mic" />
+                android:tint="?customAttr_iconTint"
+                app:srcCompat="@drawable/icon_mic"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -89,7 +91,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.75"
                 android:text="Artists"
-                android:textAppearance="?android:textAppearanceLarge" />
+                android:textAppearance="?android:textAppearanceLarge"/>
 
         </LinearLayout>
 
@@ -98,9 +100,9 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
+            android:background="?listItemBackground"
             android:orientation="horizontal"
-            android:weightSum="1"
-            android:background="?listItemBackground">
+            android:weightSum="1">
 
             <ImageView
                 android:layout_width="0dp"
@@ -108,16 +110,16 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
-                android:tint="?iconTint"
-                app:srcCompat="@drawable/icon_genre" />
+                android:tint="?customAttr_iconTint"
+                app:srcCompat="@drawable/icon_genre"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.75"
-                android:text="Genres"
-                android:textAppearance="?android:textAppearanceLarge" />
+                android:text="Genre"
+                android:textAppearance="?android:textAppearanceLarge"/>
 
         </LinearLayout>
 
@@ -126,9 +128,9 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
+            android:background="?listItemBackground"
             android:orientation="horizontal"
-            android:weightSum="1"
-            android:background="?listItemBackground">
+            android:weightSum="1">
 
             <ImageView
                 android:layout_width="0dp"
@@ -136,8 +138,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
-                android:tint="?iconTint"
-                app:srcCompat="@drawable/icon_playlist" />
+                android:tint="?customAttr_iconTint"
+                app:srcCompat="@drawable/icon_playlist"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -145,7 +147,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.75"
                 android:text="Playlists"
-                android:textAppearance="?android:textAppearanceLarge" />
+                android:textAppearance="?android:textAppearanceLarge"/>
 
         </LinearLayout>
 
@@ -154,9 +156,9 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
+            android:background="?listItemBackground"
             android:orientation="horizontal"
-            android:weightSum="1"
-            android:background="?listItemBackground">
+            android:weightSum="1">
 
             <ImageView
                 android:layout_width="0dp"
@@ -164,8 +166,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
-                android:tint="?iconTint"
-                app:srcCompat="@drawable/icon_queue" />
+                android:tint="?customAttr_iconTint"
+                app:srcCompat="@drawable/icon_queue"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -173,7 +175,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.75"
                 android:text="Queue"
-                android:textAppearance="?android:textAppearanceLarge" />
+                android:textAppearance="?android:textAppearanceLarge"/>
 
         </LinearLayout>
 
@@ -182,10 +184,10 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:weightSum="1"
             android:background="?listItemBackground"
-            android:visibility="gone">
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="1">
 
             <ImageView
                 android:layout_width="0dp"
@@ -193,8 +195,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
-                android:tint="?iconTint"
-                app:srcCompat="@drawable/icon_toprated" />
+                android:tint="?customAttr_iconTint"
+                app:srcCompat="@drawable/icon_toprated"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -202,7 +204,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.75"
                 android:text="Top Rated"
-                android:textAppearance="?android:textAppearanceLarge" />
+                android:textAppearance="?android:textAppearanceLarge"/>
 
         </LinearLayout>
 
@@ -211,9 +213,9 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
+            android:background="?listItemBackground"
             android:orientation="horizontal"
-            android:weightSum="1"
-            android:background="?listItemBackground">
+            android:weightSum="1">
 
             <ImageView
                 android:layout_width="0dp"
@@ -221,8 +223,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
-                android:tint="?iconTint"
-                app:srcCompat="@drawable/icon_recentlyadded" />
+                android:tint="?customAttr_iconTint"
+                app:srcCompat="@drawable/icon_recentlyadded"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -230,7 +232,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.75"
                 android:text="Recently Added"
-                android:textAppearance="?android:textAppearanceLarge" />
+                android:textAppearance="?android:textAppearanceLarge"/>
 
         </LinearLayout>
 
@@ -239,9 +241,9 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
+            android:background="?listItemBackground"
             android:orientation="horizontal"
-            android:weightSum="1"
-            android:background="?listItemBackground">
+            android:weightSum="1">
 
             <ImageView
                 android:layout_width="0dp"
@@ -249,8 +251,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.25"
                 android:minHeight="35dp"
-                android:tint="?iconTint"
-                app:srcCompat="@drawable/icond_videotrack" />
+                android:tint="?customAttr_iconTint"
+                app:srcCompat="@drawable/icon_video"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -258,7 +260,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.75"
                 android:text="Video Tracks"
-                android:textAppearance="?android:textAppearanceLarge" />
+                android:textAppearance="?android:textAppearanceLarge"/>
 
         </LinearLayout>
 

@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".outerlayer.view.NagizarActivity">
+    tools:context=".view_ui.view.NagizarActivity">
 
-    <com.emo.lkplayer.outerlayer.customviews.AudoMedaController
+    <com.emo.emomediaplayerpro.view_ui.customviews.AudoMedaController
         android:id="@+id/view_mediaConroller"
         style="?audomedaControllerSkin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"></com.emo.lkplayer.outerlayer.customviews.AudoMedaController>
+        android:layout_alignParentBottom="true"></com.emo.emomediaplayerpro.view_ui.customviews.AudoMedaController>
 
 
     <android.support.v4.view.ViewPager

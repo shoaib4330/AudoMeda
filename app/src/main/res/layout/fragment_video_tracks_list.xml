@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.emo.lkplayer.outerlayer.view.fragments.VideoTracksListFragment">
+    tools:context="com.emo.emomediaplayerpro.view_ui.view.fragments.VideoTracksListFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView_videoTracksList"

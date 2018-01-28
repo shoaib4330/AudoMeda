@@ -2,16 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:elevation="12dp"
-    android:translationZ="12dp">
-
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/imgV_audoMedaControllerBackground"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:visibility="gone"/>
+    android:layout_height="200dp">
 
     <android.support.v7.widget.LinearLayoutCompat
         android:id="@+id/linlay_backwhole"
@@ -20,7 +11,30 @@
         android:orientation="vertical"
         android:padding="10dp"
         android:weightSum="1">
+        
+        <RelativeLayout
+            android:id="@+id/panel_repeatShuffle_audioControl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_repeat_audioControl"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/icon_repeat"/>
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_shuffle_audioControl"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/icon_shuffle"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+        
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -131,7 +145,7 @@
                     android:layout_centerVertical="true"
                     android:layout_margin="@dimen/basic_inbetween_components_margin"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/icon_audiotrack" />
+                    app:srcCompat="@drawable/icon_audio" />
 
                 <TextView
                     android:id="@+id/tv_TrackTitle"
@@ -140,7 +154,7 @@
                     android:layout_toRightOf="@+id/img_StaticTrackIcon"
                     android:padding="@dimen/basic_textview_padding"
                     android:lines="1"
-                    android:text="I am a song"
+                    android:text="I am a audio"
                     android:textAppearance="?android:textAppearanceMedium" />
 
                 <TextView
@@ -150,11 +164,12 @@
                     android:layout_below="@+id/tv_TrackTitle"
                     android:layout_toRightOf="@+id/img_StaticTrackIcon"
                     android:padding="@dimen/basic_textview_padding"
-                    android:text="I am an album"
+                    android:text="I am a collection"
                     android:lines="1"
                     android:textAppearance="?android:textAppearanceMedium" />
 
             </RelativeLayout>
         </RelativeLayout>
+        
     </android.support.v7.widget.LinearLayoutCompat>
 </FrameLayout>

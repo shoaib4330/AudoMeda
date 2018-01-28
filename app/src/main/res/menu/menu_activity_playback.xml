@@ -3,7 +3,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menuBtn_ToneVol"
-        android:icon="@drawable/toolbar_icon_toneandcol"
+        android:icon="@drawable/icon_toolbar_navto_tonevol"
         android:orderInCategory="3"
         android:title="Tone/Vol"
         app:showAsAction="always">
@@ -19,7 +19,7 @@
 
     <item
         android:id="@+id/menuBtn_Library"
-        android:icon="@drawable/ic_libraryfoler"
+        android:icon="@drawable/icon_folder"
         android:orderInCategory="1"
         android:title="Library"
         app:showAsAction="always">
@@ -34,7 +34,8 @@
     <item
         android:id="@+id/menu_playbackFrag_lyrics"
         android:orderInCategory="2"
-        android:title="Lyrics">
+        android:title="Lyrics"
+        android:visible="false">
     </item>
 
     <!--<item-->
@@ -58,7 +59,8 @@
     <item
         android:id="@+id/menu_playbackFrag_ringtone"
         android:orderInCategory="7"
-        android:title="Ringtone">
+        android:title="Ringtone"
+        android:visible="false">
     </item>
 
     <item
@@ -76,7 +78,8 @@
     <item
         android:id="@+id/menu_playbackFrag_help"
         android:orderInCategory="10"
-        android:title="Help">
+        android:title="Help"
+        android:visible="false">
     </item>
 
 </menu>

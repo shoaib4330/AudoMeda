@@ -8,12 +8,12 @@
 
     <item
         android:id="@+id/navMenu_Nagizar_Folders"
-        android:icon="@drawable/ic_libraryfoler"
+        android:icon="@drawable/icon_folder"
         android:title="Folders" />
 
     <item
         android:id="@+id/navMenu_Nagizar_Library"
-        android:icon="@drawable/library"
+        android:icon="@drawable/icon_library"
         android:title="Library" />
 
 </menu>
